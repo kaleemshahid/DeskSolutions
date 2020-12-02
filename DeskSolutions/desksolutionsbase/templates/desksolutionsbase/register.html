@@ -1,0 +1,28 @@
+{% load static %}
+<section class="register-section" id="services">
+    <div class="container register-container">
+        <div class="col-offset-3 col-md-6">
+            <div id="success-message"></div>
+            <form method="POST" action="{% url 'signup:signups' %}" id="register-form" enctype="multipart/form-data"
+                novalidate>
+                {% csrf_token %}
+
+                {% for field in user_form %}
+                <p>
+                    {{ field.label_tag }}
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                <p style="color: red;">{{error}}</p>
+                {% endfor %}
+
+                </p>
+                {% endfor %}
+                <!-- {{user_form.as_p}}
+                {{profile_form.as_p}} -->
+
+                <input type="submit" name="register" value="Sign Up">
+            </form>
+        </div>
+    </div>
+</section>
