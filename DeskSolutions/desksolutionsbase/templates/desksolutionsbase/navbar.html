@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="navbar navbar-expand-md navbar-light fixed-top" id="navbar">
     <div class="container">
         <a class="navbar-brand" href="page-top">DeskSolutions</a>
@@ -21,6 +22,10 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#contact">Contact</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link nav-btn" href="{% url 'signup:organization-register' %}">Sign Up</a>
                 </li>
             </ul>
         </div>

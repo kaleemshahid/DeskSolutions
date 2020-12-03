@@ -4,7 +4,7 @@ from desksolutionsbase.views import OrganizationAction, signup, organizationlist
 app_name = "signup"
 
 urlpatterns = [
-    path('', OrganizationAction, name="home"),
-    path('organizations/', organizationlist, name="home"),
+    path('', organizationlist, name="home"),
+    path('organizationsetup/', OrganizationAction, name="organization-register"),
     path('profile/', signup, name='signups'),
 ]

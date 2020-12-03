@@ -71,15 +71,20 @@ class Department(models.Model):
     def __str__(self):
         return self.department_name
 
+# class Job(models.Model):
+#     title = models.CharField(max_length=20, )
 
 class Profile(models.Model):
     organization = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, null=False)
     department = models.ForeignKey(
         Department, on_delete=models.CASCADE, null=False, blank=False)
+    # job = models.ForeignKey(Job, on_delete=models.CASCADE, null=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     is_manager = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.organization)
+
+

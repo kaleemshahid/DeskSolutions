@@ -121,6 +121,10 @@ section{
     background: rgba(64, 39, 160, 1) ;
 }
 
+a.nav-link.nav-btn{
+    font-size: large;
+}
+
 /* Showcase */
 
 .showcase{
@@ -148,6 +152,38 @@ section{
     border: 1px solid black
 }
 
+/* Organzizations */
+
+.col-md-3{
+    display: inline-block;
+    margin-left: -4px;
+}
+
+.carousel-indicators .active{
+    background-color: brown;
+}
+
+.carousel-indicators{
+    margin-top:20px
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+    background-color: black;
+    border-radius: 2px;
+}
+
+.title-img{
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.desc-block{
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+
 /* Services */
 
 .services-icon{
@@ -158,17 +194,7 @@ section{
     box-shadow: 0 14px 28px rgba(0,0,0,0.25);
 }
 
-/* Register */
 
-.register-container{
-    background-color: #fff;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
-}
-
-.signup_title{
-    background-color: aqua;
-    font-size: 40px;
-}
 
 /* Footer */
 .footer .lead{

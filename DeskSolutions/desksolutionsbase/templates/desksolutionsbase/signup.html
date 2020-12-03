@@ -1,21 +1,27 @@
+{% extends 'desksolutionsbase/ext_links.html' %}
 {% load static %}
+{% block content %}
+
+<div class="container">
+    <a class="go-back-link btn btn-info" href="{% url 'signup:home' %}">Go Back</a>
+</div>
 <section class="register-section" id="services">
     <div class="container register-container">
-        <div class="col-offset-3 col-md-6" style="border: 1px solid black">
+        <div class="col-md-12">
+            <div class="stepper">
+                <h1>step</h1>
+            </div>
             <div class="signup_title">Sign Up</div>
             <form method="POST" action="" id="signup-form" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
 
                 {% for field in register_form %}
-                {{ field.label_tag }}
-                <p>{{ field }}</p>
+                <p style="font-weight: lighter;">{{ field.label_tag }}</p>
+                <p class="org-field">{{ field }}</p>
 
-                <!-- {% for error in field.errors %}
-                <p style=" color: red;">{{error}}</p>
-                {% endfor %} -->
-                <!-- <p id="id_{{ field.title }}">abc</p> -->
-                <div class="form_error">abc</div>
-
+                {% for error in field.errors %}
+                <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
+                {% endfor %}
                 {% endfor %}
 
                 <input class="btn btn-info" type="submit" name="signup" value="Sign Up">
@@ -23,3 +29,34 @@
         </div>
     </div>
 </section>
+<!-- 
+<div class="container contact-form">
+    <div class="contact-image">
+        <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
+    </div>
+    <form method="post">
+        <h3>Drop Us a Message</h3>
+       <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" name="txtName" class="form-control" placeholder="Your Name *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="txtEmail" class="form-control" placeholder="Your Email *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="txtPhone" class="form-control" placeholder="Your Phone Number *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="btnSubmit" class="btnContact" value="Send Message" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <textarea name="txtMsg" class="form-control" placeholder="Your Message *" style="width: 100%; height: 150px;"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div> -->
+{% endblock %}

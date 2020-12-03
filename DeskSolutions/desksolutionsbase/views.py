@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from desksolutionsbase.forms import OrganizationForm, RegisterForm
 from account.models import Organization, User
 from .decorators import organization_absent
@@ -13,8 +14,9 @@ from django.contrib.contenttypes.models import ContentType
 
 def OrganizationAction(request):
     context = {}
-
-    if request.method == "POST" and request.is_ajax():
+    if request.session.get('organization'):
+        del request.session['organization']
+    if request.method == "POST":
         print("request is POST")
         form = OrganizationForm(request.POST, request.FILES)
         print(settings.BASE_DIR)
@@ -24,17 +26,17 @@ def OrganizationAction(request):
 
             # org = form.save()
             # print(org)
-            # title = form.cleaned_data['title']
-            # description = form.cleaned_data['description']
-            # url = form.cleaned_data['url']
-            # address = form.cleaned_data['address']
-            # logo = request.FILES.get('logo')
-            # print(address)
-            # print(logo)
-            # create_organization = Organization.objects.create(
-            #     title=title, description=description, url=url, address=address, logo=logo)
-            # create_organization.save()
-            form.save()
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            url = form.cleaned_data['url']
+            address = form.cleaned_data['address']
+            logo = request.FILES.get('logo')
+            print(address)
+            print(logo)
+            create_organization = Organization.objects.create(
+                title=title, description=description, url=url, address=address, logo=logo)
+            create_organization.save()
+            
             # get_org = Organization.objects.filter(
             #     title=title)
             # print(get_org)
@@ -47,19 +49,19 @@ def OrganizationAction(request):
             # print(ser_instance)
             # ser_instance = json.dumps(get_org, content_type='application/json')
             # print(ser_instance)
-            # request.session['organization'] = create_organization.pk
+            request.session['organization'] = create_organization.pk
             # print(ser_instance)
-            # print(request.session['organization'])
+            print(request.session['organization'])
             # form.save()
             # return redirect("signup:signups", args=(request.session['organization'],))
-            # return redirect('signups')
+            return redirect('signup:signups')
             # context['json'] = ser_instance
             # return JsonResponse(context)
         else:
             print("Organization Form is inValid")
             # context['register_form'] = form
-            context['register_form'] = form.errors
-            return JsonResponse(context)
+            context['register_form'] = form
+            # return JsonResponse(context)
             # print(form.errors)
             # print(JsonResponse(context))
             # return JsonResponse(context)
@@ -67,18 +69,17 @@ def OrganizationAction(request):
         form = OrganizationForm()
         context['register_form'] = form
 
-    return render(request, "desksolutionsbase/base.html", context)
+    return render(request, "desksolutionsbase/signup.html", context)
 
 
 @organization_absent
 def signup(request):
     session_name = request.session.get('organization')
-    print(session_name)
     if session_name is not None:
         get_organization = Organization.objects.get(id=session_name)
         print(get_organization)
         # get_org = get_object_or_404(Organization, title=url)
-        print("in signup function")
+        print("in user signup function")
         context = {}
         if request.method == "POST":
             user_form = RegisterForm(request.POST or None)
@@ -120,6 +121,7 @@ def signup(request):
                 # profile.organization = user
                 # profile.save()
                 del request.session['organization']
+                return redirect(reverse('admin:index'))
                 # print(request.session['organization'])
             else:
                 print("invalid form")
@@ -135,4 +137,6 @@ def organizationlist(request):
     context = {}
     organizations = Organization.objects.all()
     context['orgs'] = organizations
+    n = organizations.count()
+    context['range'] = range(1, n)
     return render(request, "desksolutionsbase/base.html", context)

@@ -71,7 +71,6 @@ class CustomDepartmentForm(forms.ModelForm):
             department_name=name).filter(user__email=self.request.user)
         # get_organization = OrganizationHead.objects.filter(
         #     department_name=name).filter(organization__email=self.request.user)
-        print(self.request.user)
         # get_deps = Department.objects.filter(name=name)
         # get_deps = Department.objects.filter(
         #     organization__email=self.user)
@@ -99,23 +98,25 @@ class CustomDepartmentForm(forms.ModelForm):
 #                 _('Total of elements must be 100%%. Current : %(percent).2f%%') % {'percent': percent})
 
 class ProfileFormSet(BaseInlineFormSet):
-
+        
     def clean(self):
         try:
             for f in self.forms:
                 department = f.cleaned_data.get('department')
                 get_status = f.cleaned_data.get('is_manager')
-                get_user = f.cleaned_data.get('organization_id')
-                print(department.id)
-                print(get_status)
-                print(get_user)
+                # get_user = f.cleaned_data.get('organization')
+                # f.fields['department'].queryset = Department.objects.filter(user=date)
+                # print(f.fields['organization'])
+                # print(department.id)
+                # print(get_status)
+                # print(get_user)
                 qs = Profile.objects.filter(
-                    department=department.id, is_manager=True).count()
+                    department=department.pk, is_manager=True).count()
 
                 if department is None:
                     raise ValidationError(
                         "One or more required fields is empty")
-                if get_status:
+                if get_status ==  True:
                     if qs > 0:
                         raise ValidationError(
                             "A manager has already been allocated to selected Department")

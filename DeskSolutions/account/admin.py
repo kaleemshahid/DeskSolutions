@@ -13,6 +13,23 @@ class ProfileInline(admin.TabularInline):
     model = Profile
     formset = ProfileFormSet
     min_num = 1
+
+    # Override for displaying only relative department of an organization instead of all
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+
+        field = super(ProfileInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        print(field)
+        if db_field.name == 'department':
+            print("db_field true hogyi")
+            if request.user is not None:
+                print("obj is not none")
+                print(field.queryset)
+                field.queryset = field.queryset.filter(user__exact = request.user)  
+            else:
+                print("obj is none")
+                field.queryset = field.queryset.none()
+
+        return field
     # fieldsets = (
     #     (None, {'fields': ('is_manager', 'department')}),
     # )
@@ -22,11 +39,12 @@ class ProfileInline(admin.TabularInline):
     #      ),
     # )
 
-    def get_formset(self, request, obj=None, **kwargs):
-        # if obj:
-        if obj.is_admin:
-            kwargs['exclude'] = ('is_manager',)
-        return super().get_formset(request, obj, **kwargs)
+    # PAY ATTENTION TO THIS FORMSET, I REMOVED IT COSIDERING THE ADDED FUNCTIONALITY OF WARNING MESSAGES
+    # def get_formset(self, request, obj=None, **kwargs):
+    #     # if obj:
+    #     if obj.is_admin:
+    #         kwargs['exclude'] = ('is_manager',)
+    #     return super().get_formset(request, obj, **kwargs)
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -54,7 +72,11 @@ class UserAdmin(BaseUserAdmin):
     # empty_value_display = "NA"
 
     def changelist_view(self, request, extra_context=None):
-        qs = Organization.objects.get(user__id=request.user.id)
+        try:
+            qs = Organization.objects.get(user__id=request.user.id)
+            extra_context = {'title': qs.title}
+        except Organization.DoesNotExist:
+            pass
         depts = Department.objects.filter(user_id=request.user.id)
         for dep in depts:
             check_manager = Profile.objects.filter(
@@ -64,7 +86,6 @@ class UserAdmin(BaseUserAdmin):
             if check_manager < 1:
                 messages.warning(request, dep.department_name +
                                  " needs action. No Manager specified for the department")
-        extra_context = {'title': qs.title}
 
         return super(UserAdmin, self).changelist_view(request, extra_context=extra_context)
 
