@@ -1,5 +1,5 @@
 from django import forms
-from .models import Organization, Department, User, Profile
+from .models import Organization, Department, User, Profile, Position
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
@@ -80,23 +80,6 @@ class CustomDepartmentForm(forms.ModelForm):
             raise forms.ValidationError(
                 "This department already exists in the organization")
 
-
-# class ProfileFormSet(BaseInlineFormSet):
-#     '''
-#     Validate formset data here
-#     '''
-
-#     def clean(self):
-#         super().clean()
-
-#         percent = 0
-#         for form in self.forms:
-#             print(form)
-#             print(form.cleaned_data["department"])
-#             # if form.cleaned_data["department"]
-#             raise forms.ValidationError(
-#                 _('Total of elements must be 100%%. Current : %(percent).2f%%') % {'percent': percent})
-
 class ProfileFormSet(BaseInlineFormSet):
         
     def clean(self):
@@ -104,16 +87,21 @@ class ProfileFormSet(BaseInlineFormSet):
             for f in self.forms:
                 department = f.cleaned_data.get('department')
                 get_status = f.cleaned_data.get('is_manager')
+                position = f.cleaned_data.get('position')
                 # get_user = f.cleaned_data.get('organization')
                 # f.fields['department'].queryset = Department.objects.filter(user=date)
                 # print(f.fields['organization'])
                 # print(department.id)
                 # print(get_status)
                 # print(get_user)
+                print(department)
+                print("djjsbsdjbh")
+                print(position)
                 qs = Profile.objects.filter(
                     department=department.pk, is_manager=True).count()
 
-                if department is None:
+                if department is None or position is None:
+                    print("this executed")
                     raise ValidationError(
                         "One or more required fields is empty")
                 if get_status ==  True:
@@ -122,3 +110,31 @@ class ProfileFormSet(BaseInlineFormSet):
                             "A manager has already been allocated to selected Department")
         except AttributeError:
             pass
+
+class PositionForm(forms.ModelForm):
+    class Meta:
+        model = Position
+        fields = ('__all__')
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('title')
+        print(name)
+        # get_deps = Department.objects.filter(
+        #     department_name=name).filter(user__email=self.request.user)
+        get_position = Position.objects.filter(title=name).filter(user__email=self.request.user)
+        print(get_position)
+        # get_organization = OrganizationHead.objects.filter(
+        #     department_name=name).filter(organization__email=self.request.user)
+        # get_deps = Department.objects.filter(name=name)
+        # get_deps = Department.objects.filter(
+        #     organization__email=self.user)
+
+        # get_deps = CustomUser.objects.filter(department__name=name)
+        if get_position.count() != 0:
+            raise forms.ValidationError(
+                "This Position already exists in the Organization")

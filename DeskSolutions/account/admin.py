@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Organization, User, Department, Profile
+from .models import Organization, User, Department, Profile, Position, Tag
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .forms import UserModelForm, CustomDepartmentForm, ProfileFormSet
+from .forms import UserModelForm, CustomDepartmentForm, ProfileFormSet, PositionForm
 from django.contrib.auth.models import Group, Permission
 from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
@@ -61,6 +61,45 @@ class ProfileInline(admin.TabularInline):
 #         (None, {'fields': ('is_manager', 'department',)}),
 #     )
 
+class ProfileAdmin(admin.ModelAdmin):
+    model = Profile
+    list_display = ('organization','department','is_manager')
+    list_filter = ('department', )
+    ordering = ('organization',)
+    filter_horizontal = ()
+
+    readonly_fields = ('organization','department', 'position', 'is_manager')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        print(qs)
+        related_user = qs.filter(organization=request.user)
+        for i in related_user:
+            pass
+        return qs.filter(department=i.department)
+
+    def changelist_view(self, request, extra_context=None):
+        try:
+            qs = Profile.objects.get(organization__id=request.user.id)
+            extra_context = {'title': qs.department}
+        except Department.DoesNotExist:
+            pass
+
+        return super(ProfileAdmin, self).changelist_view(request, extra_context=extra_context)
+    # def has_view_permission(self, request, obj=None):
+    #     if request.user.is_admin or request.user.is_superuser:
+    #         return True
+    #     return False
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 class UserAdmin(BaseUserAdmin):
     add_form = UserModelForm
@@ -74,7 +113,7 @@ class UserAdmin(BaseUserAdmin):
     def changelist_view(self, request, extra_context=None):
         try:
             qs = Organization.objects.get(user__id=request.user.id)
-            extra_context = {'title': qs.title}
+            extra_context = {'title':qs.title}
         except Organization.DoesNotExist:
             pass
         depts = Department.objects.filter(user_id=request.user.id)
@@ -263,20 +302,31 @@ class DepartmentAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(user=request.user)
 
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_admin or request.user.is_superuser:
+            return True
+        return False
+
     def has_add_permission(self, request):
         if request.user.is_admin:
             return True
         return False
 
     def has_change_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return False
-        return True
-
-    def has_view_permission(self, request, obj=None):
-        if request.user.is_admin or request.user.is_superuser:
+        if request.user.is_admin:
             return True
+        # return True
         return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    
+
+    # def has_module_permission(self, request):
+    #     if request.user.is_admin:
+    #         return True
+    #     return False
 
     def save_model(self, request, obj, form, change):
         # if obj.organization:
@@ -324,10 +374,71 @@ class OrganizationAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return False
+
+    # def has_module_permission(self, request):
+    #     if request.user.is_admin:
+    #         return True
+    #     return False
+
+class PositionAdmin(admin.ModelAdmin):
+
+    form = PositionForm
+    list_display = ('title', 'user')
+    list_filter = ('title',)
+    ordering = ('title',)
+    filter_horizontal = ()
+    fieldsets = (
+        (None, {'fields': ('title','responsibility', 'tag')}),
+    )
+    exclude = ('owned_by',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(user=request.user)
+
+    def has_add_permission(self, request):
+        if request.user.is_admin:
+            return True
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return False
         return True
 
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_admin or request.user.is_superuser:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def save_model(self, request, obj, form, change):
+        user = request.user
+        obj = form.save(commit=False)
+        if not change or not obj.user:
+            obj.user = user
+        obj.save()
+        return obj
+        
+    def get_form(self, request, obj=None, **kwargs):
+        PosForm = super().get_form(request, obj, **kwargs)
+
+        class PositionFormWithRequest(PosForm):
+            def __new__(cls, *args, **kwargs):
+                kwargs['request'] = request
+                return PosForm(*args, **kwargs)
+        return PositionFormWithRequest
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Department, DepartmentAdmin)
-# admin.site.register(Profile)
+admin.site.register(Position, PositionAdmin)
+admin.site.register(Tag)

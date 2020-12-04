@@ -71,20 +71,39 @@ class Department(models.Model):
     def __str__(self):
         return self.department_name
 
-# class Job(models.Model):
-#     title = models.CharField(max_length=20, )
+class Tag(models.Model):
+    keyword = models.CharField(max_length=15, null=False, blank=False)
+
+    def __str__(self):
+        return self.keyword
+
+class Position(models.Model):
+    title = models.CharField(max_length=20, null=False, blank=False, default="Employee")
+    responsibility = models.CharField(max_length=255, null=False, blank=False)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True,default=None)
+    tag = models.ManyToManyField(Tag, related_name="positiontag")
+
+    def __str__(self):
+        return self.title
+
+
 
 class Profile(models.Model):
     organization = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, null=False)
     department = models.ForeignKey(
         Department, on_delete=models.CASCADE, null=False, blank=False)
-    # job = models.ForeignKey(Job, on_delete=models.CASCADE, null=False, blank=True)
+    position = models.ForeignKey(Position, on_delete=models.CASCADE, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     is_manager = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.organization)
+    
+    
+
+
 
 

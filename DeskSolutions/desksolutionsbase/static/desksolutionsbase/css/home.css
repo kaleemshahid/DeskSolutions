@@ -177,11 +177,15 @@ a.nav-link.nav-btn{
     border: 1px solid lightgray;
     border-radius: 10px;
     text-align: center;
+    background-color: #fff;
+    box-shadow: 0 14px 28px rgba(228, 227, 227, 0.25);
 }
 
 .desc-block{
     border: 1px solid lightgray;
     border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 14px 28px rgba(228, 227, 227, 0.25);
 }
 
 /* Services */
