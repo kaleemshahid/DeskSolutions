@@ -3,7 +3,7 @@
 <style>
     
 </style>
-<section class="organization-section bg-primary text-white" id="organization">
+<section class="organization-section bg-primary" id="organization">
     <div class="container">
         <div id="demo" class="carousel slide" data-ride="carousel">
             <ul class="carousel-indicators my-10" style="border: 1px solid white;">
@@ -33,15 +33,16 @@
                                 </div>
                                 <div class="col-md-9 ">
                                     <div class="col-md-12 desc-block">
-                                        <div class="block pull-right">
-                                            <a href="" class="btn btn-info">Jobs</a>
-                                        </div>
+                                        
                                         <div class="block">
                                             <p>{{orgs.0.description}}</p>
                                         </div><hr/>
                                         <div class="block">
                                             <p>{{orgs.0.address}}</p>
                                         </div>
+                                    </div>
+                                    <div class="block pull-right">
+                                        <a href="" class="btn btn-info">Jobs</a>
                                     </div>
                                 </div>
                             </div>
@@ -60,23 +61,23 @@
                                 <div class="col-md-3 col-xs-12 ">
                                     <div class="col-md-12 title-img">
                                         <div class="block">
-                                            <img style="width: 50px; height: 50px" class="img img-rounded" src="{{ orgs.0.logo.url }}">
+                                            <img style="width: 50px; height: 50px" class="img img-rounded" src="{{ org.logo.url }}">
                                         </div>
                                         <div class="block">
-                                            <p>{{orgs.0.title}}</p>
+                                            <p>{{org.title}}</p>
                                         </div>
                                         <div class="block">
-                                            <p>{{orgs.0.url}}</p>
+                                            <p>{{org.url}}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-9 ">
                                     <div class="col-md-12 desc-block">
                                     <div class="block">
-                                        <p>{{orgs.0.description}}</p>
+                                        <p>{{org.description}}</p>
                                     </div><hr/>
                                     <div class="block">
-                                        <p>{{orgs.0.address}}</p>
+                                        <p>{{org.address}}</p>
                                     </div>
                                     </div>
                                 </div>

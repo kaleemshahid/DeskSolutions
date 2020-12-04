@@ -72,7 +72,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        print(qs)
         related_user = qs.filter(organization=request.user)
         for i in related_user:
             pass
@@ -82,14 +81,14 @@ class ProfileAdmin(admin.ModelAdmin):
         try:
             qs = Profile.objects.get(organization__id=request.user.id)
             extra_context = {'title': qs.department}
-        except Department.DoesNotExist:
+        except Profile.DoesNotExist:
             pass
 
         return super(ProfileAdmin, self).changelist_view(request, extra_context=extra_context)
-    # def has_view_permission(self, request, obj=None):
-    #     if request.user.is_admin or request.user.is_superuser:
-    #         return True
-    #     return False
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_admin or request.user.is_superuser:
+            return False
+        return True
 
     def has_add_permission(self, request):
         return False
@@ -137,7 +136,7 @@ class UserAdmin(BaseUserAdmin):
 
     list_display = ('email',
                     'is_admin', 'manager')
-    list_filter = ('is_superuser', 'is_staff', )
+    list_filter = ('is_superuser', 'is_staff',)
     ordering = ('email',)
     filter_horizontal = ()
 
@@ -249,8 +248,12 @@ class UserAdmin(BaseUserAdmin):
         return qs.filter(id=request.user.id)
 
     def has_add_permission(self, request):
-        if request.user.is_admin:
-            return True
+        try:
+            get_profile = Profile.objects.get(organization=request.user)
+            if get_profile.is_manager or request.user.is_admin:
+                return True
+        except:
+            pass
         return False
 
     def has_delete_permission(self, request, obj=None):
@@ -391,7 +394,7 @@ class PositionAdmin(admin.ModelAdmin):
     ordering = ('title',)
     filter_horizontal = ()
     fieldsets = (
-        (None, {'fields': ('title','responsibility', 'tag')}),
+        (None, {'fields': ('title','responsibility', 'tag', 'job_posting')}),
     )
     exclude = ('owned_by',)
 

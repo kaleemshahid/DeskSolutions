@@ -83,6 +83,7 @@ class Position(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True,default=None)
     tag = models.ManyToManyField(Tag, related_name="positiontag")
+    job_posting = models.BooleanField(verbose_name="Post as Job", default=False)
 
     def __str__(self):
         return self.title

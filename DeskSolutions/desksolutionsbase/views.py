@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from desksolutionsbase.forms import OrganizationForm, RegisterForm
-from account.models import Organization, User
+from account.models import Organization, User, Position
 from .decorators import organization_absent
 from django.core import serializers
 import json
@@ -135,7 +135,9 @@ def signup(request):
 
 def organizationlist(request):
     context = {}
+    print(request.user)
     organizations = Organization.objects.all()
+    # positions = Position.objects.
     context['orgs'] = organizations
     n = organizations.count()
     context['range'] = range(1, n)
