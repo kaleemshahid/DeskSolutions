@@ -135,9 +135,14 @@ def signup(request):
 
 def organizationlist(request):
     context = {}
-    print(request.user)
     organizations = Organization.objects.all()
-    # positions = Position.objects.
+    positions = Position.objects.all()
+    # for i in organizations:
+    #     print(i)
+    #     positions = Position.objects.filter(organization=i, job_posting=True)
+    #     print(positions)
+    #     context['positions'] = positions
+    context['positions'] = positions
     context['orgs'] = organizations
     n = organizations.count()
     context['range'] = range(1, n)

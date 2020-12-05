@@ -64,8 +64,8 @@ class User(AbstractUser):
 class Department(models.Model):
     department_name = models.CharField(
         max_length=60, null=False, blank=False, verbose_name="Department Name")
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True)
+    organization = models.ForeignKey(
+        Organization, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -80,8 +80,8 @@ class Tag(models.Model):
 class Position(models.Model):
     title = models.CharField(max_length=20, null=False, blank=False, default="Employee")
     responsibility = models.CharField(max_length=255, null=False, blank=False)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True,default=None)
+    organization = models.ForeignKey(
+        Organization, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True, default=None)
     tag = models.ManyToManyField(Tag, related_name="positiontag")
     job_posting = models.BooleanField(verbose_name="Post as Job", default=False)
 

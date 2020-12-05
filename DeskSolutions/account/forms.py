@@ -57,7 +57,7 @@ class UserModelForm(forms.ModelForm):
 class CustomDepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ("department_name", "user",)
+        fields = ("department_name", "organization",)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -67,8 +67,9 @@ class CustomDepartmentForm(forms.ModelForm):
         cleaned_data = super().clean()
         name = cleaned_data.get('department_name')
 
+        print(self.request.user.organization)
         get_deps = Department.objects.filter(
-            department_name=name).filter(user__email=self.request.user)
+            department_name=name).filter(organization=self.request.user.organization)
         # get_organization = OrganizationHead.objects.filter(
         #     department_name=name).filter(organization__email=self.request.user)
         # get_deps = Department.objects.filter(name=name)
@@ -126,7 +127,7 @@ class PositionForm(forms.ModelForm):
         print(name)
         # get_deps = Department.objects.filter(
         #     department_name=name).filter(user__email=self.request.user)
-        get_position = Position.objects.filter(title=name).filter(user__email=self.request.user)
+        get_position = Position.objects.filter(title=name).filter(organization=self.request.user.organization)
         print(get_position)
         # get_organization = OrganizationHead.objects.filter(
         #     department_name=name).filter(organization__email=self.request.user)

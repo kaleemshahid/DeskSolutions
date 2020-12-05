@@ -22,11 +22,9 @@ class ProfileInline(admin.TabularInline):
         if db_field.name == 'department':
             print("db_field true hogyi")
             if request.user is not None:
-                print("obj is not none")
                 print(field.queryset)
-                field.queryset = field.queryset.filter(user__exact = request.user)  
+                field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
             else:
-                print("obj is none")
                 field.queryset = field.queryset.none()
 
         return field
@@ -47,6 +45,8 @@ class ProfileInline(admin.TabularInline):
     #     return super().get_formset(request, obj, **kwargs)
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
         return False
 
     def has_change_permission(self, request, obj=None):
@@ -97,6 +97,8 @@ class ProfileAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
         return False
 
 
@@ -115,7 +117,7 @@ class UserAdmin(BaseUserAdmin):
             extra_context = {'title':qs.title}
         except Organization.DoesNotExist:
             pass
-        depts = Department.objects.filter(user_id=request.user.id)
+        depts = Department.objects.filter(organization=request.user.organization)
         for dep in depts:
             check_manager = Profile.objects.filter(
                 department=dep.id, is_manager=True).count()
@@ -250,10 +252,13 @@ class UserAdmin(BaseUserAdmin):
     def has_add_permission(self, request):
         try:
             get_profile = Profile.objects.get(organization=request.user)
-            if get_profile.is_manager or request.user.is_admin:
+            if get_profile.is_manager:
+                print(request.user.is_admin)
                 return True
         except:
             pass
+        if request.user.is_admin:
+            return True
         return False
 
     def has_delete_permission(self, request, obj=None):
@@ -291,7 +296,7 @@ class UserAdmin(BaseUserAdmin):
 class DepartmentAdmin(admin.ModelAdmin):
 
     form = CustomDepartmentForm
-    list_display = ('department_name', 'user')
+    list_display = ('department_name', 'organization')
     list_filter = ('department_name',)
     ordering = ('department_name',)
     filter_horizontal = ()
@@ -303,7 +308,7 @@ class DepartmentAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(user=request.user)
+        return qs.filter(organization=request.user.organization)
 
     def has_view_permission(self, request, obj=None):
         if request.user.is_admin or request.user.is_superuser:
@@ -322,6 +327,8 @@ class DepartmentAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
         return False
 
     
@@ -339,8 +346,8 @@ class DepartmentAdmin(admin.ModelAdmin):
         user = request.user
         # if user
         obj = form.save(commit=False)
-        if not change or not obj.user:
-            obj.user = user
+        if not change or not obj.organization:
+            obj.organization = user.organization
         # instance.modified_by = user
         obj.save()
         # form.save_m2m()
@@ -389,7 +396,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 class PositionAdmin(admin.ModelAdmin):
 
     form = PositionForm
-    list_display = ('title', 'user')
+    list_display = ('title', 'organization')
     list_filter = ('title',)
     ordering = ('title',)
     filter_horizontal = ()
@@ -402,7 +409,7 @@ class PositionAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(user=request.user)
+        return qs.filter(organization=request.user.organization)
 
     def has_add_permission(self, request):
         if request.user.is_admin:
@@ -420,13 +427,15 @@ class PositionAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
         return False
 
     def save_model(self, request, obj, form, change):
         user = request.user
         obj = form.save(commit=False)
         if not change or not obj.user:
-            obj.user = user
+            obj.organization = user.organization
         obj.save()
         return obj
         
