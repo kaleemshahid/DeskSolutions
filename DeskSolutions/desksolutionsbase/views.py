@@ -166,19 +166,19 @@ def jobs(request, pk):
         context['application_form'] = form
     return render(request, "desksolutionsbase/jobs.html", context)
 
-def application(request,pk):
-    context = {}
-    if request.method == "POST":
-        form = ApplicationForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("APPLICATION form valid")
-            candidate= form.save(commit=False)
-            candidate.position = pk
-            candidate.save()
-    else:
-        form = ApplicationForm()
-        context['cand_form'] = form
-    return render(request, "desksolutionsbase/applications.html", context)
+# def application(request,pk):
+#     context = {}
+#     if request.method == "POST":
+#         form = ApplicationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             print("APPLICATION form valid")
+#             candidate= form.save(commit=False)
+#             candidate.position = pk
+#             candidate.save()
+#     else:
+#         form = ApplicationForm()
+#         context['cand_form'] = form
+#     return render(request, "desksolutionsbase/applications.html", context)
 
 
 
