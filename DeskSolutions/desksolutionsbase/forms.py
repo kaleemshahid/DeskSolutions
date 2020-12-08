@@ -1,5 +1,5 @@
 from django import forms
-from account.models import Organization, User, Profile
+from account.models import Organization, User, Profile, Application
 
 
 class OrganizationForm(forms.ModelForm):
@@ -58,3 +58,16 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('is_manager',)
+
+
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ('candidate_email', 'candidate_name', 'candidate_phone', 'candidate_address', 'filename')
+        # widgets = {
+        #     'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        #     # 'title': forms.TextInput(attrs={'class': 'form-control'}),
+        #     # 'phone': forms.TextInput(attrs={'class': 'form-control'}),
+        #     # 'description': forms.Textarea(attrs={'class': 'form-control'}),
+        #     # 'url': forms.TextInput(attrs={'class': 'form-control'}),
+        # }

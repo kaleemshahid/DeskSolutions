@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from desksolutionsbase.forms import OrganizationForm, RegisterForm
-from account.models import Organization, User
+from desksolutionsbase.forms import OrganizationForm, RegisterForm, ApplicationForm
+from account.models import Organization, User, Position
 from .decorators import organization_absent
 from django.core import serializers
 import json
@@ -111,7 +111,6 @@ def signup(request):
                 ct = ContentType.objects.get_for_model(Organization)
                 if created:
                     permission = Permission.objects.filter(content_type=ct)
-
                     for perm in permission:
                         group.permissions.add(perm)
                     group.save()
@@ -136,7 +135,51 @@ def signup(request):
 def organizationlist(request):
     context = {}
     organizations = Organization.objects.all()
+    positions = Position.objects.all()
+    # for i in organizations:
+    #     print(i)
+    #     positions = Position.objects.filter(organization=i, job_posting=True)
+    #     print(positions)
+    #     context['positions'] = positions
+    context['positions'] = positions
     context['orgs'] = organizations
     n = organizations.count()
     context['range'] = range(1, n)
     return render(request, "desksolutionsbase/base.html", context)
+
+def jobs(request, pk):
+    context = {}
+    qs = Position.objects.filter(organization=pk)
+    organizations = get_object_or_404(Organization,pk=pk)
+    context['jobs'] = qs
+    context['orgs'] = organizations
+
+    if request.method == "POST":
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("APPLICATION form valid")
+            application= form.save(commit=False)
+            application.position = pk
+            application.save()
+    else:
+        form = ApplicationForm()
+        context['application_form'] = form
+    return render(request, "desksolutionsbase/jobs.html", context)
+
+def application(request,pk):
+    context = {}
+    if request.method == "POST":
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("APPLICATION form valid")
+            candidate= form.save(commit=False)
+            candidate.position = pk
+            candidate.save()
+    else:
+        form = ApplicationForm()
+        context['cand_form'] = form
+    return render(request, "desksolutionsbase/applications.html", context)
+
+
+
+
