@@ -9,35 +9,7 @@
 <header class="showcase d-flex align-items-center" style="border: 1px solid black">
     {{orgs.title}}
     <div class="container">
-      <!-- {% for job in jobs %}
-      <a href="{% url 'signup:applications' job.pk %}" id="link" class="btn btn-default"
-           type="button">{{ job.pk }}</a>
-           
-      <button class="btn btn-primary" data-role="upButton" job_id="{{job.pk}}">{{job.pk}}</button>
-      <div data-role="application" app_id="{{job.pk}}">
-        <form method="POST" action="" novalidate>
-          {% csrf_token %}
-          {% for field in application_form %}
-          {{field.label}}
-          {{field}}
-          {% for error in field.errors %}
-              <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
-          {% endfor %}
-          {% endfor %}
-          <input type="text" value="{{job.pk}}">
-          <input type="submit" name="submit" value="Submit">
-      </form>
-      </div>
-      {% endfor %} -->
-
       
-        <!-- <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        </div> -->
-        <!-- <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-  
-          </div>
-      </div> -->
         {% for job in jobs %}
         <div class="row">
             <div class="col-md-6 col-lg-5 col-xl-5" style="border: 1px solid black">
@@ -45,18 +17,12 @@
                 <p>{{job.id}}</p>
                 <p>{{job.responsibility}}</p>
             </div>
-            <!-- {% for i in job.application_set.all %}
-                      {{i.pk}} 
-            <form action="" method="POST"> {% csrf_token %}          
-            <input type="submit" value="{{i.pk}}" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
-            </form>
-            {% endfor %} -->
+      
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#test{{job.pk}}">
-                <!-- <a class="fa fa-pencil text-white" href="{% url 'signup:jobs' job.pk %}">{{job.pk}}</a> -->
                 <a class="fa fa-pencil text-white" href="#test{{job.pk}}">{{job.pk}}</a>
               </button>
 
-              <div class="modal fade" id="test{{job.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="test{{job.pk}}" data-role="upButton" job_id="test{{job.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -66,7 +32,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="" novalidate>
+                        <form method="POST" action="" class="application-upload" novalidate>
                             {% csrf_token %}
                             {% for field in application_form %}
                             {{field.label}}
