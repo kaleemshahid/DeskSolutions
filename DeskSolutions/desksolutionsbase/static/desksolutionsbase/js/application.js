@@ -1,14 +1,18 @@
 $(document).ready(function(){
     $('.application-upload').submit(function (e) {
         e.preventDefault()
+        var formdata = new FormData(this)
         // alert("Asdankaknds")
         $.ajax({
             type:"POST",
             url: "",
-            data: $(this).serialize(),
+            // data: $(this).serialize(),
+            data: formdata,
+            contentType: false,
+            processData: false,
             success: function(response){
                 console.log("success")
-                console.log(response)
+                // console.log(response)
                 for (var i in response) {
                     console.log(response[i])
                     var error_message = "<p style='color: red'>" + response[i] + "</p>"
