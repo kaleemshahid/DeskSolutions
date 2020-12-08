@@ -158,12 +158,12 @@ def jobs(request, pk):
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             print("APPLICATION form valid")
-            candidate= form.save(commit=False)
-            candidate.position = pk
-            candidate.save()
+            application= form.save(commit=False)
+            application.position = pk
+            application.save()
     else:
         form = ApplicationForm()
-        context['cand_form'] = form
+        context['application_form'] = form
     return render(request, "desksolutionsbase/jobs.html", context)
 
 def application(request,pk):
