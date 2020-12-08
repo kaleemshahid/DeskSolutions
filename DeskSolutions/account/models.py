@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, FileExtensionValidator
 # from phonenumber_field.modelfields import PhoneNumberField
 from .managers import UserManager
+from .validators import validate_file_extension
 from DeskSolutions import settings
 
 
@@ -83,12 +84,21 @@ class Position(models.Model):
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True, default=None)
     tag = models.ManyToManyField(Tag, related_name="positiontag")
-    job_posting = models.BooleanField(verbose_name="Post as Job", default=False)
+    job_posting = models.BooleanField(verbose_name="Open Position", default=False)
 
     def __str__(self):
         return self.title
 
-
+class Application(models.Model):
+    candidate_email = models.CharField(max_length=20, null=False, blank=False, verbose_name="Email")
+    candidate_name = models.CharField(max_length=20, null=False, blank=False, verbose_name="Name")
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    candidate_phone = models.CharField(max_length=13, validators=[
+                             phone_regex], blank=False, null=False)
+    candidate_address = models.TextField(null=False, blank=False, default=None)
+    filename = models.FileField(upload_to="applications", validators=[FileExtensionValidator(['pdf'])])
+    position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True, blank=True)
 
 class Profile(models.Model):
     organization = models.OneToOneField(
@@ -102,9 +112,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.organization)
-    
-    
-
-
-
-

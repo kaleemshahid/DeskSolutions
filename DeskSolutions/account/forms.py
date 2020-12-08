@@ -1,5 +1,5 @@
 from django import forms
-from .models import Organization, Department, User, Profile, Position
+from .models import Organization, Department, User, Profile, Position, Application
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
@@ -139,3 +139,7 @@ class PositionForm(forms.ModelForm):
         if get_position.count() != 0:
             raise forms.ValidationError(
                 "This Position already exists in the Organization")
+
+
+
+        

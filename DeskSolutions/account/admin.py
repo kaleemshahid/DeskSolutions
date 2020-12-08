@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Organization, User, Department, Profile, Position, Tag
+from .models import Organization, User, Department, Profile, Position, Tag, Application
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserModelForm, CustomDepartmentForm, ProfileFormSet, PositionForm
 from django.contrib.auth.models import Group, Permission
@@ -454,3 +454,4 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Tag)
+admin.site.register(Application)

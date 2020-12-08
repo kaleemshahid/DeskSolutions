@@ -1,0 +1,60 @@
+{% extends 'desksolutionsbase/ext_links.html' %}
+{% load static %}
+
+{% block content %}
+{% include "desksolutionsbase/navbar.html" %}
+
+<header class="showcase d-flex align-items-center" style="border: 1px solid black">
+    {{orgs.title}}
+    <div class="container">
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        </div>
+        {% for job in jobs %}
+        <div class="row">
+            <div class="col-md-6 col-lg-5 col-xl-5" style="border: 1px solid black">
+                <p>{{job.title}}</p>
+                <p>{{job.id}}</p>
+                <p>{{job.responsibility}}</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <a class="fa fa-pencil" href="{% url 'signup:jobs' job.pk %}"></a>
+              </button>
+        </div>
+        {% endfor %}
+    </div>
+
+    
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {% for field in cand_form %}
+                    {{field.label}}
+                    {{field}}
+                    {% for error in field.errors %}
+                        <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
+                    {% endfor %}
+                    {% endfor %}
+                    <input type="submit" name="submit" value="Submit">
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</header>
+
+{% endblock %}

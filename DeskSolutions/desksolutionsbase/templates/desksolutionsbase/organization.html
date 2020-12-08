@@ -44,19 +44,17 @@
                                         <div class="block">
                                             <p>{{org.address}}</p>
                                         </div>
-                                    </div>
-                                    <div class="block pull-right">
-                                        <a href="" class="btn btn-info">
-                                            {% for i in org.position_set.all %}
-                                            <span>
+                                        <div class="block">
+                                            <a href="{% url 'signup:jobs' org.pk  %}" class="btn btn-info">
+                                                {% for i in org.position_set.all %}
                                                 
-                                                {{ i }}
-                                            </span>
-                                            {% endfor %}
-                                            {{org.position_set.all|length }}
-                                            Jobs
-                                        </a>
+                                                {% endfor %}
+                                                {{org.position_set.all|length }}
+                                                Jobs
+                                            </a>
+                                        </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -78,6 +76,6 @@
             </a>
         </div>
     </div>
-    
+
 </section>
 
