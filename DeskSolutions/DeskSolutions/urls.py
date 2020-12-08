@@ -29,7 +29,7 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('', include('rest_framework.urls')),
-    path('api/', include(router.urls)),
+    path('api/', include('account.urls')),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('home/', include('desksolutionsbase.urls', namespace='signup')),

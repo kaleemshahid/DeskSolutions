@@ -1,6 +1,9 @@
-from django.urls import path
-from . import views
+# django imports
+from django.urls import include, path
+# rest-framework imports
+from rest_framework.routers import DefaultRouter
+from .views import UserLoginApiView
 
 urlpatterns = [
-    # path('', views.OrganizationRegister, name="home"),
+    path('login/', UserLoginApiView.as_view(), name="login")
 ]

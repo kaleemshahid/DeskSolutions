@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'TaskManagement.apps.TaskmanagementConfig',
     'DeskSolutions',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 AUTH_USER_MODEL = 'account.User'
@@ -102,7 +103,7 @@ WSGI_APPLICATION = 'DeskSolutions.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
