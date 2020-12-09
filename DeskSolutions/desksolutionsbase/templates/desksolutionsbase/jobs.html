@@ -18,12 +18,12 @@
                 <p>{{job.responsibility}}</p>
             </div>
       
-            <button class="btn btn-primary" data-toggle="modal" data-target="#test{{job.pk}}">
+            <button id="modal_open_btn" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{job.pk}}">
                 <!-- <a class="fa fa-pencil text-white" href="#test{{job.pk}}">{{job.pk}}</a> -->
                 Apply for this job
               </button>
 
-              <div class="modal fade" id="test{{job.pk}}" data-role="upButton" job_id="test{{job.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="modal-{{job.pk}}" data-role="upButton" job_id="test{{job.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -33,18 +33,21 @@
                       </button>
                     </div>
                     <div class="modal-body form-modal">
-                        <form method="POST" action="" class="application-upload" enctype="multipart/form-data" novalidate>
+                        <form method="POST" action="" class="application-upload" enctype="multipart/form-data" id="app_form_id" novalidate>
                             {% csrf_token %}
                             {% for field in application_form %}
-                            <div class="form-field" style="border: 1px solid black">
+                            <div class="form-field">
                             <p style="font-weight: lighter;">{{field.label_tag}}</p>
                             {{field}}
-                            <!-- {% for error in field.errors %}
-                                <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
-                            {% endfor %} -->
-                            <span class="app_form_error">sdf</span>
+                            <span class="application_form_error" style="color: rgb(219, 80, 80);" id="form-{{field.html_name}}-error"></span>
                             </div>
                             {% endfor %}
+
+                            <!-- <div class="form-group">
+                              <label for="candidate_email">{{application_form.candidate_email.label_tag}}</label>
+                              {{application_form.candidate_email}}
+                              
+                            </div> -->
                             <input type="hidden" name="app_id" value="{{job.pk}}">
                     </div>
                     <div class="modal-footer">

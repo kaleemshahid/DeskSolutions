@@ -1,4 +1,9 @@
 $(document).ready(function(){
+
+    $('#modal_open_btn').on('click', function () {
+        $('#app_form_id').trigger('reset');
+        
+    })
     $('.application-upload').submit(function (e) {
         e.preventDefault()
         var formdata = new FormData(this)
@@ -28,9 +33,10 @@ $(document).ready(function(){
                             // console.log('#id_' + i)
                         //     console.log("nothing")
                         // }
-                        var id = '#id_' + i
+                        var id = '#form-' + i + '-error'
                         // console.log($(".form-field").children(id).children())
-                        console.log($(".app_form_error").children())
+                        // $(id).hide()
+                        $(id).text(response[i])
                         // var id = '#id_' + i
                         // $(id).parent().append(form_msg[i])
                         
@@ -46,8 +52,10 @@ $(document).ready(function(){
 
             },
             error: function (response) {
-                console.log("im in error")
                 console.log(response)
+                for (var a in response){
+                $('.app_form_error').text(response.responseJSON)
+                }
             }
         })
     })
