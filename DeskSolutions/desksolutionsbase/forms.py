@@ -64,10 +64,10 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ('candidate_email', 'candidate_name', 'candidate_phone', 'candidate_address', 'filename')
-        # widgets = {
-        #     'email': forms.EmailInput(attrs={'class': 'form-control'}),
-        #     # 'title': forms.TextInput(attrs={'class': 'form-control'}),
-        #     # 'phone': forms.TextInput(attrs={'class': 'form-control'}),
-        #     # 'description': forms.Textarea(attrs={'class': 'form-control'}),
-        #     # 'url': forms.TextInput(attrs={'class': 'form-control'}),
-        # }
+        widgets = {
+            'candidate_email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'candidate_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'candidate_phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'candidate_address': forms.Textarea(attrs={'class': 'form-control'}),
+            'filename': forms.FileInput(attrs={'class': 'form-control'}),
+        }

@@ -156,8 +156,6 @@ def jobs(request, pk):
 
     if request.method == "POST":
         form = ApplicationForm(request.POST, request.FILES)
-        if form.is_bound:
-            print("form is not bound")
         if form.is_valid():
             print("APPLICATION form valid")
             app_id = request.POST.get('app_id')
@@ -165,10 +163,14 @@ def jobs(request, pk):
             application= form.save(commit=False)
             application.position_id = app_id
             application.save()
+            # context['application_form'] = "Success"
+            # print(JsonResponse(context['application_form'], safe=False))
         else:
             print("Application form is invalid")
             # form = ApplicationForm()
             context['application_form'] = form.errors
+            print(context['application_form'])
+            print(JsonResponse(context['application_form']))
             return JsonResponse(context['application_form'])
     else:
         form = ApplicationForm()
