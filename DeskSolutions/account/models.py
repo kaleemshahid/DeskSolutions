@@ -100,6 +100,9 @@ class Application(models.Model):
     filename = models.FileField(upload_to="applications", validators=[FileExtensionValidator(['pdf'])])
     position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True, blank=True)
 
+    def __str__(self):
+        return self.candidate_email
+
 class Profile(models.Model):
     organization = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, null=False)

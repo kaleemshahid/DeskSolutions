@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'TaskManagement.apps.TaskmanagementConfig',
     'DeskSolutions',
     'rest_framework',
+
+    'PyPDF2',
+    'textract',
+    'nltk',
 ]
 
 AUTH_USER_MODEL = 'account.User'

@@ -7,7 +7,90 @@ from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.contrib import messages
+import pdfplumber
 
+from django.template.response import TemplateResponse
+from django.urls import path
+
+class ApplicationAdmin(admin.ModelAdmin):
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('appreview/', self.admin_site.admin_view(self.app_review)),
+        ]
+        return my_urls + urls
+
+    def app_review(self, request):
+        context = {}
+        arraylist = []
+        getapps = Application.objects.filter(position__organization_id=request.user.organization)
+        tags = Tag.objects.all()
+        for t in tags:
+            # print(t.keyword)
+            arraylist.append(t.keyword)
+        print(arraylist)
+        for pdf in getapps:
+            pdf = pdfplumber.open('media/' + str(pdf.filename))
+            page = pdf.pages[0]
+            text = page.extract_text().split()
+            a = set(arraylist).intersection(text)
+            print(a)
+            print(len(a))
+        # print(text)
+        # tagsList = list(tags)
+        # print(tagsList)
+
+        context['basecontext'] = self.admin_site.each_context(request)
+        context['getapps'] = getapps
+
+        # for pdf in getapps:
+        #     # print('media/' + str(pdf.filename))
+        #     pdf = pdfplumber.open('media/' + str(pdf.filename))
+        #     page = pdf.pages[0]
+        #     text = page.extract_text().split()
+        #     print(text)
+
+        # pdf = pdfplumber.open('media/applications/dummy.pdf')
+        # page = pdf.pages[0]
+        # text = page.extract_text()
+        # s = text.split()
+        # context["text"] = text.split()
+        # for t in s:
+        #     print(t)
+        #     context["t"] = t
+        #     if t == "file":
+        #         print("found this")
+        # context = dict(
+        #    # Include common variables for rendering the admin template.
+        #    self.admin_site.each_context(request),
+           
+        #    # Anything else you want in the context...
+        #     # key=value,
+        #     'getapps'= getapps,
+        # )
+        return TemplateResponse(request, "account/applicationportal.html", context)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_admin:
+            return qs.filter(position__organization_id=request.user.organization)
+        return qs
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        return False
 
 class ProfileInline(admin.TabularInline):
     model = Profile
@@ -20,7 +103,6 @@ class ProfileInline(admin.TabularInline):
         field = super(ProfileInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
         print(field)
         if db_field.name == 'department':
-            print("db_field true hogyi")
             if request.user is not None:
                 print(field.queryset)
                 field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
@@ -112,20 +194,21 @@ class UserAdmin(BaseUserAdmin):
     # empty_value_display = "NA"
 
     def changelist_view(self, request, extra_context=None):
-        try:
-            qs = Organization.objects.get(user__id=request.user.id)
-            extra_context = {'title':qs.title}
-        except Organization.DoesNotExist:
-            pass
-        depts = Department.objects.filter(organization=request.user.organization)
-        for dep in depts:
-            check_manager = Profile.objects.filter(
-                department=dep.id, is_manager=True).count()
-            # for status in check_manager:
-            # if not status.is_manager:
-            if check_manager < 1:
-                messages.warning(request, dep.department_name +
-                                 " needs action. No Manager specified for the department")
+        if request.user.is_admin:
+            try:
+                qs = Organization.objects.get(user__id=request.user.id)
+                extra_context = {'title':qs.title}
+            except Organization.DoesNotExist:
+                pass
+            depts = Department.objects.filter(organization=request.user.organization)
+            for dep in depts:
+                check_manager = Profile.objects.filter(
+                    department=dep.id, is_manager=True).count()
+                # for status in check_manager:
+                # if not status.is_manager:
+                if check_manager < 1:
+                    messages.warning(request, dep.department_name +
+                                    " needs action. No Manager specified for the department")
 
         return super(UserAdmin, self).changelist_view(request, extra_context=extra_context)
 
@@ -140,6 +223,8 @@ class UserAdmin(BaseUserAdmin):
                     'is_admin', 'manager')
     list_filter = ('is_superuser', 'is_staff',)
     ordering = ('email',)
+    search_fields = ('email',)
+
     filter_horizontal = ()
 
     def manager(self, obj):
@@ -434,8 +519,11 @@ class PositionAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         user = request.user
         obj = form.save(commit=False)
-        if not change or not obj.user:
+        if not change or not obj:
+            print("postion not change true")
             obj.organization = user.organization
+        print(change)
+        print(obj)
         obj.save()
         return obj
         
@@ -454,4 +542,5 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Tag)
-admin.site.register(Application)
+admin.site.register(Application, ApplicationAdmin)
+# admin.site.register(MyModelAdmin)

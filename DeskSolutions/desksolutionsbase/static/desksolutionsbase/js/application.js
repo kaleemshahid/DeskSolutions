@@ -2,7 +2,6 @@ $(document).ready(function(){
 
     $('#modal_open_btn').on('click', function () {
         $('#app_form_id').trigger('reset');
-        
     })
     $('.application-upload').submit(function (e) {
         e.preventDefault()
@@ -53,9 +52,9 @@ $(document).ready(function(){
             },
             error: function (response) {
                 console.log(response)
-                for (var a in response){
-                $('.app_form_error').text(response.responseJSON)
-                }
+                // for (var a in response){
+                // $('.app_form_error').text(response.responseJSON)
+                // }
             }
         })
     })

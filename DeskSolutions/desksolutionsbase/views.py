@@ -149,7 +149,7 @@ def organizationlist(request):
 
 def jobs(request, pk):
     context = {}
-    qs = Position.objects.filter(organization=pk)
+    qs = Position.objects.filter(organization=pk, job_posting=True)
     organizations = get_object_or_404(Organization,pk=pk)
     context['jobs'] = qs
     context['orgs'] = organizations

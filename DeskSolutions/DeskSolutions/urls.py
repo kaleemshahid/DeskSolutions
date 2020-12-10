@@ -22,6 +22,18 @@ from rest_framework import routers
 from account.serializers import UserSerializer
 from account.views import UserViewSet
 
+# def get_admin_urls(urls):
+#     def get_urls():
+#         my_urls =  patterns('',
+#            url(r'^$', YourCustomView,name='home'), 
+#         )
+#         return my_urls + urls
+#     return get_urls
+
+# admin.autodiscover()
+
+# admin_urls = get_admin_urls(admin.site.get_urls())
+# admin.site.get_urls = admin_urls
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)

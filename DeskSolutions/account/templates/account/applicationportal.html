@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>{{getapps}}</h1>
+<div class="well">{{text}}</div>
+
+<div class="well">
+    {% for e in t %}
+    {{e}}
+    {% endfor %}
+</div>
+{% endblock %}
