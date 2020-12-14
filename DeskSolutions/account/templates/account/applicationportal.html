@@ -1,11 +1,73 @@
 {% extends "admin/base_site.html" %}
 {% block content %}
-<h1>{{getapps}}</h1>
-<div class="well">{{text}}</div>
+<!-- <h1>{{getapps}}</h1>
+<div class="well">{{text}}</div> -->
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="well">
-    {% for e in t %}
-    {{e}}
-    {% endfor %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <style>
+        .match{
+            border: 1px solid black;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>    
+</head>
+<body>
+<div class="row">
+<div class="well col-md-6 col-sm-3">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Candidate Email</th>
+                <th>Candidate Phone</th>
+                <th>Candidate File</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for apps in getapps %}
+
+            <tr>
+                <td>{{apps.candidate_email}}</td>
+                <td>{{apps.candidate_phone}}</td>
+                <td><a href="{{apps.filename.url}}">Download Resume</a></td>
+            
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    
+    
 </div>
+<div class="col-md-2 col-sm-3">
+    <table class="table table-bordered text-center">
+        <thead>
+            <th>Matches</th>
+        </thead>
+        <tbody>
+            
+                {% for s, value in mat_length.items %}
+                <tr>
+                <!-- <td>{{s}}</td> -->
+                <td><span class="match">{{value}}</span></td>
+                {% endfor %}
+            </tr>
+            </tr>
+        </tbody>
+        
+    </table>
+</div>
+</div>
+</body>
 {% endblock %}

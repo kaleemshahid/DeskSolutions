@@ -7,7 +7,7 @@ from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.contrib import messages
-import pdfplumber
+import pdfplumber, operator, collections
 
 from django.template.response import TemplateResponse
 from django.urls import path
@@ -23,25 +23,120 @@ class ApplicationAdmin(admin.ModelAdmin):
     def app_review(self, request):
         context = {}
         arraylist = []
+        textList = []
+        appsList = []
+        app_dict = {}
         getapps = Application.objects.filter(position__organization_id=request.user.organization)
-        tags = Tag.objects.all()
-        for t in tags:
-            # print(t.keyword)
-            arraylist.append(t.keyword)
-        print(arraylist)
-        for pdf in getapps:
-            pdf = pdfplumber.open('media/' + str(pdf.filename))
+        print(getapps)
+        position = Position.objects.filter(organization=request.user.organization, job_posting=True, application__in=getapps)
+        print(position)
+        
+        # tags = Tag.objects.filter()
+        for pos in position:
+            # print(pos)
+            position_tags = list(pos.tag.all().values_list('keyword', flat=True))
+            print(position_tags)
+            # [['flask', 'django'], ['expert', 'resume']]
+            # made the position_tags a list cz wwe want the results in individual lists
+            # print(position_tags)
+            arraylist.append(position_tags)
+            # for p in position_tags:
+            #     print(p)
+            #     # arraylist.append(p.keyword)
+            #     appsList.append(p)
+                # print(p)
+            # arraylist.append(p)
+            print(arraylist)
+        # print(arraylist)
+        # print(appsList)
+        # for t in tags:
+        #     # print(t.keyword)
+        #     arraylist.append(t.keyword)
+        # print(arraylist)
+        # count = 0
+        for count, i in enumerate(getapps):
+            print("count: " + str(count))
+            # print(i.pk)
+            pdf = pdfplumber.open('media/' + str(i.filename))
+            print(i.candidate_email)
+            print(i.filename)
             page = pdf.pages[0]
             text = page.extract_text().split()
-            a = set(arraylist).intersection(text)
-            print(a)
-            print(len(a))
-        # print(text)
+            # print(text)
+            # for count2, s in enumerate(arraylist):
+            # print(text)
+            # print(count2)
+            # print(arraylist)
+            a = set(arraylist[count]).intersection(text)
+            # print(count)
+            # print(a)
+            # print(sorted(list(a), reverse=True))
+            b = list(a)
+            # print(b)
+            # print(b)
+            # b.sort(reverse=False)
+            # print(b)
+            # print(len(a))
+            # print(len(list(a)))
+            app_dict[i.pk] = len(b)
+
+            # c =textList.append(b)
+            print(app_dict[i.pk])
+            
+            d = len(textList)
+
+            # count = count + 1
+            # print(pdf)
+            # print(textList.index)
+
+            # print(len(sorted(textList, reverse=True)))
+            # print(sorted(textList, reverse=True))
+            # print(textList.append(list(a)))
+
+            # print(len(b))
+        # print(sorted(textList, reverse=True))
+        
+        # sorted_d = sorted(app_dict.items(), key=operator.itemgetter(1), reverse=True)
+        # print(app_dict)
+        sorted_d = collections.OrderedDict(sorted(app_dict.items(), key=lambda x: x[1], reverse=True))
+        sorted_dict = dict(sorted_d)
+        print(sorted_dict)
+        # for m in sorted_dict:
+        #     print(m, sorted_dict[m])
+        # sorted_list = list(sorted_d.keys())
+        # print(sorted_list)
+        # sorted_values = list(sorted_d.values())
+        # print(sorted_values)
+        for s in sorted_dict:
+            print(s, sorted_dict[s])
+            appsList.append(sorted_dict[s])
+            for app in appsList:
+                print(app)
+                context["mat_length"] = sorted_dict
+            print(context["mat_length"])
+            
+            filtered_applications = getapps.filter(pk=s)
+            for f in filtered_applications:
+            # print(filtered_applications)
+                textList.append(f)
+            # textList.append(filtered_applications)
+        # print(textList)
+        # for v in sorted_values:
+        #     print(v)
+        #     appsList.append(v)
+        
+        context['getapps'] = textList
+        
+        # context['getappss'] = getapps
+        # print(textList)
+        # print(textList.sort())
+        #     # b = list(a)
+        # print(textList)
+        
         # tagsList = list(tags)
         # print(tagsList)
 
         context['basecontext'] = self.admin_site.each_context(request)
-        context['getapps'] = getapps
 
         # for pdf in getapps:
         #     # print('media/' + str(pdf.filename))
@@ -88,7 +183,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_superuser:
+        if request.user.is_admin:
             return True
         return False
 
