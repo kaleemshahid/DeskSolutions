@@ -17,40 +17,53 @@
 
     <style>
         .match{
-            border: 1px solid black;
             padding-left: 20px;
             padding-right: 20px;
+            font-weight: lighter;
+            border-radius: 20px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        #g5{
+            background-color: rgb(63, 175, 63);
+        }
+        #g3{
+            background-color: rgb(207, 207, 42);
+        }
+        #g2{
+            background-color: rgb(238, 114, 92);
         }
     </style>    
 </head>
 <body>
+<div class="container">
 <div class="row">
-<div class="well col-md-6 col-sm-3">
+<div class="well col-md-8 col-sm-3">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Candidate Email</th>
                 <th>Candidate Phone</th>
+                <th>For Position</th>
                 <th>Candidate File</th>
             </tr>
         </thead>
         <tbody>
             
             {% for apps in getapps %}
-
             <tr>
                 <td>{{apps.candidate_email}}</td>
                 <td>{{apps.candidate_phone}}</td>
+                <td>{{apps.position}}</td>
                 <td><a href="{{apps.filename.url}}">Download Resume</a></td>
             
             {% endfor %}
             </tr>
         </tbody>
     </table>
-    
-    
+
 </div>
-<div class="col-md-2 col-sm-3">
+<div class="col-md-3 col-sm-3">
     <table class="table table-bordered text-center">
         <thead>
             <th>Matches</th>
@@ -60,13 +73,27 @@
                 {% for s, value in mat_length.items %}
                 <tr>
                 <!-- <td>{{s}}</td> -->
-                <td><span class="match">{{value}}</span></td>
+                <td>
+                    {% if value >= 5 %}
+                    <span class="match" id="g5">{{value}} matches</span>
+                    {% elif value >= 3 %}
+                    <span class="match" id="g3">{{value}} matches</span>
+                    {% else %}
+                    <span class="match" id="g2">{{value}} matches</span>
+
+                    {% endif %}
+
+                </td>
+
+                {% empty %}
+                <h2>No Applications Received</h2>
                 {% endfor %}
             </tr>
             </tr>
         </tbody>
         
     </table>
+</div>
 </div>
 </div>
 </body>

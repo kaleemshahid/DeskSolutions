@@ -137,7 +137,7 @@ class PositionForm(forms.ModelForm):
     #     #     organization__email=self.user)
 
     #     # get_deps = CustomUser.objects.filter(department__name=name)
-    #     if get_position.count() >= 1 and not job_marker:
+    #     if get_position.count() >= 1:
     #         raise forms.ValidationError(
     #             "This Position already exists in the Organization")
 

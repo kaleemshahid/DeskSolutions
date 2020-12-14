@@ -32,23 +32,25 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
+    'admin_interface',
+    'colorfield',
+
+    'DeskSolutions',
+    'rest_framework',
+
+    'account.apps.AccountConfig',
+    'desksolutionsbase.apps.DesksolutionsbaseConfig',
+    'TaskManagement.apps.TaskmanagementConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'account.apps.AccountConfig',
-    'desksolutionsbase.apps.DesksolutionsbaseConfig',
-    'TaskManagement.apps.TaskmanagementConfig',
-    'DeskSolutions',
-    'rest_framework',
-
-    'PyPDF2',
-    'textract',
-    'nltk',
 ]
+X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 
 AUTH_USER_MODEL = 'account.User'
 GROUP_ALLOCATE = "OrganizationAdministrators"
@@ -84,7 +86,8 @@ ROOT_URLCONF = 'DeskSolutions.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': ['D:/DeskSolutionsProject/DeskSolutions/templates',],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

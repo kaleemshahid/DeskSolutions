@@ -9,6 +9,9 @@ from django.core.mail import send_mail
 from django.contrib import messages
 import pdfplumber, operator, collections
 
+# from django.contrib.sites.models import Site
+from django.contrib.auth.models import Group
+
 from django.template.response import TemplateResponse
 from django.urls import path
 
@@ -16,9 +19,11 @@ class ApplicationAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('appreview/', self.admin_site.admin_view(self.app_review)),
+            path('appreview/', self.admin_site.admin_view(self.app_review), name="appreview"),
         ]
         return my_urls + urls
+
+    change_list_template = 'admin/application.html'
 
     def app_review(self, request):
         context = {}
@@ -62,14 +67,15 @@ class ApplicationAdmin(admin.ModelAdmin):
             print(i.filename)
             page = pdf.pages[0]
             text = page.extract_text().split()
-            # print(text)
+
+            print(text)
             # for count2, s in enumerate(arraylist):
             # print(text)
             # print(count2)
             # print(arraylist)
             a = set(arraylist[count]).intersection(text)
             # print(count)
-            # print(a)
+            print(a)
             # print(sorted(list(a), reverse=True))
             b = list(a)
             # print(b)
@@ -186,6 +192,17 @@ class ApplicationAdmin(admin.ModelAdmin):
         if request.user.is_admin:
             return True
         return False
+
+    def has_module_permission(self, request):
+        if request.user.is_admin:
+            return True
+        return False
+
+    # def get_model_perms(self, request):
+    #     """
+    #     Return empty perms dict thus hiding the model from admin index.
+    #     """
+    #     return {}
 
 class ProfileInline(admin.TabularInline):
     model = Profile
@@ -511,6 +528,11 @@ class DepartmentAdmin(admin.ModelAdmin):
             return True
         return False
 
+    # def has_module_permission(self, request):
+    #     if request.user.is_admin:
+    #         return True
+    #     return False
+
     
 
     # def has_module_permission(self, request):
@@ -639,3 +661,6 @@ admin.site.register(Position, PositionAdmin)
 admin.site.register(Tag)
 admin.site.register(Application, ApplicationAdmin)
 # admin.site.register(MyModelAdmin)
+
+admin.site.unregister(Group)
+

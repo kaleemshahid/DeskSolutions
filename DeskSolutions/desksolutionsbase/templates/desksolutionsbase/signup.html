@@ -1,7 +1,25 @@
 {% extends 'desksolutionsbase/ext_links.html' %}
 {% load static %}
 {% block content %}
-
+<style>
+    .box{
+        width:800px;
+        margin: 0 auto;
+    }
+    .active_tab1{
+        background-color: #fff;
+        color: #333;
+        cursor: not-allowed;
+    }
+    .has_error{
+        border-color: #cc0000;
+        background-color: #ffff99;
+    }
+</style>
+<div class="container box">
+    <br/>
+    <h2 style="align-content: center;">Register your organization</h2>
+</div>
 <div class="container">
     <a class="go-back-link btn btn-info" href="{% url 'signup:home' %}">Go Back</a>
 </div>
