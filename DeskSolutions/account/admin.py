@@ -189,14 +189,14 @@ class ApplicationAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_admin:
+        if request.user.is_admin or request.user.is_superuser:
             return True
         return False
 
-    def has_module_permission(self, request):
-        if request.user.is_admin:
-            return True
-        return False
+    # def has_module_permission(self, request):
+    #     if request.user.is_admin:
+    #         return True
+    #     return False
 
     # def get_model_perms(self, request):
     #     """

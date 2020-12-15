@@ -14,11 +14,13 @@ from django.contrib.contenttypes.models import ContentType
 
 def OrganizationAction(request):
     context = {}
-    if request.session.get('organization'):
-        del request.session['organization']
-    if request.method == "POST":
+    create_organization = None
+    # if request.session.get('organization'):
+    #     del request.session['organization']
+    if request.method == "POST" and request.is_ajax():
         print("request is POST")
         form = OrganizationForm(request.POST, request.FILES)
+        user_form = RegisterForm(request.POST or None)
         print(settings.BASE_DIR)
         print(settings.MEDIA_ROOT)
         if form.is_valid():
@@ -50,86 +52,100 @@ def OrganizationAction(request):
             # ser_instance = json.dumps(get_org, content_type='application/json')
             # print(ser_instance)
             request.session['organization'] = create_organization.pk
+            context['org_id'] = create_organization.pk
             # print(ser_instance)
-            print(request.session['organization'])
+            print(context['org_id'])
             # form.save()
             # return redirect("signup:signups", args=(request.session['organization'],))
-            return redirect('signup:signups')
+            # return redirect('signup:signups')
             # context['json'] = ser_instance
             # return JsonResponse(context)
+
+        elif user_form.is_valid():
+            session_id = request.session.get('organization')
+            print(session_id)
+            if session_id is not None:
+                print("session is not none")
+                get_organization = get_object_or_404(Organization,id=session_id)
+                user = user_form.save(commit=False)
+                user.organization = get_organization
+                user.save()
+                del request.session['organization']
+            return redirect(reverse('admin:index'))
+                # print(request.session['organization'])
         else:
-            print("Organization Form is inValid")
-            # context['register_form'] = form
-            context['register_form'] = form
-            # return JsonResponse(context)
-            # print(form.errors)
-            # print(JsonResponse(context))
-            # return JsonResponse(context)
+            print("invalid form")
+            context['register_form'] = form.errors
+            context['user_form'] = user_form.errors
+            return JsonResponse(context)
+
     else:
         form = OrganizationForm()
         context['register_form'] = form
+        user_form = RegisterForm()
+        context['user_form'] = user_form
 
     return render(request, "desksolutionsbase/signup.html", context)
 
 
-@organization_absent
-def signup(request):
-    session_name = request.session.get('organization')
-    if session_name is not None:
-        get_organization = Organization.objects.get(id=session_name)
-        print(get_organization)
-        # get_org = get_object_or_404(Organization, title=url)
-        print("in user signup function")
-        context = {}
-        if request.method == "POST":
-            user_form = RegisterForm(request.POST or None)
-            if user_form.is_valid():
-                print("form valid")
-                user = user_form.save(commit=False)
-                # email = user_form.cleaned_data.get('email')
-                # first_name = user_form.cleaned_data.get('first_name')
-                # last_name = user_form.cleaned_data.get('last_name')
-                # phone = user_form.cleaned_data.get('phone')
-                # address = user_form.cleaned_data.get('address')
+# @organization_absent
+# def signup(request):
+#     session_id = request.session.get('organization')
+#     if session_id is not None:
+#         get_organization = Organization.objects.get(id=session_id)
+#         print(get_organization)
+#         # get_org = get_object_or_404(Organization, title=url)
+#         print("in user signup function")
+#         context = {}
+#         if request.method == "POST":
+#             user_form = RegisterForm(request.POST or None)
+#             if user_form.is_valid():
+#                 print("form valid")
+#                 user = user_form.save(commit=False)
+#                 # email = user_form.cleaned_data.get('email')
+#                 # first_name = user_form.cleaned_data.get('first_name')
+#                 # last_name = user_form.cleaned_data.get('last_name')
+#                 # phone = user_form.cleaned_data.get('phone')
+#                 # address = user_form.cleaned_data.get('address')
 
-                # user = User.objects.create_user(
-                #     email=email)
-                # profile = profile_form.save(commit=False)
-                # org = request.session.get('organization')
-                # for obj in serializers.deserialize("json", org):
-                #     print(obj)
-                # print(org)
-                # print(user)
-                # convert_to_obj = json.loads(org)
-                # print(convert_to_obj)
-                # print(org.id)
-                user.organization = get_organization
-                user.save()
-                group, created = Group.objects.get_or_create(
-                    name=settings.GROUP_ALLOCATE)
+#                 # user = User.objects.create_user(
+#                 #     email=email)
+#                 # profile = profile_form.save(commit=False)
+#                 # org = request.session.get('organization')
+#                 # for obj in serializers.deserialize("json", org):
+#                 #     print(obj)
+#                 # print(org)
+#                 # print(user)
+#                 # convert_to_obj = json.loads(org)
+#                 # print(convert_to_obj)
+#                 # print(org.id)
+#                 user.organization = get_organization
+#                 user.save()
+#                 group, created = Group.objects.get_or_create(
+#                     name=settings.GROUP_ALLOCATE)
 
-                ct = ContentType.objects.get_for_model(Organization)
-                if created:
-                    permission = Permission.objects.filter(content_type=ct)
-                    for perm in permission:
-                        group.permissions.add(perm)
-                    group.save()
-                    user.groups.add(group)
-                else:
-                    user.groups.add(group)
-                # profile.organization = user
-                # profile.save()
-                del request.session['organization']
-                return redirect(reverse('admin:index'))
-                # print(request.session['organization'])
-            else:
-                print("invalid form")
-                context['user_form'] = user_form
-        else:
-            user_form = RegisterForm()
-            context['user_form'] = user_form
+#                 ct = ContentType.objects.get_for_model(Organization)
+#                 if created:
+#                     permission = Permission.objects.filter(content_type=ct)
+#                     for perm in permission:
+#                         group.permissions.add(perm)
+#                     group.save()
+#                     user.groups.add(group)
+#                 else:
+#                     user.groups.add(group)
+#                 # profile.organization = user
+#                 # profile.save()
+#                 del request.session['organization']
+#                 return redirect(reverse('admin:index'))
+#                 # print(request.session['organization'])
+#             else:
+#                 print("invalid form")
+#                 context['user_form'] = user_form
+#         else:
+#             user_form = RegisterForm()
+#             context['user_form'] = user_form
 
-        return render(request, 'desksolutionsbase/register.html', context)
+#         return render(request, 'desksolutionsbase/register.html', context)
 
 
 def organizationlist(request):

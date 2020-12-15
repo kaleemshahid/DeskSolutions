@@ -5,76 +5,95 @@
     .box{
         width:800px;
         margin: 0 auto;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
     }
     .active_tab1{
-        background-color: #fff;
+        background-color: rgba(64,39,160,1);
+        color: #fff;
+        font-weight: 600;
+    }
+    .inactive_tab1{
+        background-color: #f5f5f5;
         color: #333;
         cursor: not-allowed;
     }
     .has_error{
         border-color: #cc0000;
-        background-color: #ffff99;
+    }
+    .error-span{
+        padding: 20px;
+        border: 1px solid black
+    }
+    input:focus, textarea:focus, select:focus{
+        outline: none;
     }
 </style>
-<div class="container box">
+<div class="container box col-md-6">
     <br/>
     <h2 style="align-content: center;">Register your organization</h2>
-</div>
-<div class="container">
-    <a class="go-back-link btn btn-info" href="{% url 'signup:home' %}">Go Back</a>
-</div>
-<section class="register-section" id="services">
-    <div class="container register-container">
-        <div class="col-md-12">
-            <div class="stepper">
-                <h1>step</h1>
+    
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active_tab1" style="border: 1px solid #ccc" id="organizationformlink">Organization Signup</a>
+            </li>
+            <li class="nav-item" style="margin-left: 3px;">
+                <a class="nav-link inactive_tab1" style="border: 1px solid #ccc" id="userformlink">User Signup</a>
+            </li>
+        </ul>
+        <div class="tab-content" style="margin-top: 16px">
+            <div class="tab-pane active" id="orgtab">
+                <div class="card">
+                    <div class="card-header">Organization Form Setup</div>
+                <div class="card-body">
+                    <form method="POST" action="" id="signup-form" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        {% for field in register_form %}
+                            <p style="font-weight: lighter;">{{ field.label_tag }}</p>
+                            <p class="org-field">{{ field }}</p>
+
+                            {% for error in field.errors %}
+                                <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
+                            {% endfor %}
+                            <span class="text-danger error-span" id="error-{{field.html_name}}"></span>
+                        {% endfor %}
+                        <input class="btn btn-info" type="submit" name="signup" value="Sign Up">
+                        <div class="">
+                            <button class="btn btn-primary btn-lg" type="button" name="btn_to_user_signup" id="next">Next</button>
+                        </div>
+                     </form>
+                </div>
             </div>
-            <div class="signup_title">Sign Up</div>
-            <form method="POST" action="" id="signup-form" enctype="multipart/form-data" novalidate>
+
+            </div>
+            <div class="tab-pane" id="usertab">
+                <form method="POST" action="" id="register-form" enctype="multipart/form-data"
+                novalidate>
                 {% csrf_token %}
 
-                {% for field in register_form %}
-                <p style="font-weight: lighter;">{{ field.label_tag }}</p>
-                <p class="org-field">{{ field }}</p>
+                {% for field in user_form %}
+                <p>
+                    {{ field.label_tag }}
+                    {{ field }}
 
-                {% for error in field.errors %}
-                <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
-                {% endfor %}
+                    {% for error in field.errors %}
+                <p style="color: red;">{{error}}</p>
                 {% endfor %}
 
-                <input class="btn btn-info" type="submit" name="signup" value="Sign Up">
+                </p>
+                {% endfor %}
+                <!-- {{user_form.as_p}}
+                {{profile_form.as_p}} -->
+
+                <input type="submit" name="register" value="Sign Up">
+                <div class="">
+                    <button class="btn btn-primary btn-lg" type="button" name="btn_to_org_signup" id="previous">Previous</button>
+                </div>
             </form>
-        </div>
-    </div>
-</section>
-<!-- 
-<div class="container contact-form">
-    <div class="contact-image">
-        <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
-    </div>
-    <form method="post">
-        <h3>Drop Us a Message</h3>
-       <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <input type="text" name="txtName" class="form-control" placeholder="Your Name *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="text" name="txtEmail" class="form-control" placeholder="Your Email *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="text" name="txtPhone" class="form-control" placeholder="Your Phone Number *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" name="btnSubmit" class="btnContact" value="Send Message" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <textarea name="txtMsg" class="form-control" placeholder="Your Message *" style="width: 100%; height: 150px;"></textarea>
-                </div>
             </div>
         </div>
-    </form>
-</div> -->
+        
+</div>
+
+
 {% endblock %}
