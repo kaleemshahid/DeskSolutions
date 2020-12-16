@@ -1,38 +1,13 @@
 {% extends 'desksolutionsbase/ext_links.html' %}
 {% load static %}
 {% block content %}
-<style>
-    .box{
-        width:800px;
-        margin: 0 auto;
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
-    }
-    .active_tab1{
-        background-color: rgba(64,39,160,1);
-        color: #fff;
-        font-weight: 600;
-    }
-    .inactive_tab1{
-        background-color: #f5f5f5;
-        color: #333;
-        cursor: not-allowed;
-    }
-    .has_error{
-        border-color: #cc0000;
-    }
-    .error-span{
-        padding: 20px;
-        border: 1px solid black
-    }
-    input:focus, textarea:focus, select:focus{
-        outline: none;
-    }
-</style>
-<div class="container box col-md-6">
-    <br/>
+
+<header class="signup-showcase">
+    <img class="logo" style="border: 1px solid black; display: inline;" src="{% static 'desksolutionsbase/img/desklogo.png' %}">
+
+    <div class="container box col-md-12">
     <h2 style="align-content: center;">Register your organization</h2>
     
-
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active_tab1" style="border: 1px solid #ccc" id="organizationformlink">Organization Signup</a>
@@ -48,7 +23,7 @@
                 <div class="card-body">
                     <form method="POST" action="" id="signup-form" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
-                        {% for field in register_form %}
+                        <!-- {% for field in register_form %}
                             <p style="font-weight: lighter;">{{ field.label_tag }}</p>
                             <p class="org-field">{{ field }}</p>
 
@@ -56,7 +31,35 @@
                                 <p style=" color: rgba(255, 0, 0, 0.664);">{{error}}</p>
                             {% endfor %}
                             <span class="text-danger error-span" id="error-{{field.html_name}}"></span>
-                        {% endfor %}
+                        {% endfor %} -->
+                        <div class="form-row">
+                            <div class="col">
+                                {{ register_form.title.label_tag }}
+                                {{ register_form.title }}
+                                <span class="text-danger error-span" id="error-{{register_form.title.html_name}}"></span>
+                            </div>
+                            <div class="col">
+                                {{ register_form.url.label_tag }}
+                                {{ register_form.url }}
+                                <span class="text-danger error-span" id="error-{{register_form.url.html_name}}"></span>
+                            </div>
+                            <div class="col">
+                                {{ register_form.logo.label_tag }}
+                                {{ register_form.logo }}
+                                <span class="text-danger error-span" id="error-{{register_form.logo.html_name}}"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ register_form.description.label_tag }}
+                            {{ register_form.description }}
+                            <span class="text-danger error-span" id="error-{{register_form.description.html_name}}"></span>
+                        </div>
+                        <div class="form-group">
+                            {{ register_form.address.label_tag }}
+                            {{ register_form.address }}
+                            <span class="text-danger error-span" id="error-{{register_form.address.html_name}}"></span>
+                        </div>
+
                         <input class="btn btn-info" type="submit" name="signup" value="Sign Up">
                         <div class="">
                             <button class="btn btn-primary btn-lg" type="button" name="btn_to_user_signup" id="next">Next</button>
@@ -91,9 +94,9 @@
                 </div>
             </form>
             </div>
-        </div>
-        
-</div>
+        </div> 
+    </div>
+</header>
 
 
 {% endblock %}

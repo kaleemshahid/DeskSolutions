@@ -8,14 +8,14 @@ from DeskSolutions import settings
 
 
 class Organization(models.Model):
-    title = models.CharField(verbose_name="Name of Organization",
+    title = models.CharField(verbose_name="Organization Title",
                              max_length=50, unique=True, blank=False, null=False)
     description = models.TextField(
-        verbose_name="Describe your Organization", null=True, blank=False)
+        verbose_name="Description", null=True, blank=False)
     url = models.URLField(verbose_name="Organization URL",
                           null=True, blank=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
-    logo = models.ImageField(upload_to="logos", default=None)
+    logo = models.ImageField(upload_to="logos", default=None, null=True, blank=True)
     address = models.TextField(
         verbose_name="Organization Address", null=True, blank=False)
 

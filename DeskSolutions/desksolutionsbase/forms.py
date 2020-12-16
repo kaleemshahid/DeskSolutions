@@ -7,12 +7,27 @@ class OrganizationForm(forms.ModelForm):
         model = Organization
         fields = ('title', 'url', 'description', 'address', 'logo')
         widgets = {
-            'title': forms.EmailInput(attrs={'class': 'form-control'}),
-            'url': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'title': forms.EmailInput(attrs={
+                'class': 'form-control input-text',
+                # 'placeholder' : 'Organization Email',
+                }),
+            'url': forms.TextInput(attrs={
+                'class': 'form-control input-text',
+                # 'placeholder' : 'Organization URL',
+                }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control input-text',
+                'rows': 3,
+                'placeholder' : 'Describe your organization in few words...',
+                }),
+            'address': forms.Textarea(attrs={
+                'class': 'form-control input-text', 
+                'rows': 1,
+                'placeholder' : 'House no 1, Street 44, Model Town, Lahore',
+                }),
             # 'logo': forms.FileField(allow_empty_file=True),
         }
+        
 
 
 class RegisterForm(forms.ModelForm):
@@ -49,7 +64,7 @@ class RegisterForm(forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password1'])
         if commit:
-            print("it happend")
+            # print("it happend")
             user.save()
         return user
 

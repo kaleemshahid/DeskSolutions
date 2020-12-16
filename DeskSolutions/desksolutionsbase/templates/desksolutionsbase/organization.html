@@ -1,16 +1,19 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'desksolutionsbase/css/home.css' %}">
 
-<section class="organization-section bg-primary" id="organization">
+<section class="organization-section" id="organization">
     <div class="container">
-        <div id="demo" class="carousel slide" data-ride="carousel">
-            <ul class="carousel-indicators my-10" style="border: 1px solid white;">
+        <h2 class="section-title mb-4 text-center">Organizations</h2>
+        <h6 class="lead mb-4 text-center">Organizations that are affiliated with us! Find jobs here</h6>
+        <div id="demo" class="carousel slide" data-ride="carousel" style="padding-bottom:60px">
+            <ul class="carousel-indicators" style="margin-top:800px">
                 <li data-target="#demo"  data-slide-to="0" class="active"></li>
                 {% for i in range %}
                 <li data-target="#demo"  data-slide-to="{{i}}"></li>
                 {% endfor %}
             </ul> 
-            <div class="carousel-inner">
+
+            <div class="carousel-inner d-flex">
                 {% for org in orgs %}
                 {% if forloop.first %}
                 <div class="carousel-item active">
@@ -20,9 +23,10 @@
                     <div class="row">
                         <div class="col-lg-12 mx-auto">
                             <div class="container">
-                            <div class="row">
+                            <div class="row ">
+                                
                                 <div class="col-md-3 col-xs-12 ">
-                                    <div class="col-md-12 title-img">
+                                    <div class="title-img">
                                         <div class="block">
                                             <img style="width: 50px; height: 50px" class="img img-rounded" src="{{ org.logo.url }}">
                                         </div>
@@ -34,16 +38,12 @@
                                         </div>
                                     </div> 
                                 </div>
-                                <div class="col-md-9 ">
-                                    <div class="col-md-12 desc-block">
-                                        <div class="block">
-                                            <p>{{org.description}}</p>
-                                        </div><hr/>
-                                        <div class="block">
-                                            <p>{{org.address}}</p>
-                                        </div>
-                                        <div class="block">
+                                <div class="col-md-9">
+                                    <div class="desc-block">
+                                        {% if org.position_set.all|length %}
+                                        <div class="col-md-12 job-alarm d-flex justify-content-start">
                                             <a href="{% url 'signup:jobs' org.pk  %}" class="btn btn-info">
+                                                <i class="fa fa-bell"></i>
                                                 {% for i in org.position_set.all %}
                                                 
                                                 {% endfor %}
@@ -51,6 +51,15 @@
                                                 Jobs
                                             </a>
                                         </div>
+                                        {% endif %}
+
+                                        <div class="block">
+                                            <p>{{org.description}}</p>
+                                        </div><hr/>
+                                        <div class="block">
+                                            <p>{{org.address}}</p>
+                                        </div>
+                                        
                                     </div>
                                     
                                 </div>
@@ -59,6 +68,8 @@
                         </div>
                     </div>
                 </div>
+                {% empty %}
+                <h4>No Organizations registered</h4>
                 {% endfor %}
     
             </div>
