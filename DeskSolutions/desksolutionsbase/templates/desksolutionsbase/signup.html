@@ -3,24 +3,23 @@
 {% block content %}
 
 <header class="signup-showcase">
-    <img class="logo" style="border: 1px solid black; display: inline;" src="{% static 'desksolutionsbase/img/desklogo.png' %}">
-
-    <div class="container box col-md-12">
-    <h2 style="align-content: center;">Register your organization</h2>
+    <div class="col-md-2">
+        <a href="{% url 'signup:home' %}"><img class="logo img" width="auto" height="100" src="{% static 'desksolutionsbase/img/desklogo.png' %}"></a>
+    </div>
+    <div class="container box col-md-10">
+    <h2 class="letstart" >Let's start!</h2>
     
         <ul class="nav nav-tabs">
-            <li class="nav-item">
+            <li class="nav-item nav-tab">
                 <a class="nav-link active_tab1" style="border: 1px solid #ccc" id="organizationformlink">Organization Signup</a>
             </li>
-            <li class="nav-item" style="margin-left: 3px;">
+            <li class="nav-item nav-tab" style="margin-left: 3px;">
                 <a class="nav-link inactive_tab1" style="border: 1px solid #ccc" id="userformlink">User Signup</a>
             </li>
         </ul>
         <div class="tab-content" style="margin-top: 16px">
             <div class="tab-pane active" id="orgtab">
-                <div class="card">
-                    <div class="card-header">Organization Form Setup</div>
-                <div class="card-body">
+                <div class="container form-container">
                     <form method="POST" action="" id="signup-form" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
                         <!-- {% for field in register_form %}
@@ -34,69 +33,82 @@
                         {% endfor %} -->
                         <div class="form-row">
                             <div class="col">
-                                {{ register_form.title.label_tag }}
+                                <label class="org-label" for="id_title">Title</label>
                                 {{ register_form.title }}
                                 <span class="text-danger error-span" id="error-{{register_form.title.html_name}}"></span>
                             </div>
                             <div class="col">
-                                {{ register_form.url.label_tag }}
+                                <label class="org-label" for="id_url">Organization URL</label>
                                 {{ register_form.url }}
                                 <span class="text-danger error-span" id="error-{{register_form.url.html_name}}"></span>
                             </div>
-                            <div class="col">
-                                {{ register_form.logo.label_tag }}
-                                {{ register_form.logo }}
-                                <span class="text-danger error-span" id="error-{{register_form.logo.html_name}}"></span>
-                            </div>
                         </div>
                         <div class="form-group">
-                            {{ register_form.description.label_tag }}
+                            <label class="org-label" for="id_description">Description</label>
                             {{ register_form.description }}
                             <span class="text-danger error-span" id="error-{{register_form.description.html_name}}"></span>
                         </div>
                         <div class="form-group">
-                            {{ register_form.address.label_tag }}
+                            <label class="org-label" for="id_address">Address</label>
                             {{ register_form.address }}
                             <span class="text-danger error-span" id="error-{{register_form.address.html_name}}"></span>
                         </div>
-
+                        <div class="form-group">
+                                <label class="org-label" for="id_logo">Logo</label>
+                                {{ register_form.logo }}
+                                <span class="text-danger error-span" id="error-{{register_form.logo.html_name}}"></span>
+                        </div>
+                        <div class="d-flex justify-content-between">
                         <input class="btn btn-info" type="submit" name="signup" value="Sign Up">
-                        <div class="">
+                        <!-- <div class="">
                             <button class="btn btn-primary btn-lg" type="button" name="btn_to_user_signup" id="next">Next</button>
+                        </div> -->
+                        
+                        <p>Already a member? <a href="{% url 'admin:login' %}">Login</a></p>
                         </div>
                      </form>
-                </div>
-            </div>
-
+                    </div>
             </div>
             <div class="tab-pane" id="usertab">
                 <form method="POST" action="" id="register-form" enctype="multipart/form-data"
                 novalidate>
                 {% csrf_token %}
-
-                {% for field in user_form %}
-                <p>
-                    {{ field.label_tag }}
-                    {{ field }}
-
-                    {% for error in field.errors %}
-                <p style="color: red;">{{error}}</p>
-                {% endfor %}
-
-                </p>
-                {% endfor %}
-                <!-- {{user_form.as_p}}
-                {{profile_form.as_p}} -->
-
-                <input type="submit" name="register" value="Sign Up">
-                <div class="">
-                    <button class="btn btn-primary btn-lg" type="button" name="btn_to_org_signup" id="previous">Previous</button>
+            
+                <div class="form-row">
+                    <div class="col">
+                        <label class="org-label" for="id_first_name">First Name</label>
+                        {{ user_form.first_name }}
+                        <span class="text-danger error-span" id="error-{{user_form.first_name.html_name}}"></span>
+                    </div>
+                    <div class="col">
+                        <label class="org-label" for="id_last_name">Last Name</label>
+                        {{ user_form.last_name }}
+                        <span class="text-danger error-span" id="error-{{user_form.last_name.html_name}}"></span>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label class="org-label" for="id_email">Email</label>
+                        {{ user_form.email }}
+                    <span class="text-danger error-span" id="error-{{user_form.email.html_name}}"></span>
+                </div>
+                <div class="form-group">
+                    <label class="org-label" for="id_phone">Phone</label>
+                        {{ user_form.phone }}
+                    <span class="text-danger error-span" id="error-{{user_form.phone.html_name}}"></span>
+                </div>
+                <div class="form-group">
+                    <label class="org-label" for="id_address">Address</label>
+                        {{ user_form.address }}
+                    <span class="text-danger error-span" id="error-{{user_form.address.html_name}}"></span>
+                </div>
+            
+                <input type="submit" name="register" value="Sign Up">
             </form>
             </div>
         </div> 
     </div>
 </header>
+
 
 
 {% endblock %}

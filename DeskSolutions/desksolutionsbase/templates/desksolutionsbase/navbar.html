@@ -28,8 +28,7 @@
                 <li class="nav-item signup">
                     <a style="font-weight: bolder;" class="nav-link nav-btn text-white" href="{% url 'signup:organization-register' %}">Sign Up</a>
                 </li>
-                {% if request.user.is_authenticated %}
-                {%else%}
+                {% if not request.user.is_authenticated %}
                 <li class="nav-item login">
                     <a style="font-weight: bolder;" class="nav-link nav-btn text-white" href="{% url 'admin:index' %}">Login</a>
                 </li>

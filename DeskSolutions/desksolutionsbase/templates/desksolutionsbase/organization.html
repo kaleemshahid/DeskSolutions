@@ -27,9 +27,11 @@
                                 
                                 <div class="col-md-3 col-xs-12 ">
                                     <div class="title-img">
+                                        {% if org.logo %}
                                         <div class="block">
                                             <img style="width: 50px; height: 50px" class="img img-rounded" src="{{ org.logo.url }}">
                                         </div>
+                                        {% endif %}
                                         <div class="block">
                                             <p>{{org.title}}</p>
                                         </div>
