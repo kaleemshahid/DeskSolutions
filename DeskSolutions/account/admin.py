@@ -216,10 +216,14 @@ class ProfileInline(admin.TabularInline):
         print(field)
         if db_field.name == 'department':
             if request.user is not None:
-                print(field.queryset)
                 field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
-            else:
-                field.queryset = field.queryset.none()
+                print(field.queryset)
+        elif db_field.name == 'position':
+            if request.user is not None:
+                field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
+                print(field.queryset)
+        else:
+            field.queryset = field.queryset.none()
 
         return field
     # fieldsets = (
