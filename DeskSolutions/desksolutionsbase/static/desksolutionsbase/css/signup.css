@@ -9,7 +9,7 @@
 
 .letstart{
     text-align: center;
-    padding: 20px
+    padding: 30px
 }
 
 .box{
@@ -24,9 +24,9 @@
 }
 
 .active_tab1{
-    background-color: rgb(135, 134, 138);
+    background-color: #9966CC;
     color: #fff;
-    font-weight: 400;
+    font-weight: 600;
 }
 .inactive_tab1{
     background-color: #f5f5f5;
@@ -69,3 +69,20 @@ outline: none;
 
 margin-left: 20px
 }
+
+.bg-primary.form-container{
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.bg-primary.form-container p{
+    color: #fff;
+    font-weight: lighter;
+    padding-bottom: 10px;
+}
+
+.bg-primary.form-container h2{
+    color: #fff;
+    font-weight: bolder;
+}
+

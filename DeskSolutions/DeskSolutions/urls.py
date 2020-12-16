@@ -17,10 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import PasswordResetView
 
 from rest_framework import routers
 from account.serializers import UserSerializer
 from account.views import UserViewSet
+
+
 
 # def get_admin_urls(urls):
 #     def get_urls():
@@ -43,9 +46,12 @@ urlpatterns = [
     path('', include('rest_framework.urls')),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('account/', include('account.urls')),
+    # path('account/', include('account.urls')),
+    path('account/', include('django.contrib.auth.urls')),
     path('home/', include('desksolutionsbase.urls', namespace='signup')),
     path('task/', include('TaskManagement.urls')),
+    path('admin_password_reset/', PasswordResetView.as_view(), name='admin_password_reset')
+
 ]
 
 if settings.DEBUG:

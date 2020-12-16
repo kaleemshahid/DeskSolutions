@@ -466,6 +466,8 @@ class UserAdmin(BaseUserAdmin):
 # 9/11/2020, rat 9.16 pe isko comment kia tha meny, ku k mjy lgta tha k iski koi zrurt ni
     def save_model(self, request, obj, form, change):
         user = request.user
+        username = form.cleaned_data['email']
+        print(username)
         obj = form.save(commit=False)
         password = get_random_string(length=7)
         print(user)
@@ -475,19 +477,17 @@ class UserAdmin(BaseUserAdmin):
             obj.organization = user.organization
             obj.set_password(password)
             obj.is_admin = False
+            send_mail(
+                "DeskSolutions Account Password",
+                "Hello " + str(username) + ". Your password is " + str(password) + ".",
+                "noreply@desksolutions.com",
+                [username,],
+                fail_silently=False
+            )
 
         obj.save()
         # send_mail('This is your passwrd', password,'noreply@desksolutions.com', [obj], fail_silently = False)
         return obj
-
-    # def get_form(self, request, obj=None, **kwargs):
-    #     UserForm = super().get_form(request, obj, **kwargs)
-
-    #     class UserFormWithRequest(UserForm):
-    #         def __new__(cls, *args, **kwargs):
-    #             kwargs['request'] = request
-    #             return UserForm(*args, **kwargs)
-    #     return UserFormWithRequest
 
 
 class DepartmentAdmin(admin.ModelAdmin):

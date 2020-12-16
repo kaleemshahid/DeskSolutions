@@ -64,12 +64,18 @@ REST_FRAMEWORK = {
     ],
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# if not DEBUG:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'f2018027021@umt.edu.pk'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'noreply@desksolutions.com'
-EMAIL_HOST_PASSWORD = 'Project2020'
+EMAIL_HOST_USER = 'f2018027021@umt.edu.pk'
+EMAIL_HOST_PASSWORD = 'f4Uu@2Tp'
+EMAIL_USE_TLS = True
+# else:
+#     EMAIL_BACKEND = (
+#         "django.core.mail.backends.smtp.EmailBackend"
+#     )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
