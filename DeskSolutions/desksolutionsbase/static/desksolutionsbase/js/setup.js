@@ -32,7 +32,7 @@ $(document).ready(function(){
                 }
                 else {
                     console.log("Form submitted")
-                    alert("sdfsfsfd")
+                    // alert("sdfsfsfd")
                     $("#organizationformlink").removeClass('active active_tab1')
                     $("#organizationformlink").removeAttr('href data-toggle')
                     $("#orgtab").removeClass('active')
@@ -49,7 +49,7 @@ $(document).ready(function(){
     })
 
     $("#register-form").submit(function (e){
-        alert("Asdasdddddd")
+        // alert("Asdasdddddd")
         e.preventDefault()
         $.ajax({
             type: "POST",
@@ -61,11 +61,11 @@ $(document).ready(function(){
                 if (form_msg) {
                     console.log("User Form has errors")
                     for (var i in form_msg) {
-                        var error_message = "<p style='color: red'>" + form_msg[i] + "</p>"
-                        var id = '#id_' + i
-                        $(id).parent('p').append(form_msg[i])
-                        $(id).addClass('ss');
-
+                        var error_id = '#error-' + i
+                        var id = 'id_' + i
+                        console.log(error_id)
+                        $(error_id).text(form_msg[i])
+                        $(id).addClass('has_error')
                         // $("#form_errors").text(error_message)
                         console.log(form_msg[i])
                         console.log(i)

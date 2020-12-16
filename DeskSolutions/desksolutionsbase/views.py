@@ -31,12 +31,12 @@ def OrganizationAction(request):
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
             url = form.cleaned_data['url']
-            address = form.cleaned_data['address']
+            address = form.cleaned_data['org_address']
             logo = request.FILES.get('logo')
             print(address)
             print(logo)
             create_organization = Organization.objects.create(
-                title=title, description=description, url=url, address=address, logo=logo)
+                title=title, description=description, url=url, org_address=address, logo=logo)
             create_organization.save()
             
             # get_org = Organization.objects.filter(

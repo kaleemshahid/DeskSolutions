@@ -5,7 +5,7 @@ from account.models import Organization, User, Profile, Application
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
-        fields = ('title', 'url', 'description', 'address', 'logo')
+        fields = ('title', 'url', 'description', 'org_address', 'logo')
         widgets = {
             'title': forms.EmailInput(attrs={
                 'class': 'form-control input-text',
@@ -20,7 +20,7 @@ class OrganizationForm(forms.ModelForm):
                 'rows': 3,
                 'placeholder' : 'Describe your organization in few words...',
                 }),
-            'address': forms.Textarea(attrs={
+            'org_address': forms.Textarea(attrs={
                 'class': 'form-control input-text', 
                 'rows': 1,
                 'placeholder' : 'House no 1, Street 44, Model Town, Lahore',
@@ -33,24 +33,24 @@ class OrganizationForm(forms.ModelForm):
 class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={'class': 'form-control input-text'})
     )
 
     password2 = forms.CharField(
         label="Confirm Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={'class': 'form-control input-text'})
     )
 
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'phone', 'address')
         widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.Textarea(attrs={'class': 'form-control'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control input-text'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control input-text'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control input-text'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control input-text'}),
+            'address': forms.Textarea(attrs={'class': 'form-control input-text'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control input-text'}),
         }
 
     def clean_password2(self):

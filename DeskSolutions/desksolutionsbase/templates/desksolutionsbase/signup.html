@@ -49,9 +49,9 @@
                             <span class="text-danger error-span" id="error-{{register_form.description.html_name}}"></span>
                         </div>
                         <div class="form-group">
-                            <label class="org-label" for="id_address">Address</label>
-                            {{ register_form.address }}
-                            <span class="text-danger error-span" id="error-{{register_form.address.html_name}}"></span>
+                            <label class="org-label" for="id_org_address">Address</label>
+                            {{ register_form.org_address }}
+                            <span class="text-danger error-span" id="error-{{register_form.org_address.html_name}}"></span>
                         </div>
                         <div class="form-group">
                                 <label class="org-label" for="id_logo">Logo</label>
@@ -100,6 +100,16 @@
                     <label class="org-label" for="id_address">Address</label>
                         {{ user_form.address }}
                     <span class="text-danger error-span" id="error-{{user_form.address.html_name}}"></span>
+                </div>
+                <div class="form-group">
+                    <label class="org-label" for="id_password1">Password</label>
+                        {{ user_form.password1 }}
+                    <span class="text-danger error-span" id="error-{{user_form.password1.html_name}}"></span>
+                </div>
+                <div class="form-group">
+                    <label class="org-label" for="id_password2">Confirm Password</label>
+                        {{ user_form.password2 }}
+                    <span class="text-danger error-span" id="error-{{user_form.password2.html_name}}"></span>
                 </div>
             
                 <input type="submit" name="register" value="Sign Up">

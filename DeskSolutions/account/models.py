@@ -16,7 +16,7 @@ class Organization(models.Model):
                           null=True, blank=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     logo = models.ImageField(upload_to="logos", default=None, null=True, blank=True)
-    address = models.TextField(
+    org_address = models.CharField(max_length=255,
         verbose_name="Organization Address", null=True, blank=False)
 
     def __str__(self):
