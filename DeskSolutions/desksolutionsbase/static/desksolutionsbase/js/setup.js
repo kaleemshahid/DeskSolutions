@@ -78,4 +78,39 @@ $(document).ready(function(){
             }
         })
     })
+
+    $("#lookup_form").submit(function (e) {
+        e.preventDefault()
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: $(this).serialize(),
+            success: (response) => {
+
+                var lookup_msg = response['lookup_not_exist']
+                var lookup_empty = response['lookup_form']
+                var admin_exist = response['admin_exist']
+                if (lookup_msg){
+                    console.log(lookup_msg)
+                }
+                else if(lookup_empty){
+                    console.log(lookup_empty)
+                }
+                else if(admin_exist){
+                    console.log(admin_exist)
+                }
+                else{
+                    $("#organizationformlink").removeClass('active active_tab1')
+                    $("#organizationformlink").removeAttr('href data-toggle')
+                    $("#orgtab").removeClass('active')
+                    $("#organizationformlink").addClass('inactive_tab1')
+                    $("#userformlink").removeClass('inactive_tab1')
+                    $("#userformlink").addClass('active active_tab1')
+                    $("#userformlink").attr('href', "#usertab")
+                    $("#userformlink").attr('data-toggle', "tab")
+                    $("#usertab").addClass("active in")
+                }
+            }
+        })
+    })
 })

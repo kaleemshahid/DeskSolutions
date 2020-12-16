@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from desksolutionsbase.forms import OrganizationForm, RegisterForm, ApplicationForm
+from desksolutionsbase.forms import OrganizationForm, RegisterForm, ApplicationForm, LookupForm
 from account.models import Organization, User, Position
-from .decorators import organization_absent
+# from .decorators import organization_absent
+from django.core.exceptions import ValidationError
 from django.core import serializers
 import json
 
@@ -21,6 +22,7 @@ def OrganizationAction(request):
         print("request is POST")
         form = OrganizationForm(request.POST, request.FILES)
         user_form = RegisterForm(request.POST or None)
+        lookup_form = LookupForm(request.POST or None)
         print(settings.BASE_DIR)
         print(settings.MEDIA_ROOT)
         if form.is_valid():
@@ -63,6 +65,8 @@ def OrganizationAction(request):
 
         elif user_form.is_valid():
             session_id = request.session.get('organization')
+            lookup_session = request.session.get('lookup_organization')
+            print(lookup_session)
             print(session_id)
             if session_id is not None:
                 print("session is not none")
@@ -71,19 +75,38 @@ def OrganizationAction(request):
                 user.organization = get_organization
                 user.save()
                 del request.session['organization']
+            # elif lookup_session is not None:
+            #     get_organization = get_object_or_404(Organization,id=lookup_session)
+            #     user = user_form.save(commit=False)
+            #     user.organization = get_organization
+            #     user.save()
+            #     del request.session['organization']
             return redirect(reverse('admin:index'))
                 # print(request.session['organization'])
+        elif lookup_form.is_valid():
+            organization_name = lookup_form.cleaned_data.get('organization_name')
+            try:
+                qs = Organization.objects.get(title = organization_name)                
+                request.session['lookup_organization'] = qs.pk
+                check_existance = Organization.objects.filter(user__organization_id=qs.pk).exists()
+                if check_existance:
+                    context['admin_exist'] = "An admin to this organization already exists. Please Login to your account"
+            except Organization.DoesNotExist:
+                context['lookup_not_exist'] =  "This organization does not exist"
+            return JsonResponse(context, safe=False)
         else:
             print("invalid form")
             context['register_form'] = form.errors
             context['user_form'] = user_form.errors
+            context['lookup_form'] = lookup_form.errors
             return JsonResponse(context)
-
     else:
         form = OrganizationForm()
         context['register_form'] = form
         user_form = RegisterForm()
         context['user_form'] = user_form
+        lookup_form = LookupForm()
+        context['lookup_form'] = lookup_form
 
     return render(request, "desksolutionsbase/signup.html", context)
 

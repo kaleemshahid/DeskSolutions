@@ -1,6 +1,17 @@
 from django import forms
 from account.models import Organization, User, Profile, Application
 
+class LookupForm(forms.Form):
+    organization_name = forms.CharField(
+        max_length=40, 
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+            'class': 'form-control input-text',
+            'placeholder' : 'Enter exact organization name',
+            })
+        )
+    
 
 class OrganizationForm(forms.ModelForm):
     class Meta:

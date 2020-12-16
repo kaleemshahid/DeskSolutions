@@ -68,6 +68,16 @@
                         </div>
                      </form>
                     </div>
+                    <hr/>
+                <div class="container form-container">
+                    <h2 class="letstart">Lookup form</h2>
+                    <p>Left your registeration midway? Search for your added organization to proceed futher...</p>
+                    <form action="" method="POST" id="lookup_form" novalidate>
+                        {% csrf_token %}
+                        {{ lookup_form }}
+                        <input type="submit" class="btn btn-warning" value="Lookup">
+                    </form>
+                </div>
             </div>
             <div class="tab-pane" id="usertab">
                 <form method="POST" action="" id="register-form" enctype="multipart/form-data"
