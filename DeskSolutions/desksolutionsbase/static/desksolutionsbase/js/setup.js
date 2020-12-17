@@ -15,11 +15,7 @@ $(document).ready(function(){
                 if (form_msg) {
                     console.log("Form has errors")
                     for (var i in form_msg) {
-                        // var error_message = "<p style='color: red'>" + form_msg[i] + "</p>"
-                        // var id = '#id_' + i
-                        // $(id).parent('p').append(form_msg[i])
-                        // $(id).addClass('ss');
-                        // $("#form_error").show(form_msg[i])
+                        
                         var error_id = '#error-' + i
                         var id = 'id_' + i
                         console.log(error_id)
@@ -32,7 +28,6 @@ $(document).ready(function(){
                 }
                 else {
                     console.log("Form submitted")
-                    // alert("sdfsfsfd")
                     $("#organizationformlink").removeClass('active active_tab1')
                     $("#organizationformlink").removeAttr('href data-toggle')
                     $("#orgtab").removeClass('active')
@@ -102,7 +97,7 @@ $(document).ready(function(){
                 else{
                     $("#organizationformlink").removeClass('active active_tab1')
                     $("#organizationformlink").removeAttr('href data-toggle')
-                    $("#orgtab").removeClass('active')
+                    $("#orgtab").removeClass('active in')
                     $("#organizationformlink").addClass('inactive_tab1')
                     $("#userformlink").removeClass('inactive_tab1')
                     $("#userformlink").addClass('active active_tab1')

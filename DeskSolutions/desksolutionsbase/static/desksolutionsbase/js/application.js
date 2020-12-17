@@ -1,6 +1,14 @@
 $(document).ready(function(){
 
-    $('#modal_open_btn').on('click', function () {
+    // $('#modal_open_btn').on('click', function () {
+    //     // $('#app_form_id').trigger('reset');
+    //     $('#app_form_id')[0].reset();
+    // })
+    // $('#btnClose').on('click', function () {
+    //     alert("btn close")
+    //     $('#app_form_id').trigger('reset');
+    // })
+    $('#modal').on('hidden.bs.modal', function(){
         $('#app_form_id').trigger('reset');
     })
     $('.application-upload').submit(function (e) {
@@ -32,10 +40,21 @@ $(document).ready(function(){
                             // console.log('#id_' + i)
                         //     console.log("nothing")
                         // }
+                        
                         var id = '#form-' + i + '-error'
+                        if (i == ""){
                         // console.log($(".form-field").children(id).children())
                         // $(id).hide()
-                        $(id).text(response[i])
+                        console.log(i)
+                            $(id).text(response[i])
+                        }
+                        else if(i == ""){
+                            console.log("asdsad")
+                        }
+                        else{
+                            console.log("id no")
+                            $(id).text("")
+                        }
                         // var id = '#id_' + i
                         // $(id).parent().append(form_msg[i])
                         
@@ -46,7 +65,10 @@ $(document).ready(function(){
                     }
                 } else {
                     console.log("response ni mila")
-                    $('.application-upload').parent().html("<p class='lead'>Application submitted successfully! The company will contact you upon qualification")
+                    $('.application-upload').parent().html("<p class=''>Application submitted successfully! The company will contact you upon qualification")
+                    $("#submit-application-btn").hide()
+                    $('#app_form_id').trigger('reset');
+
                 }
 
             },
