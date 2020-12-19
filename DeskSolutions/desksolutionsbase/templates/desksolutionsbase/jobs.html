@@ -20,10 +20,10 @@
         {% for job in jobs %}
         <div class="row">
             <div class="container" style="border-bottom: 1px solid grey">
-              <div id="success-application" class="alert alert-success">Your applicant has been submitted for review. Please wait for response</div>
+              <div id="success-application" class="alert alert-success success-application">Your applicant has been submitted for review. Please wait for response</div>
               <div class="container col-md-12 d-flex justify-content-between">
                 <p style="margin-top: 20px;">Position: <span style="font-weight: 600;">{{job.title}}</span></p>
-                <button id="modal_open_btn" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{job.pk}}">
+                <button  class="modal_open_btn btn btn-primary" data-toggle="modal" data-target="#modal-{{job.pk}}">
                   <!-- <a class="fa fa-pencil text-white" href="#test{{job.pk}}">{{job.pk}}</a> -->
                   Apply for this job
                 </button>
