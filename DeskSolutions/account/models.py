@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator, FileExtensionValidator
 from .managers import UserManager
 from .validators import validate_file_extension
 from DeskSolutions import settings
-
+from ckeditor.fields import RichTextField
 
 class Organization(models.Model):
     title = models.CharField(verbose_name="Organization Title",
@@ -80,7 +80,7 @@ class Tag(models.Model):
 
 class Position(models.Model):
     title = models.CharField(max_length=20, null=False, blank=False, default="Employee")
-    responsibility = models.CharField(max_length=255, null=False, blank=False)
+    responsibility = RichTextField(blank=False, null=False)
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True, default=None)
     tag = models.ManyToManyField(Tag, related_name="positiontag")

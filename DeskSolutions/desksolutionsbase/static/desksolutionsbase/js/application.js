@@ -11,6 +11,8 @@ $(document).ready(function(){
     $('#modal').on('hidden.bs.modal', function(){
         $('#app_form_id').trigger('reset');
     })
+
+    $("#success-application").hide()
     $('.application-upload').submit(function (e) {
         e.preventDefault()
         var formdata = new FormData(this)
@@ -42,19 +44,10 @@ $(document).ready(function(){
                         // }
                         
                         var id = '#form-' + i + '-error'
-                        if (i == ""){
-                        // console.log($(".form-field").children(id).children())
-                        // $(id).hide()
                         console.log(i)
-                            $(id).text(response[i])
-                        }
-                        else if(i == ""){
-                            console.log("asdsad")
-                        }
-                        else{
-                            console.log("id no")
-                            $(id).text("")
-                        }
+                        console.log(response[i])
+                        $(id).text(response[i])
+                        
                         // var id = '#id_' + i
                         // $(id).parent().append(form_msg[i])
                         
@@ -65,10 +58,16 @@ $(document).ready(function(){
                     }
                 } else {
                     console.log("response ni mila")
-                    $('.application-upload').parent().html("<p class=''>Application submitted successfully! The company will contact you upon qualification")
-                    $("#submit-application-btn").hide()
+                    // $('.application-upload').parent().html("<p class=''>Application submitted successfully! The company will contact you upon qualification")
+                    // $("#submit-application-btn").hide()
+                    $(".modal").modal('toggle')
                     $('#app_form_id').trigger('reset');
-
+                    $("#success-application").show()
+                    $(".application_form_error").hide()
+                    setTimeout(function() {
+                        $('#success-application').fadeOut('fast');
+                    }, 3000)
+                    
                 }
 
             },

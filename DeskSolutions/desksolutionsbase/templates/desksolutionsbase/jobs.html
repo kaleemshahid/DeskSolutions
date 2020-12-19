@@ -4,24 +4,35 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-{% include "desksolutionsbase/navbar.html" %}
+<header class="jobs-showcase">
+  <div class="col-md-12">
+      <a href="{% url 'signup:home' %}"><img class="logo img" width="auto" height="100" src="{% static 'desksolutionsbase/img/desklogo.png' %}"></a>
+    
+  </div>
+  <h2 class="text-center job-msg">Welome to DeskSolutions Job Portal</h2>
 
-<header class="showcase d-flex align-items-center" style="border: 1px solid black">
-    {{orgs.title}}
-    <div class="container">
-      
+    <div class="container jobs-box col-md-8">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xl-12 company-name-box text-white">
+          <p class="">You are browsing jobs for <span class="company-name">{{orgs.title}}</span></p>
+        </div>
+      </div>
         {% for job in jobs %}
         <div class="row">
-            <div class="col-md-6 col-lg-5 col-xl-5" style="border: 1px solid black">
-                <p>{{job.title}}</p>
-                <p>{{job.id}}</p>
-                <p>{{job.responsibility}}</p>
+            <div class="container" style="border-bottom: 1px solid grey">
+              <div id="success-application" class="alert alert-success">Your applicant has been submitted for review. Please wait for response</div>
+              <div class="container col-md-12 d-flex justify-content-between">
+                <p style="margin-top: 20px;">Position: <span style="font-weight: 600;">{{job.title}}</span></p>
+                <button id="modal_open_btn" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{job.pk}}">
+                  <!-- <a class="fa fa-pencil text-white" href="#test{{job.pk}}">{{job.pk}}</a> -->
+                  Apply for this job
+                </button>
+              </div><hr/>
+              <div class="container">
+                <p class="">{{job.responsibility | safe}}</p>
+              </div>
             </div>
-      
-            <button id="modal_open_btn" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{job.pk}}">
-                <!-- <a class="fa fa-pencil text-white" href="#test{{job.pk}}">{{job.pk}}</a> -->
-                Apply for this job
-              </button>
+            
 
               <div class="modal fade" id="modal-{{job.pk}}" data-role="upButton" job_id="test{{job.pk}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -37,7 +48,7 @@
                             {% csrf_token %}
                             {% for field in application_form %}
                             <div class="form-field">
-                            <p style="font-weight: lighter;">{{field.label_tag}}</p>
+                            <p style="font-weight: bolder;">{{field.label_tag}}</p>
                             {{field}}
                             <span class="application_form_error" style="color: rgb(219, 80, 80);" id="form-{{field.html_name}}-error"></span>
                             </div>

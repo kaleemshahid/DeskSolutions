@@ -213,15 +213,17 @@ class ProfileInline(admin.TabularInline):
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
 
         field = super(ProfileInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
-        print(field)
-        if db_field.name == 'department':
+        print(db_field.name)
+        if db_field.name == 'department' or db_field.name == 'position':
             if request.user is not None:
                 field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
-                print(field.queryset)
-        if db_field.name == 'position':
-            if request.user is not None:
-                field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
-                print(field.queryset)
+                print("department" + str(field.queryset))
+        # if db_field.name == 'position':
+        #     print("yes position")
+        #     if request.user is not None:
+        #         print(field.queryset)
+        #         field.queryset = field.queryset.filter(organization__exact = request.user.organization)  
+        #         print("position" + str(field.queryset))
         else:
             field.queryset = field.queryset.none()
 
@@ -252,13 +254,6 @@ class ProfileInline(admin.TabularInline):
             return True
         return False
 
-
-# class ProfileAdmin(admin.ModelAdmin):
-#     list_display = ('is_manager',)
-#     fieldsets = (
-#         (None, {'fields': ('is_manager', 'department',)}),
-#     )
-
 class ProfileAdmin(admin.ModelAdmin):
     model = Profile
     list_display = ('organization','department','is_manager')
@@ -284,9 +279,13 @@ class ProfileAdmin(admin.ModelAdmin):
 
         return super(ProfileAdmin, self).changelist_view(request, extra_context=extra_context)
     def has_view_permission(self, request, obj=None):
-        if request.user.is_admin or request.user.is_superuser:
+        try:
+            get_profile = Profile.objects.get(organization=request.user)
+            if get_profile.is_manager:
+                return True
+        except:
             return False
-        return True
+        
 
     def has_add_permission(self, request):
         return False
@@ -452,7 +451,7 @@ class UserAdmin(BaseUserAdmin):
 
     def has_add_permission(self, request):
         try:
-            get_profile = Profile.objects.get(organization=request.user)
+            get_profile = Profile.objects.get(organization=request.user.organization)
             if get_profile.is_manager:
                 print(request.user.is_admin)
                 return True
@@ -623,9 +622,9 @@ class PositionAdmin(admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return False
-        return True
+        if request.user.is_admin:
+            return True
+        return False
 
     def has_view_permission(self, request, obj=None):
         if request.user.is_admin or request.user.is_superuser:
@@ -657,12 +656,43 @@ class PositionAdmin(admin.ModelAdmin):
                 return PosForm(*args, **kwargs)
         return PositionFormWithRequest
 
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('keyword',)
+    list_filter = ('keyword',)
+    ordering = ('keyword',)
+    filter_horizontal = ()
+    fieldsets = (
+        (None, {'fields': ('title','responsibility', 'tag', 'job_posting')}),
+    )
+    list_per_page = 10
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+    
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Position, PositionAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)
 admin.site.register(Application, ApplicationAdmin)
 # admin.site.register(MyModelAdmin)
 
