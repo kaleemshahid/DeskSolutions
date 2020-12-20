@@ -1,6 +1,8 @@
 {% extends 'desksolutionsbase/ext_links.html' %}
 {% load static %}
-
+{% block styles %}
+<link rel="stylesheet" href="{% static 'desksolutionsbase/css/home.css' %}">
+{% endblock %}
 {% block content %}
 
     {% include "desksolutionsbase/navbar.html" %}
@@ -17,5 +19,9 @@
 
     {% include "desksolutionsbase/footer.html" %}
 
+{% endblock %}
+{% block script %}
+<script src="{% static 'desksolutionsbase/js/home.js' %}"></script>
+<script src="{% static 'desksolutionsbase/js/contact.js' %}"></script>
 {% endblock %}
 

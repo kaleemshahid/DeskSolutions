@@ -9,8 +9,44 @@ class LookupForm(forms.Form):
             attrs={
             'class': 'form-control input-text',
             'placeholder' : 'Enter exact organization name',
-            })
+            }
+            )
         )
+
+class ContactForm(forms.Form):
+    contact_email = forms.EmailField(
+        max_length=60,
+        required=True,
+        widget= forms.EmailInput(
+            attrs={
+                'class' : 'form-control input-text',
+                'placeholder' : "Your email address...",
+            }
+            )
+        )
+
+    contact_name = forms.CharField(
+        max_length=60,
+        required=True,
+        widget= forms.TextInput(
+            attrs={
+                'class' : 'form-control input-text',
+                'placeholder' : "Your name...",
+            }
+            )
+        )
+    
+    contact_message = forms.CharField(
+            required=True,
+            widget= forms.Textarea(
+            attrs={
+                'class' : 'form-control input-text',
+                'placeholder' : "Your message...",
+            }
+            )
+        
+        )
+
     
 
 class OrganizationForm(forms.ModelForm):

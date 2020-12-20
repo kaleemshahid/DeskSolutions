@@ -259,12 +259,36 @@ a.nav-link.nav-btn{
     color: #3a3a3a
 }
 
-.mark{
-    color: rgba(102,62,255,1);
+.footer{
+    background-color: #4B0082;
+}
+
+.footer p{
+    font-weight: lighter;
+}
+
+.site-info{
     font-weight: 500;
 }
 
+/* Contact Section */
 
+.contact-form-container{
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.418);
+}
+
+.contact-form-title{
+    text-align: start;
+    padding: 5px;
+}
+
+.contact-form-text{
+    font-weight: lighter;
+    text-align: start;
+    padding: 5px
+}
 
 /* Scroll to top */
 

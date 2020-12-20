@@ -47,14 +47,14 @@
 }
 
 .input-text {
-display: block;
-width: 100%;
-border-radius: 0%;
-border-width: 0 0 1px 0;
-font-size: 18px;
-/* line-height: 26px; */
-font-weight: 400;
-margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    border-radius: 0%;
+    border-width: 0 0 1px 0;
+    font-size: 18px;
+    /* line-height: 26px; */
+    font-weight: 400;
+    margin-bottom: 20px;
 }
 
 .form-container{
@@ -62,12 +62,11 @@ margin-bottom: 20px;
 }
 
 .input-text:focus {
-outline: none;
+    outline: none;
 }
 
 .logo{
-
-margin-left: 20px
+    margin-left: 20px
 }
 
 .bg-primary.form-container{

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
-from desksolutionsbase.forms import OrganizationForm, RegisterForm, ApplicationForm, LookupForm
+from desksolutionsbase.forms import OrganizationForm, RegisterForm, ApplicationForm, LookupForm, ContactForm
 from account.models import Organization, User, Position
 # from .decorators import organization_absent
 from django.core.exceptions import ValidationError
@@ -184,6 +184,21 @@ def organizationlist(request):
     context['orgs'] = organizations
     n = organizations.count()
     context['range'] = range(1, n)
+
+    if request.method == "POST" and request.is_ajax():
+        print("contact form")
+        contact_form = ContactForm(request.POST or None)
+        if contact_form.is_valid():
+            email = request.POST['contact_email']
+            name = request.POST['contact_name']
+            message = request.POST['contact_message']
+            print(name)
+        else:
+            context['contact_form'] = contact_form.errors
+            return JsonResponse(context["contact_form"], status=400)
+    else:
+        context['contact_form'] = ContactForm()
+
     return render(request, "desksolutionsbase/base.html", context)
 
 def jobs(request, pk):

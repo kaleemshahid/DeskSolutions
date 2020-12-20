@@ -1,6 +1,9 @@
 {% extends 'desksolutionsbase/ext_links.html' %}
 {% load static %}
-
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'desksolutionsbase/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'desksolutionsbase/css/jobs.css' %}">
+{% endblock %}
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -81,4 +84,7 @@
     </div>
 </header>
 
+{% endblock %}
+{% block script %}
+<script src="{% static 'desksolutionsbase/js/application.js' %}"></script>
 {% endblock %}
