@@ -11,6 +11,7 @@ import pdfplumber, operator, collections
 
 # from django.contrib.sites.models import Site
 from django.contrib.auth.models import Group
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.template.response import TemplateResponse
 from django.urls import path
@@ -31,16 +32,17 @@ class ApplicationAdmin(admin.ModelAdmin):
         textList = []
         appsList = []
         app_dict = {}
+        pos_dict = {}
         getapps = Application.objects.filter(position__organization_id=request.user.organization)
-        print(getapps)
+        # print(getapps)
         position = Position.objects.filter(organization=request.user.organization, job_posting=True, application__in=getapps)
-        print(position)
+        # print(position)
         
         # tags = Tag.objects.filter()
         for pos in position:
             # print(pos)
             position_tags = list(pos.tag.all().values_list('keyword', flat=True))
-            print(position_tags)
+            # print(position_tags)
             # [['flask', 'django'], ['expert', 'resume']]
             # made the position_tags a list cz wwe want the results in individual lists
             # print(position_tags)
@@ -51,7 +53,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             #     appsList.append(p)
                 # print(p)
             # arraylist.append(p)
-            print(arraylist)
+            # print(arraylist)
         # print(arraylist)
         # print(appsList)
         # for t in tags:
@@ -68,14 +70,16 @@ class ApplicationAdmin(admin.ModelAdmin):
             page = pdf.pages[0]
             text = page.extract_text().split()
 
-            print(text)
+            # print(text)
             # for count2, s in enumerate(arraylist):
             # print(text)
             # print(count2)
             # print(arraylist)
             a = set(arraylist[count]).intersection(text)
+            print("ARRAY LIST: " + str(arraylist[0]))
             # print(count)
             print(a)
+            print("Position: " + str(i.position))
             # print(sorted(list(a), reverse=True))
             b = list(a)
             # print(b)
@@ -84,12 +88,19 @@ class ApplicationAdmin(admin.ModelAdmin):
             # print(b)
             # print(len(a))
             # print(len(list(a)))
+            # if (i.position_id == pos_dict[i.position_id]):
+            #     print("adsadnkandska")
+            # pos_dict[i.position_id] = app_dict[i.pk]
             app_dict[i.pk] = len(b)
-
+            # print("position id: " + str(i.position_id))
+            # app_dict[i.pk] = pos_dict[i.position_id]
+            # pos_dict[i.position] = len(b)
+        
+            # print(pos_dict)
             # c =textList.append(b)
-            print(app_dict[i.pk])
-            
-            d = len(textList)
+            print("APP DICTIONARY : " + str(app_dict))
+
+            # d = len(textList)
 
             # count = count + 1
             # print(pdf)
@@ -105,6 +116,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # sorted_d = sorted(app_dict.items(), key=operator.itemgetter(1), reverse=True)
         # print(app_dict)
         sorted_d = collections.OrderedDict(sorted(app_dict.items(), key=lambda x: x[1], reverse=True))
+        print(sorted_d)
         sorted_dict = dict(sorted_d)
         print(sorted_dict)
         # for m in sorted_dict:
@@ -113,6 +125,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         # print(sorted_list)
         # sorted_values = list(sorted_d.values())
         # print(sorted_values)
+        
         for s in sorted_dict:
             print(s, sorted_dict[s])
             appsList.append(sorted_dict[s])
@@ -133,7 +146,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         
         context['getapps'] = textList
         
-        # context['getappss'] = getapps
         # print(textList)
         # print(textList.sort())
         #     # b = list(a)
