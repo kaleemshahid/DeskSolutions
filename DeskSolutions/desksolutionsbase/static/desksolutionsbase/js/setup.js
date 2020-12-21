@@ -82,11 +82,11 @@ $(document).ready(function(){
             data: $(this).serialize(),
             success: (response) => {
 
-                var lookup_msg = response['lookup_not_exist']
+                var lookup_not_exist = response['lookup_not_exist']
                 var lookup_empty = response['lookup_form']
                 var admin_exist = response['admin_exist']
-                if (lookup_msg){
-                    console.log(lookup_msg)
+                if (lookup_not_exist){
+                    console.log(lookup_not_exist)
                 }
                 else if(lookup_empty){
                     console.log(lookup_empty)

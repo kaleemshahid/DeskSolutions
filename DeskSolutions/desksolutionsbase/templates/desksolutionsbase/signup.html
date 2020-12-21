@@ -121,6 +121,8 @@
                 </div>
             </div>
             <div class="tab-pane" id="usertab">
+                {{ request.session.name  }}
+
                 <form method="POST" action="" id="register-form" enctype="multipart/form-data"
                 novalidate>
                 {% csrf_token %}

@@ -65,6 +65,7 @@ def OrganizationAction(request):
 
         elif user_form.is_valid():
             session_id = request.session.get('organization')
+            print("session: " + str(session_id))
             lookup_session = request.session.get('lookup_organization')
             print(lookup_session)
             print(session_id)
@@ -81,7 +82,8 @@ def OrganizationAction(request):
             #     user.organization = get_organization
             #     user.save()
             #     del request.session['organization']
-            return redirect(reverse('admin:index'))
+                return redirect(reverse('admin:index'))
+            
                 # print(request.session['organization'])
         elif lookup_form.is_valid():
             organization_name = lookup_form.cleaned_data.get('organization_name')
