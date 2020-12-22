@@ -1,5 +1,6 @@
 from .models import Task, TaskDetail,  TaskUpdate
 from rest_framework import serializers
+from rest_framework.exceptions import NotAcceptable
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -11,6 +12,9 @@ class TaskSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         name = validated_data.get('task_name')
         user = self.context['request'].user
+
+        if user.is_admin:
+            raise NotAcceptable("Admin can not create a task")
 
         task = Task.objects.create(task_name=name, created_by=user)
 
