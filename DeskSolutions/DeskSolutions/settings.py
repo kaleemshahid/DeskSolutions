@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -107,6 +110,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Heroku middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'DeskSolutions.urls'
@@ -134,10 +140,21 @@ WSGI_APPLICATION = 'DeskSolutions.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+        'NAME' : 'DSDB',
+        'USER' : 'postgres',
+        'PASSWORD' : 'custom123',
+        'HOST' : 'localhost',
+        'PORT' : '5432',
     }
 }
 
@@ -174,7 +191,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# For Heroku
 
+STATICFILES_STORGAE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -184,3 +203,7 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# For heroku
+django_heroku.settings(locals())
+
