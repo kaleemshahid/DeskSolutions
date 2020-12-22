@@ -257,7 +257,7 @@ class ProfileInline(admin.TabularInline):
     #     return super().get_formset(request, obj, **kwargs)
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_superuser:
+        if request.user.is_admin:
             return True
         return False
 
@@ -265,6 +265,16 @@ class ProfileInline(admin.TabularInline):
         if request.user.is_admin:
             return True
         return False
+
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return False
+        return True
+
+    def has_add_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return False
+        return True
 
 class ProfileAdmin(admin.ModelAdmin):
     model = Profile
@@ -524,7 +534,7 @@ class DepartmentAdmin(admin.ModelAdmin):
         return qs.filter(organization=request.user.organization)
 
     def has_view_permission(self, request, obj=None):
-        if request.user.is_admin or request.user.is_superuser:
+        if request.user.is_admin:
             return True
         return False
 
@@ -640,12 +650,12 @@ class PositionAdmin(admin.ModelAdmin):
         return False
 
     def has_view_permission(self, request, obj=None):
-        if request.user.is_admin or request.user.is_superuser:
+        if request.user.is_admin:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_superuser:
+        if request.user.is_admin:
             return True
         return False
 
