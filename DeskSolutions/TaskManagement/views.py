@@ -3,6 +3,7 @@ from .serializers import TaskSerializer, TaskDetailSerializer, TaskUpdateSeriali
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
+from account.models import Department
 
 
 class AdminTaskManagementViewSet(ListAPIView, RetrieveAPIView):
@@ -10,7 +11,7 @@ class AdminTaskManagementViewSet(ListAPIView, RetrieveAPIView):
     serializer_class = TaskSerializer
 
 
-class ManagerTaskManagementViewSet(ModelViewSet):
+class TaskManagementViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
@@ -19,6 +20,16 @@ class ManagerTaskManagementViewSet(ModelViewSet):
         Returns the queryset of task for a a login manager
         """
         return Task.objects.filter(created_by=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        if request.user.is_admin:
+            # tasks queryset against an admin
+            queryset = Task.objects.filter(created_by__profile__department__organization=request.user.organization)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class SubTaskViewSet(ModelViewSet):
