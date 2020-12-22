@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 
     'DeskSolutions',
     'rest_framework',
-    # 'rest_framework.authtoken',
+    'rest_framework.authtoken',
 
     'account.apps.AccountConfig',
     'desksolutionsbase.apps.DesksolutionsbaseConfig',
@@ -62,9 +62,9 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 CKEDITOR_CONFIGS = {
