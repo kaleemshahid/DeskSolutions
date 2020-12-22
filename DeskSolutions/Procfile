@@ -1,1 +1,1 @@
-web: gunicorn DeskSolutions.wsgi
+web: gunicorn --pythonpath DeskSolutions DeskSolutions.wsgi
