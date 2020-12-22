@@ -268,23 +268,23 @@ class ProfileInline(admin.TabularInline):
 
 class ProfileAdmin(admin.ModelAdmin):
     model = Profile
-    list_display = ('organization','department','is_manager')
+    list_display = ('user','department','is_manager')
     list_filter = ('department', )
-    ordering = ('organization',)
+    ordering = ('user',)
     filter_horizontal = ()
 
-    readonly_fields = ('organization','department', 'position', 'is_manager')
+    readonly_fields = ('user','department', 'position', 'is_manager')
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        related_user = qs.filter(organization=request.user)
+        related_user = qs.filter(user=request.user)
         for i in related_user:
             pass
         return qs.filter(department=i.department)
 
     def changelist_view(self, request, extra_context=None):
         try:
-            qs = Profile.objects.get(organization__id=request.user.id)
+            qs = Profile.objects.get(user__id=request.user.id)
             extra_context = {'title': qs.department}
         except Profile.DoesNotExist:
             pass
@@ -292,7 +292,7 @@ class ProfileAdmin(admin.ModelAdmin):
         return super(ProfileAdmin, self).changelist_view(request, extra_context=extra_context)
     def has_view_permission(self, request, obj=None):
         try:
-            get_profile = Profile.objects.get(organization=request.user)
+            get_profile = Profile.objects.get(user=request.user)
             if get_profile.is_manager:
                 return True
         except:

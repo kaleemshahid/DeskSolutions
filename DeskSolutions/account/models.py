@@ -74,7 +74,8 @@ class Department(models.Model):
 
 class Tag(models.Model):
     keyword = models.CharField(max_length=15, null=False, blank=False)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return self.keyword
 
@@ -85,6 +86,7 @@ class Position(models.Model):
         Organization, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True, default=None)
     tag = models.ManyToManyField(Tag, related_name="positiontag")
     job_posting = models.BooleanField(verbose_name="Open Position", default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -99,19 +101,19 @@ class Application(models.Model):
     candidate_address = models.TextField(null=False, blank=False, default=None)
     filename = models.FileField(upload_to="applications", validators=[FileExtensionValidator(['pdf'])])
     position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.candidate_email
 
 class Profile(models.Model):
-    organization = models.OneToOneField(
+    user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, null=False)
     department = models.ForeignKey(
         Department, on_delete=models.CASCADE, null=False, blank=False)
     position = models.ForeignKey(Position, on_delete=models.CASCADE, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
     is_manager = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.organization)
+        return str(self.user)
