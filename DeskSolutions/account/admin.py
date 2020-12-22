@@ -343,6 +343,7 @@ class UserAdmin(BaseUserAdmin):
         for inline in self.get_inline_instances(request, obj):
             # hide inline in the add view
             # we are on change page if the below condition is TRUE
+            # if obj is None or not obj.is_admin:
             if obj is None or not obj.is_admin:
                 yield inline.get_formset(request, obj), inline
 
@@ -356,7 +357,7 @@ class UserAdmin(BaseUserAdmin):
 
     def manager(self, obj):
         # return "\n".join([str(p.is_manager) for p in Profile.objects.filter(organization=obj.id)])
-        q = Profile.objects.get(organization__id=obj.id)
+        q = Profile.objects.get(user__id=obj.id)
         return q.is_manager
     # This would set the method type to Boolean
     manager.boolean = True
