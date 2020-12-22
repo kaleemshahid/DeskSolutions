@@ -6,6 +6,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.response import Response
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -58,6 +60,18 @@ class LogoutApiView(APIView):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class EmployeeViewSet(ListAPIView):
+
+    def list(self, request, *args, **kwargs):
+        manager_queryset = Profile.objects.filter(organization=request.user)
+        employees_queryset = Profile.objects.filter(department=manager_queryset.first().department, is_manager=False)
+
+        employees = []
+        for emp in employees_queryset:
+            employees.append({'id': emp.organization.id, "first_name": emp.organization.first_name,
+                              "last_name": emp.organization.last_name})
+        return Response(employees)
 
 # m1 vvqsXO6
 # e1 b0Lapi8   iX6fZcm

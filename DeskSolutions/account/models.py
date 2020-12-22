@@ -66,10 +66,13 @@ class Department(models.Model):
         max_length=60, null=False, blank=False, verbose_name="Department Name")
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Owned By", null=False, blank=True)
+    organization = models.ForeignKey(
+        Organization, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.department_name
+
 
 class Tag(models.Model):
     keyword = models.CharField(max_length=15, null=False, blank=False)
@@ -90,7 +93,7 @@ class Position(models.Model):
 
 
 class Profile(models.Model):
-    organization = models.OneToOneField(
+    organization = models.OneToOneField(        # Todo: change this to user in everywhere I used.
         User, on_delete=models.CASCADE, primary_key=True, null=False)
     department = models.ForeignKey(
         Department, on_delete=models.CASCADE, null=False, blank=False)

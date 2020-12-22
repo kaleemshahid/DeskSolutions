@@ -1,7 +1,11 @@
-from django.urls import path
-from .views import GetTask, CreateTask
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+from .views import ManagerTaskManagementViewSet, SubTaskViewSet
+
+router = DefaultRouter()
+router.register(r'manager', ManagerTaskManagementViewSet)
+router.register(r'subtask', SubTaskViewSet)
 
 urlpatterns = [
-    path('<int:pk>/', GetTask.as_view()),
-    path('createtask/', CreateTask.as_view()),
+    path('', include(router.urls)),
 ]
