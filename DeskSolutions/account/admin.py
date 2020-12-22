@@ -257,8 +257,6 @@ class ProfileInline(admin.TabularInline):
     #     return super().get_formset(request, obj, **kwargs)
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_admin:
-            return True
         return False
 
     def has_change_permission(self, request, obj=None):
@@ -510,7 +508,6 @@ class UserAdmin(BaseUserAdmin):
                 [username,],
                 fail_silently=False
             )
-
         obj.save()
         # send_mail('This is your passwrd', password,'noreply@desksolutions.com', [obj], fail_silently = False)
         return obj
@@ -684,9 +681,6 @@ class TagAdmin(admin.ModelAdmin):
     list_filter = ('keyword',)
     ordering = ('keyword',)
     filter_horizontal = ()
-    fieldsets = (
-        (None, {'fields': ('title','responsibility', 'tag', 'job_posting')}),
-    )
     list_per_page = 10
 
     def has_view_permission(self, request, obj=None):
