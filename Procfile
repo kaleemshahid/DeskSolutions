@@ -1,1 +1,1 @@
-web : gunicorn DeskSolutions.wsgi
+web: gunicorn DeskSolutions.wsgi
