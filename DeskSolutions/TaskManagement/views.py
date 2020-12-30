@@ -37,6 +37,16 @@ class SubTaskViewSet(ModelViewSet):
     queryset = TaskDetail.objects.all()
     serializer_class = TaskDetailSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        update_history_queryset = TaskUpdate.objects.filter(taskdetail=instance.id)
+        update_history_data = TaskUpdateSerializer(update_history_queryset, many=True).data
+        response = serializer.data
+        response.update({"update_history": update_history_data})
+        return Response(response)
+
     def list(self, request, *args, **kwargs):
         # for manager
         if request.data.get("parent_task_id"):
