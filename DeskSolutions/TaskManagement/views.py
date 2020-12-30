@@ -37,8 +37,10 @@ class SubTaskViewSet(ModelViewSet):
     serializer_class = TaskDetailSerializer
 
     def list(self, request, *args, **kwargs):
+        # for manager
         if request.data.get("parent_task_id"):
             queryset = self.filter_queryset(self.get_queryset()).filter(task=request.data.get("parent_task_id"))
+        # for employee
         elif not request.data.get("parent_task_id"):
             queryset = self.filter_queryset(self.get_queryset()).filter(assigned_to=request.user)
         serializer = self.get_serializer(queryset, many=True)
