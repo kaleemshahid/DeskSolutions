@@ -3,6 +3,7 @@ from .serializers import TaskSerializer, TaskDetailSerializer, TaskUpdateSeriali
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
+from rest_framework import status
 from account.models import Department
 
 
@@ -45,3 +46,19 @@ class SubTaskViewSet(ModelViewSet):
             queryset = self.filter_queryset(self.get_queryset()).filter(assigned_to=request.user)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        """
+        make a new entry(history) in TaskUpdate model on every update request
+        """
+
+        instance = self.get_object()
+        data = request.data
+        data.update({"taskdetail": instance.id})
+
+        serializer = TaskUpdateSerializer(data=data)
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
