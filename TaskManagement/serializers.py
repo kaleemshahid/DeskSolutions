@@ -23,9 +23,18 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class TaskDetailSerializer(serializers.ModelSerializer):
+    assignee_name = serializers.SerializerMethodField()
+
+    def get_assignee_name(self, obj):
+        names = {
+            "first_name": obj.assigned_to.first_name,
+            "last_name": obj.assigned_to.last_name
+        }
+        return names
+
     class Meta:
         model = TaskDetail
-        fields = '__all__'
+        fields = ['id', 'task', 'assigned_to', 'assignee_name', 'description', 'priority']
 
 
 class TaskUpdateSerializer(serializers.ModelSerializer):
