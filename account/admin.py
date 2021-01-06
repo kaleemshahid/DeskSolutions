@@ -16,6 +16,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.response import TemplateResponse
 from django.urls import path
 
+# from django_google_maps import widgets as map_widgets
+# from django_google_maps import fields as map_fields
+
+from mapwidgets.widgets import GooglePointFieldWidget
+from django.contrib.gis.db.models import PointField
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
@@ -589,6 +596,17 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 
 class OrganizationAdmin(admin.ModelAdmin):
+
+    # formfield_overrides = {
+    #     map_fields.AddressField: {
+    #         'widget': map_widgets.GoogleMapsAddressWidget(attrs={'data-map-type': 'roadmap'})
+    #     },
+    # }
+    formfield_overrides = {
+        PointField: {"widget": GooglePointFieldWidget}
+    }
+
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_admin:
@@ -611,7 +629,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
-        return False
+        return True
 
     # def has_module_permission(self, request):
     #     if request.user.is_admin:
