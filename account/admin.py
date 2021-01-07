@@ -16,6 +16,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.response import TemplateResponse
 from django.urls import path
 
+# from django_google_maps import widgets as map_widgets
+# from django_google_maps import fields as map_fields
+
+from mapwidgets.widgets import GooglePointFieldWidget
+from django.contrib.gis.db.models import PointField
+
+
 class ApplicationAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
@@ -357,11 +364,17 @@ class UserAdmin(BaseUserAdmin):
 
     list_display = ('email',
                     'is_admin', 'manager')
-    list_filter = ('is_superuser', 'is_staff',)
+    list_filter = ('is_admin', 'is_staff',)
     ordering = ('email',)
     search_fields = ('email',)
 
     filter_horizontal = ()
+
+    # fs = (
+    #             ("Information", {'fields': ('email', 'first_name', 'last_name', 'phone', 'address')}),
+    #             ('Permissions', {'fields': ('is_staff',
+    #                                         'is_active',)}),
+    #         )
 
     def manager(self, obj):
         # return "\n".join([str(p.is_manager) for p in Profile.objects.filter(organization=obj.id)])
@@ -408,37 +421,21 @@ class UserAdmin(BaseUserAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = super(
             UserAdmin, self).get_readonly_fields(request, obj)
-        if obj and obj.is_admin:  # editing an existing object
-            print("obj.is_admin is None")
+        # if obj and obj.is_admin or request.user.is_superuser:  # editing an existing object
+        if obj.is_admin and request.user.is_admin or not request.user.is_admin:  # editing an existing object
             return readonly_fields + ('is_active', 'is_staff',)
-        print("obj.is_admin is not None")
         return readonly_fields
 
     def get_fieldsets(self, request, obj=None):
-        if request.user.is_admin:
-            # print("yesss")
-            # print(request.user.password)
-            # fs = ((None, {'fields': ('email', 'title', 'phone', 'description', 'url', 'password', 'is_staff',
-            #                          'is_active', 'is_manager', 'groups',)}))
-            fs = (
-                ("Information", {'fields': ('email', 'phone', 'address')}),
-                ('Permissions', {'fields': ('is_staff',
-                                            'is_active',)}),
-            )
+        fs = (
+            ("Information", {'fields': ('email', 'first_name', 'last_name', 'phone', 'address')}),
+            ('Permissions', {'fields': ('is_staff',
+                                        'is_active',)}),
+        )
+        return fs
 
-            # exclude = ('password2',)
-            return fs
-        else:
-            # fs = ((None, {'fields': ('email', 'title', 'phone',
-            #                          'description', 'password')}))
-            fs = (
-                ("Information", {'fields': ('email', 'phone', 'address')}),
-                ('Permissions', {'fields': ('is_staff',
-                                            'is_active',)}),
-            )
-            return fs
 
-    # return fs
+            
 
     # def get_fieldsets(self, request, obj=None):
     #     fs = super().get_fieldsets(request, obj)
@@ -589,6 +586,18 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 
 class OrganizationAdmin(admin.ModelAdmin):
+
+    # formfield_overrides = {
+    #     map_fields.AddressField: {
+    #         'widget': map_widgets.GoogleMapsAddressWidget(attrs={'data-map-type': 'roadmap'})
+    #     },
+    # }
+    formfield_overrides = {
+        PointField: {"widget": GooglePointFieldWidget}
+    }
+
+
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_admin:
@@ -596,9 +605,7 @@ class OrganizationAdmin(admin.ModelAdmin):
         return qs
 
     def has_view_permission(self, request, obj=None):
-        if request.user.is_admin or request.user.is_superuser:
-            return True
-        return False
+        return True
 
     def has_add_permission(self, request):
         return False

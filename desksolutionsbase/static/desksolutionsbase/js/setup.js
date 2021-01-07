@@ -44,7 +44,7 @@ $(document).ready(function(){
     })
 
     $("#register-form").submit(function (e){
-        // alert("Asdasdddddd")
+        alert("Asdasdddddd")
         e.preventDefault()
         $.ajax({
             type: "POST",

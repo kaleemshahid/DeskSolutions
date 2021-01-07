@@ -6,12 +6,14 @@
 {% endblock %}
 {% block content %}
 
+
 <header class="signup-showcase">
     <div class="col-md-2">
         <a href="{% url 'signup:home' %}"><img class="logo img" width="auto" height="100" src="{% static 'desksolutionsbase/img/desklogo.png' %}"></a>
     </div>
     <div class="container box col-md-10">
     <h2 class="letstart" >Let's start!</h2>
+
     
         <ul class="nav nav-tabs">
             <li class="nav-item nav-tab">
@@ -86,6 +88,20 @@
                                     {{ register_form.org_address }}
                             </div>
                             <span class="text-danger error-span" id="error-{{register_form.org_address.html_name}}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="org-label" for="id_city">City</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-transparent" style="border: none" id="basic-addon1">
+                                    <i class="fa fa-book"></i>
+                                    </span>
+                                </div>
+                                    {{ register_form.city }}
+                            </div>
+
+                            {{map|safe}}
+                            <span class="text-danger error-span" id="error-{{register_form.city.html_name}}"></span>
                         </div>
                         <div class="form-group">
                             <label class="org-label" for="id_logo">Logo</label>
