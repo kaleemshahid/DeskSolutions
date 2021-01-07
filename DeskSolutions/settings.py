@@ -16,6 +16,8 @@ import django_heroku
 import dj_database_url
 from decouple import config
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +31,7 @@ SECRET_KEY = 'ad^gbq0h)tg7oc9tf6_iqku6&om5p^nzq*%pnavjwd6jr9w)*-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['desksolutions.herokuapp.com']
 
 
 # Application definition
@@ -76,7 +78,6 @@ GEOS_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/geos_c.d
 # GDAL_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/gdal301.dll'
 GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/gdal301.dll')
 
-print(GDAL_LIBRARY_PATH)
 # MAP_WIDGETS = {
 #     "GooglePointFieldWidget": (
 #         ("zoom", 15),
@@ -193,6 +194,9 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -237,12 +241,17 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+#location where django collect all static files
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# location where you will store your static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static')
+]
 
 # Handle media files
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
 
 # FCM Token Settings
 
