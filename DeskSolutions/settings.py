@@ -55,12 +55,37 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'admin_interface',
+    # 'leaflet',
+    # 'django_extensions',
+    'mapwidgets',
+    "fcm_django",
+    'django.contrib.gis',
 
 ]
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 
 AUTH_USER_MODEL = 'account.User'
 GROUP_ALLOCATE = "OrganizationAdministrators"
+
+GOOGLE_MAPS_API_KEY = "AIzaSyBX8TzU9ISXBXcAmW-MQhtckPprS5AOcOw"
+
+# GDAL_LIBRARY_PATH = 'D:/deskSolutions/GDAL-3.1.4-cp38-cp38-win32.whl'
+# GEOS_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/geos_c.dll'
+GEOS_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/geos_c.dll')
+
+# GDAL_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/gdal301.dll'
+GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/gdal301.dll')
+
+print(GDAL_LIBRARY_PATH)
+# MAP_WIDGETS = {
+#     "GooglePointFieldWidget": (
+#         ("zoom", 15),
+#         ("mapCenterLocationName", "london"),
+#         ("GooglePlaceAutocompleteOptions", {'componentRestrictions': {'country': 'uk'}}),
+#         ("markerFitZoom", 12),
+#     ),
+#     "GOOGLE_MAP_API_KEY": "AIzaSyBX8TzU9ISXBXcAmW-MQhtckPprS5AOcOw"
+# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -116,7 +141,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'DeskSolutions.urls'
-
+print(os.path.join(BASE_DIR, 'env'))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -147,9 +172,19 @@ WSGI_APPLICATION = 'DeskSolutions.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+#         'NAME' : 'DSDB',
+#         'USER' : 'postgres',
+#         'PASSWORD' : 'custom123',
+#         'HOST' : 'localhost',
+#         'PORT' : '5432',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+        'ENGINE' : 'django.contrib.gis.db.backends.postgis',
         'NAME' : 'DSDB',
         'USER' : 'postgres',
         'PASSWORD' : 'custom123',
@@ -191,6 +226,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+# For GEOIP
+
+GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
+
 # For Heroku
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -203,6 +242,13 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+# FCM Token Settings
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AAAA-RKOFa8:APA91bGXUIUW4gfgJ-wZvppSVdbSZ_MLbJCc069LZ1eyoiNKHrBzCrlz17lB0caaqnm56gCmJxv1_LQBc6E0G7Dn4Dpp-3rrJsZY8pWioFMS5ccEUcAX5h4PntPsno3bMNw0SBIUiGu7"
+}
 
 # For heroku
 django_heroku.settings(locals())

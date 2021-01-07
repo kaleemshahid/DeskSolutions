@@ -52,7 +52,7 @@ class ContactForm(forms.Form):
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
-        fields = ('title', 'url', 'description', 'org_address', 'logo')
+        fields = ('title', 'url', 'description', 'org_address','city', 'logo')
         widgets = {
             'title': forms.EmailInput(attrs={
                 'class': 'form-control input-text',

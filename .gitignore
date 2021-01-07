@@ -1,9 +1,3 @@
 env
 DeskSolutions/db.sqlite3
-DeskSolutions/account/_pycache_
-DeskSolutions/account/migrations
-DeskSolutions/DeskSolutions/_pycache_
-DeskSolutions/desksolutionsbase/_pycache_
-DeskSolutions/desksolutionsbase/migrations
-DeskSolutions/TaskManagement/_pycache_
-DeskSolutions/TaskManagement/migrations
+_pycache_/

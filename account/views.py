@@ -38,6 +38,8 @@ class UserLoginApiView(ObtainAuthToken):
         elif not profiles.first().is_manager:
             role = "employee"
 
+        print(role)
+
         return Response(
             {
                 'token': token.key,
