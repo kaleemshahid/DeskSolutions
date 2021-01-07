@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     # 'leaflet',
     # 'django_extensions',
     'mapwidgets',
+    "fcm_django",
     'django.contrib.gis',
 
 ]
@@ -241,6 +242,13 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+# FCM Token Settings
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AAAA-RKOFa8:APA91bGXUIUW4gfgJ-wZvppSVdbSZ_MLbJCc069LZ1eyoiNKHrBzCrlz17lB0caaqnm56gCmJxv1_LQBc6E0G7Dn4Dpp-3rrJsZY8pWioFMS5ccEUcAX5h4PntPsno3bMNw0SBIUiGu7"
+}
 
 # For heroku
 django_heroku.settings(locals())
