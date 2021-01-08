@@ -38,7 +38,6 @@ urlpatterns = [
     path('home/', include('desksolutionsbase.urls', namespace='signup')),
     path('task/', include('TaskManagement.urls')),
     path('admin_password_reset/', PasswordResetView.as_view(), name='admin_password_reset')
-
 ]
 
 if settings.DEBUG:

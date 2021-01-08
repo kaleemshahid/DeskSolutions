@@ -73,7 +73,7 @@ GOOGLE_MAPS_API_KEY = "AIzaSyBX8TzU9ISXBXcAmW-MQhtckPprS5AOcOw"
 
 # GDAL_LIBRARY_PATH = 'D:/deskSolutions/GDAL-3.1.4-cp38-cp38-win32.whl'
 # GEOS_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/geos_c.dll'
-GEOS_LIBRARY_PATH = os.path.join('env/Lib/site-packages/osgeo/geos_c.dll')
+GEOS_LIBRARY_PATH = 'env/Lib/site-packages/osgeo/geos_c.dll'
 
 # GDAL_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/gdal301.dll'
 GDAL_LIBRARY_PATH = 'env/Lib/site-packages/osgeo/gdal301.dll'

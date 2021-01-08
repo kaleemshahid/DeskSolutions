@@ -312,7 +312,6 @@ class ProfileAdmin(admin.ModelAdmin):
                 return True
         except:
             return False
-        
 
     def has_add_permission(self, request):
         return False
@@ -422,7 +421,7 @@ class UserAdmin(BaseUserAdmin):
         readonly_fields = super(
             UserAdmin, self).get_readonly_fields(request, obj)
         # if obj and obj.is_admin or request.user.is_superuser:  # editing an existing object
-        if obj.is_admin and request.user.is_admin or not request.user.is_admin:  # editing an existing object
+        if obj and obj.is_admin: # editing an existing object
             return readonly_fields + ('is_active', 'is_staff',)
         return readonly_fields
 
@@ -432,10 +431,7 @@ class UserAdmin(BaseUserAdmin):
             ('Permissions', {'fields': ('is_staff',
                                         'is_active',)}),
         )
-        return fs
-
-
-            
+        return fs    
 
     # def get_fieldsets(self, request, obj=None):
     #     fs = super().get_fieldsets(request, obj)
