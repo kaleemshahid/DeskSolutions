@@ -73,10 +73,28 @@ GOOGLE_MAPS_API_KEY = "AIzaSyBX8TzU9ISXBXcAmW-MQhtckPprS5AOcOw"
 
 # GDAL_LIBRARY_PATH = 'D:/deskSolutions/GDAL-3.1.4-cp38-cp38-win32.whl'
 # GEOS_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/geos_c.dll'
-GEOS_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/geos_c.dll')
+# GEOS_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/django/contrib/gis/geos')
 
-# GDAL_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/gdal301.dll'
-GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/gdal301.dll')
+# # GDAL_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/gdal301.dll'
+# # GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/osgeo/gdal301.dll')
+# GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/django/contrib/gis/gdal')
+
+# OSGEO_VENV = Path(__file__).parents[1] / 'venv/Lib/site-packages/osgeo/'
+# print(OSGEO_VENV)
+# GEOS_LIBRARY_PATH = str(OSGEO_VENV / 'geos_c.dll')
+# GDAL_LIBRARY_PATH = str(OSGEO_VENV / 'gdal204.dll')
+# os.environ["PATH"] += os.pathsep + str(OSGEO_VENV)
+
+if os.name == 'nt':
+    import platform
+    OSGEO4W = r"C:\OSGeo4W"
+    if '64' in platform.architecture()[0]:
+        OSGEO4W += "64"
+    assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
+    os.environ['OSGEO4W_ROOT'] = OSGEO4W
+    os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
+    os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
+    os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
 
 # MAP_WIDGETS = {
 #     "GooglePointFieldWidget": (
