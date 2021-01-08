@@ -73,12 +73,17 @@ GOOGLE_MAPS_API_KEY = "AIzaSyBX8TzU9ISXBXcAmW-MQhtckPprS5AOcOw"
 
 # GDAL_LIBRARY_PATH = 'D:/deskSolutions/GDAL-3.1.4-cp38-cp38-win32.whl'
 # GEOS_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/geos_c.dll'
-GEOS_LIBRARY_PATH = 'env/Lib/site-packages/osgeo/geos_c.dll'
+OSGEO_VENV = Path(__file__).parents[1] / 'env/Lib/site-packages/osgeo/'
+print(OSGEO_VENV)
+GEOS_LIBRARY_PATH = str(OSGEO_VENV / 'geos_c.dll')
+print(GEOS_LIBRARY_PATH)
+GDAL_LIBRARY_PATH = str(OSGEO_VENV / 'gdal301.dll')
+os.environ["PATH"] += os.pathsep + str(OSGEO_VENV)
+# GEOS_LIBRARY_PATH = 'env/Lib/site-packages/osgeo/geos_c.dll'
 
 # GDAL_LIBRARY_PATH = 'C:/Users/LAPTOP MART/AppData/Local/Programs/Python/Python38/Lib/site-packages/osgeo/gdal301.dll'
-GDAL_LIBRARY_PATH = 'env/Lib/site-packages/osgeo/gdal301.dll'
+# GDAL_LIBRARY_PATH = 'env/Lib/site-packages/osgeo/gdal301.dll'
 # GDAL_LIBRARY_PATH = os.path.join(BASE_DIR, 'env/Lib/site-packages/django/contrib/gis/gdal')
-print(GDAL_LIBRARY_PATH)
 # OSGEO_VENV = Path(__file__).parents[1] / 'venv/Lib/site-packages/osgeo/'
 # print(OSGEO_VENV)
 # GEOS_LIBRARY_PATH = str(OSGEO_VENV / 'geos_c.dll')
