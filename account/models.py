@@ -22,9 +22,9 @@ class Organization(models.Model):
     org_address = models.CharField(max_length=255,
         verbose_name="Organization Address", null=True, blank=False)
     city = models.CharField(max_length=40, null=False, blank=False, default=None)
-    radius = models.IntegerField(blank=True)
-    latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True)
-    longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True)
+    radius = models.IntegerField(blank=True, null=True)
+    latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
 
     # geoLocation = gismodels.PointField(max_length=100, null=True, blank=True, srid=4326)
     # geoLocation = models.CharField(max_length=100, null=True, blank=True)
