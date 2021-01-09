@@ -19,8 +19,8 @@ from django.urls import path
 # from django_google_maps import widgets as map_widgets
 # from django_google_maps import fields as map_fields
 
-from mapwidgets.widgets import GooglePointFieldWidget
-from django.contrib.gis.db.models import PointField
+# from mapwidgets.widgets import GooglePointFieldWidget
+# from django.contrib.gis.db.models import PointField
 
 
 class ApplicationAdmin(admin.ModelAdmin):
@@ -588,9 +588,9 @@ class OrganizationAdmin(admin.ModelAdmin):
     #         'widget': map_widgets.GoogleMapsAddressWidget(attrs={'data-map-type': 'roadmap'})
     #     },
     # }
-    formfield_overrides = {
-        PointField: {"widget": GooglePointFieldWidget}
-    }
+    # formfield_overrides = {
+    #     PointField: {"widget": GooglePointFieldWidget}
+    # }
 
 
 
@@ -655,7 +655,7 @@ class PositionAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_admin:
+        if request.user.is_admin or request.user.is_superuser:
             return True
         return False
 

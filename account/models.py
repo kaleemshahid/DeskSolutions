@@ -7,7 +7,7 @@ from .validators import validate_file_extension
 from DeskSolutions import settings
 from ckeditor.fields import RichTextField
 # from django_google_maps import fields as map_fields
-from django.contrib.gis.db import models as gismodels
+# from django.contrib.gis.db import models as gismodels
 
 class Organization(models.Model):
     title = models.CharField(verbose_name="Organization Title",
@@ -22,9 +22,13 @@ class Organization(models.Model):
     org_address = models.CharField(max_length=255,
         verbose_name="Organization Address", null=True, blank=False)
     city = models.CharField(max_length=40, null=False, blank=False, default=None)
-    geoLocation = gismodels.PointField(max_length=100, null=True, blank=True, srid=4326)
+    radius = models.IntegerField(blank=True)
+    latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True)
+    longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True)
+
+    # geoLocation = gismodels.PointField(max_length=100, null=True, blank=True, srid=4326)
     # geoLocation = models.CharField(max_length=100, null=True, blank=True)
-    objects = gismodels.Manager()
+    # objects = gismodels.Manager()
 
     def __str__(self):
         return self.title

@@ -6,11 +6,12 @@ from account.models import Organization, User, Position
 # from .decorators import organization_absent
 from django.core.exceptions import ValidationError
 from django.core import serializers
-import json, folium
-from folium.plugins import Draw
+import json
+# import folium
+# from folium.plugins import Draw
 
 from DeskSolutions import settings
-from .utils import get_ip, get_geo
+# from .utils import get_ip, get_geo
 from geopy.geocoders import Nominatim
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -22,38 +23,38 @@ def OrganizationAction(request):
     # if request.session.get('organization'):
     #     del request.session['organization']
     # ip = get_ip(request)
-    ip = '119.160.64.50'
-    # ip = '72.14.207.99'
+    # ip = '119.160.64.50'
+    # # ip = '72.14.207.99'
 
-    geolocator = Nominatim(user_agent='desksolutionsbase')
+    # geolocator = Nominatim(user_agent='desksolutionsbase')
     
-    # print(ip)
+    # # print(ip)
 
-    country, o_city, lat, lon = get_geo(ip)
-    print('location', o_city)
-    print('location', country)
-    print('location', lat)
-    print('location', lon)
+    # country, o_city, lat, lon = get_geo(ip)
+    # print('location', o_city)
+    # print('location', country)
+    # print('location', lat)
+    # print('location', lon)
 
-    pointA = (lat, lon)
+    # pointA = (lat, lon)
 
-    m = folium.Map(width=800, height=500, location=pointA, zoom_start=13)
+    # m = folium.Map(width=800, height=500, location=pointA, zoom_start=13)
     
+    # # folium.Marker([lat, lon], draggable=True,tooltip='Click for more', popup=o_city, 
+    # #     icon=folium.Icon(color="purple")).add_to(m.add_child(folium.LatLngPopup()))
+
+    # draw = Draw(
+    #     draw_options={
+    #         'polyline':False,
+    #         'rectangle':True,
+    #         'polygon':True,
+    #         'circle':False,
+    #         'marker':True,
+    #         'circlemarker':False},
+    #     edit_options={'edit':False})
+    # m.add_child(draw)
     # folium.Marker([lat, lon], draggable=True,tooltip='Click for more', popup=o_city, 
-    #     icon=folium.Icon(color="purple")).add_to(m.add_child(folium.LatLngPopup()))
-
-    draw = Draw(
-        draw_options={
-            'polyline':False,
-            'rectangle':True,
-            'polygon':True,
-            'circle':False,
-            'marker':True,
-            'circlemarker':False},
-        edit_options={'edit':False})
-    m.add_child(draw)
-    folium.Marker([lat, lon], draggable=True,tooltip='Click for more', popup=o_city, 
-        icon=folium.Icon(color="purple")).add_to(m.add_child(draw))
+    #     icon=folium.Icon(color="purple")).add_to(m.add_child(draw))
 
     # print(m.add_child(folium.LatLngPopup()))
     # print(folium.LatLngPopup())
@@ -79,12 +80,12 @@ def OrganizationAction(request):
             address = form.cleaned_data['org_address']
             logo = request.FILES.get('logo')
             city = form.cleaned_data['city']
-            check_city = geolocator.geocode(city, language='en')
-            if check_city is not None:
-                print("city is ok")
-                print(check_city)
-                create_organization = Organization.objects.create(
-                title=title, description=description, url=url, org_address=address, logo=logo, city=city)
+            # check_city = geolocator.geocode(city, language='en')
+            # if check_city is not None:
+            #     print("city is ok")
+            #     print(check_city)
+            create_organization = Organization.objects.create(
+            title=title, description=description, url=url, org_address=address, logo=logo, city=city)
             # create_organization.save()
             
             # get_org = Organization.objects.filter(
@@ -99,10 +100,10 @@ def OrganizationAction(request):
             # print(ser_instance)
             # ser_instance = json.dumps(get_org, content_type='application/json')
             # print(ser_instance)
-                request.session['organization'] = create_organization.pk
-                context['org_id'] = create_organization.pk
-                # print(ser_instance)
-                print(context['org_id'])
+            request.session['organization'] = create_organization.pk
+            context['org_id'] = create_organization.pk
+            # print(ser_instance)
+            print(context['org_id'])
             # form.save()
             # return redirect("signup:signups", args=(request.session['organization'],))
             # return redirect('signup:signups')
@@ -144,17 +145,17 @@ def OrganizationAction(request):
             return JsonResponse(context, safe=False)
         else:
             print("invalid form")
-            m = m._repr_html_()
+            # m = m._repr_html_()
             context['register_form'] = form.errors
             context['user_form'] = user_form.errors
             context['lookup_form'] = lookup_form.errors
-            context['map'] = m
+            # context['map'] = m
             return JsonResponse(context)
     else:
         form = OrganizationForm()
         context['register_form'] = form
-        m = m._repr_html_()
-        context['map'] = m
+        # m = m._repr_html_()
+        # context['map'] = m
         user_form = RegisterForm()
         context['user_form'] = user_form
         lookup_form = LookupForm()
