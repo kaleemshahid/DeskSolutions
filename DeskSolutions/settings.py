@@ -15,7 +15,7 @@ import os
 import django_heroku
 import dj_database_url
 from decouple import config
-from account.classified import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
+from account.email import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 
 
