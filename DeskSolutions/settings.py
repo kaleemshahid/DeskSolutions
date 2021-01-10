@@ -38,6 +38,8 @@ ALLOWED_HOSTS = ['desksolutions.herokuapp.com']
 
 INSTALLED_APPS = [
 
+    'admin_interface',
+
     'colorfield',
     'ckeditor',
 
@@ -56,7 +58,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'admin_interface',
     # 'leaflet',
     # 'django_extensions',
     # 'mapwidgets',
@@ -167,6 +168,7 @@ MIDDLEWARE = [
     # Heroku middleware
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 
 ROOT_URLCONF = 'DeskSolutions.urls'
 TEMPLATES = [

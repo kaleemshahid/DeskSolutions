@@ -1,10 +1,10 @@
-from .models import User, Profile
-from .serializers import UserSerializer
+from .models import User, Profile, Organization
+from .serializers import UserSerializer, OrganizationSerializer
 from rest_framework import viewsets, permissions, status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 
 
@@ -72,3 +72,13 @@ class EmployeeViewSet(ListAPIView):
             employees.append({'id': emp.user.id, "first_name": emp.user.first_name,
                               "last_name": emp.user.last_name})
         return Response(employees)
+
+class OrganizationViewSet(UpdateAPIView):
+
+    serializer_class = OrganizationSerializer
+
+    def update(self, request, *args, **kwargs):
+        orgs = Organization.objects.get(user=request.user)
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
