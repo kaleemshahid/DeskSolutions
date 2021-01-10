@@ -15,6 +15,7 @@ import os
 import django_heroku
 import dj_database_url
 from decouple import config
+from account.classified import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 
 
@@ -148,8 +149,8 @@ CKEDITOR_CONFIGS = {
 # EMAIL_HOST = 'f2018027021@umt.edu.pk'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'f2018027021@umt.edu.pk'
-EMAIL_HOST_PASSWORD = 'f5Uu@2tP'
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_USE_TLS = True
 # else:
 #     EMAIL_BACKEND = (
@@ -261,7 +262,7 @@ USE_TZ = True
 
 # For GEOIP
 
-GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
+# GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
 
 # For Heroku
 

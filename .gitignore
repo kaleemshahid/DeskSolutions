@@ -3,3 +3,4 @@ env
 *.pot
 *.pyc
 __pycache__/
+account/classified.py
