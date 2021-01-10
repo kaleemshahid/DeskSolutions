@@ -74,6 +74,7 @@ class ApplicationAdmin(admin.ModelAdmin):
             print("count: " + str(count))
             # print(i.pk)
             pdf = pdfplumber.open('media/' + str(i.filename))
+            print(pdf)
             print(i.candidate_email)
             print(i.filename)
             page = pdf.pages[0]
