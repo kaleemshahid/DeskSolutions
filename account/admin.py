@@ -1,12 +1,14 @@
 from django.contrib import admin
 from .models import Organization, User, Department, Profile, Position, Tag, Application
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .forms import UserModelForm, CustomDepartmentForm, ProfileFormSet, PositionForm
+from .forms import UserModelForm, CustomDepartmentForm, ProfileFormSet, PositionForm, OrganizationModelForm
 from django.contrib.auth.models import Group, Permission
 from django.utils.crypto import get_random_string
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.contrib import messages
+from admin_interface.models import Theme
+from rest_framework.authtoken.models import TokenProxy
 import pdfplumber, operator, collections
 
 # from django.contrib.sites.models import Site
@@ -592,7 +594,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     #     PointField: {"widget": GooglePointFieldWidget}
     # }
 
-
+    form = OrganizationModelForm
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -714,7 +716,8 @@ admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Application, ApplicationAdmin)
-# admin.site.register(MyModelAdmin)
 
 admin.site.unregister(Group)
+admin.site.unregister(Theme)
+admin.site.unregister(TokenProxy)
 

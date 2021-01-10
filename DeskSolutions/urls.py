@@ -40,8 +40,8 @@ urlpatterns = [
     path('admin_password_reset/', PasswordResetView.as_view(), name='admin_password_reset')
 ]
 
-if settings.DEBUG:
+# if settings.DEBUG:
     #     urlpatterns += static(settings.STATIC_URL,
     #                           document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL,
+urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

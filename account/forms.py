@@ -7,6 +7,12 @@ from django.core.exceptions import ValidationError
 from django.utils.crypto import get_random_string
 
 
+class OrganizationModelForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = ('title', 'description', 'url', 'logo', 'org_address', 'city')
+
+
 # Model form for User Registration through admin panel
 class UserModelForm(forms.ModelForm):
 
