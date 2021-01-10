@@ -8,7 +8,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto text-white">
                 <li class="nav-item">
                     <a class="nav-link" href="#page-top">Home</a>
                 </li>
@@ -26,11 +26,11 @@
                 </li>
 
                 <li class="nav-item signup">
-                    <a style="font-weight: bolder;" class="nav-link nav-btn text-white" href="{% url 'signup:organization-register' %}">Sign Up</a>
+                    <a style="font-weight: 300;" class="nav-link nav-btn text-white" href="{% url 'signup:organization-register' %}">Sign Up</a>
                 </li>
                 {% if not request.user.is_authenticated %}
                 <li class="nav-item login">
-                    <a style="font-weight: bolder;" class="nav-link nav-btn text-white" href="{% url 'admin:index' %}">Login</a>
+                    <a style="font-weight: 300;" class="nav-link nav-btn text-white" href="{% url 'admin:index' %}">Login</a>
                 </li>
                 {% endif %}
             </ul>
