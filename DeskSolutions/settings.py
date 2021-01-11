@@ -278,6 +278,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'media')
 ]
 
+print(STATICFILES_DIRS)
+
 # Handle media files
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
