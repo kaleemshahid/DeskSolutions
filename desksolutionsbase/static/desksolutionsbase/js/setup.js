@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+    var time = new Date().getTime()
     $("#signup-form").submit(function(e){
         e.preventDefault()
 
@@ -7,8 +9,16 @@ $(document).ready(function(){
             type: "POST",
             url: "",
             data: formdata,
+            ajaxTime: time,
             contentType: false,
             processData: false,
+            beforeSend: function(){
+                var responseTime = new Date().getTime() - this.ajaxTime;
+                console.log(responseTime)
+                if (responseTime > 2000){
+                $('.loading-bar').show();
+                }
+            },
             success: (response) => {
                 var form_msg = response['register_form']
 
@@ -39,17 +49,27 @@ $(document).ready(function(){
                     $("#usertab").addClass("active in")
                     // window.location.href = 'profile';
                 }
-            }
+            },
+            complete: function(){
+                $('.loading-bar').hide();
+            },
         })
     })
 
     $("#register-form").submit(function (e){
-        alert("Asdasdddddd")
         e.preventDefault()
         $.ajax({
             type: "POST",
             url: "",
             data: $(this).serialize(),
+            ajaxTime: time,
+            beforeSend: function(){
+                var responseTime = new Date().getTime() - this.ajaxTime;
+                console.log(responseTime)
+                if (responseTime > 2000){
+                $('.loading-bar').show();
+                }
+            },
             success: (response) => {
                 var form_msg = response['user_form']
 
@@ -70,7 +90,10 @@ $(document).ready(function(){
                     console.log("success")
                     window.location.href = '../../admin/login';
                 }
-            }
+            },
+            complete: function(){
+                $('.loading-bar').hide();
+            },
         })
     })
 
@@ -80,6 +103,14 @@ $(document).ready(function(){
             type: "POST",
             url: "",
             data: $(this).serialize(),
+            ajaxTime: time,
+            beforeSend: function(){
+                var responseTime = new Date().getTime() - this.ajaxTime;
+                console.log(responseTime)
+                if (responseTime > 2000){
+                $('.loading-bar').show();
+                }
+            },
             success: (response) => {
 
                 var lookup_not_exist = response['lookup_not_exist']
@@ -105,7 +136,10 @@ $(document).ready(function(){
                     $("#userformlink").attr('data-toggle', "tab")
                     $("#usertab").addClass("active in")
                 }
-            }
+            },
+            complete: function(){
+                $('.loading-bar').hide();
+            },
         })
     })
 })

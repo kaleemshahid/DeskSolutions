@@ -12,7 +12,7 @@ import json
 
 from DeskSolutions import settings
 # from .utils import get_ip, get_geo
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
@@ -246,6 +246,13 @@ def organizationlist(request):
             name = request.POST['contact_name']
             message = request.POST['contact_message']
             print(name)
+            # send_mail(
+            #     "DeskSolutions Account Password",
+            #     "Hello " + str(username) + ". Your password is " + str(password) + ".",
+            #     "noreply@desksolutions.com",
+            #     [username,],
+            #     fail_silently=False
+            # )
         else:
             context['contact_form'] = contact_form.errors
             return JsonResponse(context["contact_form"], status=400)
