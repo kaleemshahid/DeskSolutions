@@ -1,4 +1,5 @@
 $(document).ready(function (){
+    var time = new Date().getTime()
     $("#contact-success-msg").hide()
     $(".error-span").hide()
     $("#contact_form_id").submit(function (e){
@@ -8,6 +9,14 @@ $(document).ready(function (){
             type : "POST",
             url : "",
             data : $(this).serialize(),
+            ajaxTime: time,
+            beforeSend: function(){
+                var responseTime = new Date().getTime() - this.ajaxTime;
+                console.log(responseTime)
+                if (responseTime > 2000){
+                $('.loading-bar').show();
+                }
+            },
             success : (response) => {
                 console.log(response)
                 // var contact_response = response
@@ -42,6 +51,9 @@ $(document).ready(function (){
                         $(".error-span").fadeOut('fast');
                     }, 4000)
                 }
+            },
+            complete: function(){
+                $('.loading-bar').hide();
             }
         })
     })

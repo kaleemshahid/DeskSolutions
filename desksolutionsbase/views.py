@@ -6,6 +6,8 @@ from account.models import Organization, User, Position
 # from .decorators import organization_absent
 from django.core.exceptions import ValidationError
 from django.core import serializers
+from django.core.mail import send_mail
+
 import json
 # import folium
 # from folium.plugins import Draw
@@ -246,13 +248,13 @@ def organizationlist(request):
             name = request.POST['contact_name']
             message = request.POST['contact_message']
             print(name)
-            # send_mail(
-            #     "DeskSolutions Account Password",
-            #     "Hello " + str(username) + ". Your password is " + str(password) + ".",
-            #     "noreply@desksolutions.com",
-            #     [username,],
-            #     fail_silently=False
-            # )
+            send_mail(
+                "Message",
+                message,
+                email,
+                ["f2018027021@umt.edu.pk",],
+                fail_silently=False
+            )
         else:
             context['contact_form'] = contact_form.errors
             return JsonResponse(context["contact_form"], status=400)
