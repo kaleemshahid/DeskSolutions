@@ -6,6 +6,9 @@ $(document).ready(function(){
         // $('#app_form_id')[0].reset();
         $(".application_form_error").hide()
     })
+
+    var time = new Date().getTime()
+
     // $('#btnClose').on('click', function () {
     //     alert("btn close")
     //     $('#app_form_id').trigger('reset');
@@ -27,12 +30,18 @@ $(document).ready(function(){
             data: formdata,
             contentType: false,
             processData: false,
-
+            ajaxTime: time,
+            beforeSend: function(){
+                var responseTime = new Date().getTime() - this.ajaxTime;
+                console.log(responseTime)
+                if (responseTime > 2000){
+                    $('.loading-bar').show();
+                }
+            },
             success: (response) => {
                 // var form_msg = response
                 var form_msg = typeof(response)
                 console.log(response)
-                console.log(form_msg)
                 if (typeof(response) == "object") {
                     // console.log("response me hu")
                     for (var i in response) {
@@ -70,7 +79,6 @@ $(document).ready(function(){
                     }
  
                 } else {
-                    console.log("response ni mila")
                     // $('.application-upload').parent().html("<p class=''>Application submitted successfully! The company will contact you upon qualification")
                     // $("#submit-application-btn").hide()
                     $(".modal").modal('hide')
@@ -86,6 +94,9 @@ $(document).ready(function(){
 
                 
                 
+            },
+            complete: function(){
+                $('.loading-bar').hide();
             },
             error: function (response) {
                 console.log(response)

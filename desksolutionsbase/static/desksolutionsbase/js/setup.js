@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
     var time = new Date().getTime()
+    $(".error-span").hide()
     $("#signup-form").submit(function(e){
         e.preventDefault()
 
@@ -31,6 +32,11 @@ $(document).ready(function(){
                         console.log(error_id)
                         $(error_id).text(form_msg[i])
                         $(id).addClass('has_error')
+                        $(".error-span").show()
+                        setTimeout(function() {
+                            $(".error-span").fadeOut('fast');
+                        }, 7000)
+
                         // $("#form_errors").text(error_message)
                         console.log(form_msg[i])
                         console.log(i)
@@ -81,6 +87,10 @@ $(document).ready(function(){
                         console.log(error_id)
                         $(error_id).text(form_msg[i])
                         $(id).addClass('has_error')
+                        $(".error-span").show()
+                        setTimeout(function() {
+                            $(".error-span").fadeOut('fast');
+                        }, 7000)
                         // $("#form_errors").text(error_message)
                         console.log(form_msg[i])
                         console.log(i)
@@ -118,12 +128,18 @@ $(document).ready(function(){
                 var admin_exist = response['admin_exist']
                 if (lookup_not_exist){
                     console.log(lookup_not_exist)
+                    $(".error-span").show()
+                    $("#error-lookup").text(lookup_not_exist)
                 }
                 else if(lookup_empty){
                     console.log(lookup_empty)
+                    $(".error-span").show()
+                    $("#error-lookup").text(lookup_empty.organization_name[0])
                 }
                 else if(admin_exist){
                     console.log(admin_exist)
+                    $(".error-span").show()
+                    $("#error-lookup").text(admin_exist)
                 }
                 else{
                     $("#organizationformlink").removeClass('active active_tab1')
