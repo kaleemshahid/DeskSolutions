@@ -71,8 +71,6 @@ class User(AbstractUser):
         return querset
 
 # CompanyAdmins can then add their own departments, or add new users to their system but after adding departments
-
-
 class Department(models.Model):
     department_name = models.CharField(
         max_length=60, null=False, blank=False, verbose_name="Department Name")
@@ -128,3 +126,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+class Attendance(models.Model):
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False, blank=False)
+    date = models.DateTimeField(auto_now_add=True)
+    is_present = models.BooleanField(default=False)
