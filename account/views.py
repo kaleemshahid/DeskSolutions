@@ -41,6 +41,12 @@ class UserLoginApiView(ObtainAuthToken):
 
         print(role)
 
+        location = {
+            'lat': token.user.organization.latitude,
+            'long': token.user.organization.longitude,
+            'radius': token.user.organization.radius
+        }
+
         return Response(
             {
                 'token': token.key,
@@ -48,6 +54,7 @@ class UserLoginApiView(ObtainAuthToken):
                 'first_name': token.user.first_name,
                 'last_name': token.user.last_name,
                 'created_at': token.user.date_joined,
+                'organization_location': location
 
             }
         )
