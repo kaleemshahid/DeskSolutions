@@ -131,3 +131,13 @@ class Attendance(models.Model):
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
     is_present = models.BooleanField(default=False)
+
+class ComplaintBox(models.Model):
+    user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False, blank=False)
+    complain_date = models.DateTimeField(auto_now_add=True)
+    subject = models.CharField(max_length=250, null=False, blank=False)
+    complain = models.TextField(null=False, blank=False)
+
+    
+
+
