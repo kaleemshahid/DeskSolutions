@@ -1,4 +1,4 @@
-from .models import User, Organization, Attendance
+from .models import User, Organization, Attendance, ComplaintBox
 from rest_framework import serializers
 
 
@@ -7,13 +7,26 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ['email', 'phone', ]
 
+
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = ['radius', 'longitude', 'latitude',]
+        fields = ['radius', 'longitude', 'latitude', ]
 
 
 class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
         fields = ['user_profile', 'date']
+
+
+class CreateComplaintBoxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComplaintBox
+        fields = '__all__'
+
+
+class ListComplaintBoxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComplaintBox
+        fields = ['complain_date', 'subject', 'complain']

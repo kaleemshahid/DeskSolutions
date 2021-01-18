@@ -1,5 +1,6 @@
-from .models import User, Profile, Organization, Attendance
-from .serializers import UserSerializer, OrganizationSerializer, AttendanceSerializer
+from rest_framework.exceptions import NotAcceptable
+from .models import User, Profile, Organization, Attendance, ComplaintBox
+from .serializers import UserSerializer, OrganizationSerializer, AttendanceSerializer, CreateComplaintBoxSerializer, ListComplaintBoxSerializer
 from rest_framework import viewsets, permissions, status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -104,3 +105,33 @@ class AttendanceViewSet(ListAPIView, CreateAPIView):
 
     def get_queryset(self):
         return Attendance.objects.filter(user_profile=self.request.user.id)
+
+
+class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
+    queryset = ComplaintBox.objects.all()
+    serializer_class = CreateComplaintBoxSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        Create complaint
+        """
+        if self.request.user.is_admin:
+            raise NotAcceptable("Admin can not create issue")
+        request_data = request.data
+        request_data.update({
+            "user_profile": request.user.id
+        })
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        if not self.request.user.is_admin:
+            raise NotAcceptable("Employee or manager dont have access to issues")
+
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = ListComplaintBoxSerializer(queryset, many=True)
+        return Response(serializer.data)
