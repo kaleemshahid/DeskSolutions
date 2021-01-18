@@ -76,13 +76,13 @@ class EmployeeViewSet(ListAPIView):
 
 
 class OrganizationViewSet(UpdateAPIView):
+    queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
 
-    def update(self, request, *args, **kwargs):
-        orgs = Organization.objects.get(user=request.user)
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+    def get_object(self):
+        org = User.objects.get(id=self.request.user.id).organization
+        self.check_object_permissions(self.request, org)
+        return org
 
 
 class AttendanceViewSet(ListAPIView, CreateAPIView):
