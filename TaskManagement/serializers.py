@@ -4,10 +4,19 @@ from rest_framework.exceptions import NotAcceptable
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    manager_name = serializers.SerializerMethodField()
+
+    def get_manager_name(self, obj):
+        names = {
+            "first_name": obj.created_by.first_name,
+            "last_name": obj.created_by.last_name
+        }
+        return names
+
     class Meta:
         model = Task
         fields = ['id', 'task_name',
-                  'is_completed', 'created_at', 'last_reviewed']
+                  'is_completed', 'created_at', 'last_reviewed', 'manager_name']
 
     def create(self, validated_data):
         name = validated_data.get('task_name')
