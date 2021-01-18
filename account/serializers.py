@@ -1,4 +1,4 @@
-from .models import User, Organization
+from .models import User, Organization, Attendance
 from rest_framework import serializers
 
 
@@ -11,3 +11,9 @@ class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = ['radius', 'longitude', 'latitude',]
+
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attendance
+        fields = ['user_profile', 'date']

@@ -1,10 +1,10 @@
-from .models import User, Profile, Organization
-from .serializers import UserSerializer, OrganizationSerializer
+from .models import User, Profile, Organization, Attendance
+from .serializers import UserSerializer, OrganizationSerializer, AttendanceSerializer
 from rest_framework import viewsets, permissions, status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from rest_framework.response import Response
 
 
@@ -73,8 +73,8 @@ class EmployeeViewSet(ListAPIView):
                               "last_name": emp.user.last_name})
         return Response(employees)
 
-class OrganizationViewSet(UpdateAPIView):
 
+class OrganizationViewSet(UpdateAPIView):
     serializer_class = OrganizationSerializer
 
     def update(self, request, *args, **kwargs):
@@ -82,3 +82,25 @@ class OrganizationViewSet(UpdateAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
+
+class AttendanceViewSet(ListAPIView, CreateAPIView):
+    queryset = Attendance.objects.all()
+    serializer_class = AttendanceSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        Create attendence of employee/manager
+        """
+        request_data = request.data
+        request_data.update({
+            "user_profile": request.user.id
+        })
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_queryset(self):
+        return Attendance.objects.filter(user_profile=self.request.user.id)
