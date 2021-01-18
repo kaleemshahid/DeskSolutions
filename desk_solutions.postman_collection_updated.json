@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\":\"m1@m.com\",\n\t\"password\":\"vvqsXO6\"\n}",
+							"raw": "{\n\t\"username\":\"mian.waqas@outlook.com\",\n\t\"password\":\"1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,7 +51,7 @@
 							"apikey": [
 								{
 									"key": "value",
-									"value": "Token fc39783aedec89f467723957389b18c8d2c29d68",
+									"value": "Token 144834df908e8cce2940be6fa822a4339a4cea15",
 									"type": "string"
 								},
 								{
@@ -303,7 +303,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8001/api/task/subtask/3/",
+									"raw": "http://localhost:8001/api/task/subtask/2/",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -313,7 +313,7 @@
 										"api",
 										"task",
 										"subtask",
-										"3",
+										"2",
 										""
 									]
 								}
@@ -494,7 +494,175 @@
 				"apikey": [
 					{
 						"key": "value",
-						"value": "Token c1897e2ef3e19380cffd9da70ba197eed0e20661",
+						"value": "Token 04ba7e887a45dd901f5a851d17ca6e204a63663b",
+						"type": "string"
+					},
+					{
+						"key": "in",
+						"value": "header",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "Authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Additional APIs",
+			"item": [
+				{
+					"name": "1: mark attendance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/api/attendance/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"attendance",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2: attendance history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/api/attendance/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"attendance",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3: report",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\": \"subject\",\n    \"complain\": \"afsdsfsfdgfdg asfdsf\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/api/complaint/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"complaint",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4: getIssues",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/api/complaint/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"complaint",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6: create endpoint to add location of institute",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"radius\": 23232,\n    \"longitude\": 22.23232,\n    \"latitude\": 121.23232\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/api/organization/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"api",
+								"organization",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "Token 88cfb0c2c26a035e5a9a144a2884d79dd21ecdfe",
 						"type": "string"
 					},
 					{
