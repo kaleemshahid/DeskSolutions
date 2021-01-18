@@ -82,14 +82,14 @@ class EmployeeViewSet(ListAPIView):
         return Response(employees)
 
 
-class OrganizationViewSet(UpdateAPIView):
-    queryset = Organization.objects.all()
-    serializer_class = OrganizationSerializer
+# class OrganizationViewSet(UpdateAPIView):
+#     queryset = Organization.objects.all()
+#     serializer_class = OrganizationSerializer
 
-    def get_object(self):
-        org = User.objects.get(id=self.request.user.id).organization
-        self.check_object_permissions(self.request, org)
-        return org
+#     def get_object(self):
+#         org = User.objects.get(id=self.request.user.id).organization
+#         self.check_object_permissions(self.request, org)
+#         return org
 
 
 class AttendanceViewSet(ListAPIView, CreateAPIView):
