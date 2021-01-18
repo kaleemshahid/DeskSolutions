@@ -132,6 +132,6 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
             raise NotAcceptable("Employee or manager dont have access to issues")
 
         queryset = self.filter_queryset(self.get_queryset())
-
-        serializer = ListComplaintBoxSerializer(queryset, many=True)
+        admin_queryset = ComplaintBox.objects.filter(user_profile__department__organization=request.user.organization)
+        serializer = ListComplaintBoxSerializer(admin_queryset, many=True)
         return Response(serializer.data)
