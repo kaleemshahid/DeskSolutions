@@ -82,20 +82,19 @@ class EmployeeViewSet(ListAPIView):
         return Response(employees)
 
 
-# class OrganizationViewSet(UpdateAPIView):
-#     queryset = Organization.objects.all()
-#     serializer_class = OrganizationSerializer
+class OrganizationViewSet(UpdateAPIView):
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
 
-#     def get_object(self):
-#         org = User.objects.get(id=self.request.user.id).organization
-#         self.check_object_permissions(self.request, org)
-#         return org
+    def get_object(self):
+        org = User.objects.get(id=self.request.user.id).organization
+        self.check_object_permissions(self.request, org)
+        return org
 
 
 class AttendanceViewSet(ListAPIView, CreateAPIView):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
-
     def create(self, request, *args, **kwargs):
         """
         Create attendence of employee/manager
@@ -105,6 +104,7 @@ class AttendanceViewSet(ListAPIView, CreateAPIView):
             "user_profile": request.user.id
         })
         serializer = self.get_serializer(data=request.data)
+        print(serializer)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
