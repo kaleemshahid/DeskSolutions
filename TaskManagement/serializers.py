@@ -33,6 +33,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 class TaskDetailSerializer(serializers.ModelSerializer):
     assignee_name = serializers.SerializerMethodField()
+    update_history = serializers.SerializerMethodField()
 
     def get_assignee_name(self, obj):
         names = {
@@ -41,12 +42,18 @@ class TaskDetailSerializer(serializers.ModelSerializer):
         }
         return names
 
+    def get_update_history(self, obj):
+        update_history_queryset = TaskUpdate.objects.filter(taskdetail=obj.id)
+        update_history_data = TaskUpdateSerializer(update_history_queryset, many=True).data
+
+        return update_history_data
+
     class Meta:
         model = TaskDetail
-        fields = ['id', 'task', 'assigned_to', 'assignee_name', 'description', 'priority']
+        fields = ['id', 'task', 'assigned_to', 'assignee_name', 'description', 'priority', 'update_history']
 
 
 class TaskUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskUpdate
-        fields = ['taskdetail', 'update_info', 'status']
+        fields = ['taskdetail', 'update_info', 'status', 'updated_at']
