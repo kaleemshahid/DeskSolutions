@@ -17,7 +17,6 @@ class Task(models.Model):
     def __str__(self):
         return self.task_name
 
-
 class TaskDetail(models.Model):
     PRIORITY_CHOICES = (
         ('1', 'High'),
@@ -33,6 +32,10 @@ class TaskDetail(models.Model):
     priority = models.CharField(
         choices=PRIORITY_CHOICES, max_length=9, null=False, blank=False)
 
+    start_time = models.DateTimeField(auto_now_add=True)
+
+    # End time for manager to set up a time limit for a sub task
+    end_time = models.PositiveIntegerField(null=False, blank=False, default=None)
 
 class TaskUpdate(models.Model):
     STATUS_CHOICES = (

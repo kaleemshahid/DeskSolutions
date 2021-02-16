@@ -17,7 +17,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
 class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
-        fields = ['user_profile', 'date']
+        fields = ['user_profile', 'punch_in_time', 'punch_out_time', 'is_present']
 
 
 class CreateComplaintBoxSerializer(serializers.ModelSerializer):

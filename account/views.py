@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from rest_framework.response import Response
+import datetime
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -88,30 +89,55 @@ class OrganizationViewSet(UpdateAPIView):
 
     def get_object(self):
         org = User.objects.get(id=self.request.user.id).organization
+        print(org)
         self.check_object_permissions(self.request, org)
         return org
 
 
-class AttendanceViewSet(ListAPIView, CreateAPIView):
+class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
+    
     def create(self, request, *args, **kwargs):
         """
         Create attendence of employee/manager
         """
+        qs = Attendance.objects.filter(user_profile=request.user.id, punch_in_time=datetime.date.today())
+        if qs:
+            raise NotAcceptable("Already marked for today")
         request_data = request.data
-        request_data.update({
-            "user_profile": request.user.id
-        })
+        
+        if datetime.datetime.now().hour > 9 :
+            request_data.update({
+                "user_profile": request.user.id,
+                "is_present" : False
+            })
+        # elif datetime.datetime.now().hour < 8:
+        #     raise NotAcceptable("You can mark attendance after 8.00 am")     
+        else:
+            request_data.update({
+                "user_profile": request.user.id,
+                "is_present" : True
+            })
+        
         serializer = self.get_serializer(data=request.data)
-        print(serializer)
+        # print(serializer)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        # headers = self.get_success_headers(serializer.data)
+        # print(serializer.data)
+        # print(datetime.date.today())
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
         return Attendance.objects.filter(user_profile=self.request.user.id)
+
+    def get_object(self):
+
+        org = Attendance.objects.get(user_profile=self.request.user.id)
+        print(org)
+        self.check_object_permissions(self.request, org)
+        return org
 
 
 class ComplaintBoxViewSet(ListAPIView, CreateAPIView):

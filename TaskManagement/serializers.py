@@ -50,7 +50,7 @@ class TaskDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskDetail
-        fields = ['id', 'task', 'assigned_to', 'assignee_name', 'description', 'priority', 'update_history']
+        fields = ['id', 'task', 'assigned_to', 'assignee_name', 'description', 'start_time', 'end_time', 'priority', 'update_history']
 
 
 class TaskUpdateSerializer(serializers.ModelSerializer):
