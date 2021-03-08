@@ -112,8 +112,8 @@ class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
                 "user_profile": request.user.id,
                 "is_present" : False
             })
-        elif datetime.datetime.now().hour < 8:
-            raise NotAcceptable("You can mark attendance after 8.00 am")     
+        # elif datetime.datetime.now().hour < 8:
+        #     raise NotAcceptable("You can mark attendance after 8.00 am")     
         else:
             request_data.update({
                 "user_profile": request.user.id,

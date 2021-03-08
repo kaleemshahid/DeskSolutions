@@ -205,7 +205,7 @@ WSGI_APPLICATION = 'DeskSolutions.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'DSolutions',
+        'NAME' : 'DeskSolutions',
         'USER' : 'postgres',
         'PASSWORD' : 'custom123',
         'HOST' : 'localhost',

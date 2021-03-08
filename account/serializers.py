@@ -16,13 +16,13 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class AttendanceSerializer(serializers.ModelSerializer):
 
-    attendance_details = serializers.SerializerMethodField()
+    # attendance_details = serializers.SerializerMethodField()
 
-    def get_attendance_details(self, obj):
-        test = {
-            "test" : obj.is_present,
-        }
-        return test
+    # def get_attendance_details(self, obj):
+    #     test = {
+    #         "test" : obj.is_present,
+    #     }
+    #     return test
 
 
     class Meta:
