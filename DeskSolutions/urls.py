@@ -31,12 +31,12 @@ router.register(r'users', UserViewSet)
 urlpatterns = [
     path('rest/', include('rest_framework.urls')),
     path('api/', include('account.urls')),
-    path('api/task/', include('TaskManagement.urls')),
+    path('api/task/', include('taskmanagement.urls')),
     path('admin/', admin.site.urls),
     # path('account/', include('account.urls')),
     path('account/', include('django.contrib.auth.urls')),
     path('', include('desksolutionsbase.urls', namespace='signup')),
-    path('task/', include('TaskManagement.urls')),
+    path('task/', include('taskmanagement.urls')),
     path('admin_password_reset/', PasswordResetView.as_view(), name='admin_password_reset')
 ]
 

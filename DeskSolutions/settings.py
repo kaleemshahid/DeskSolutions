@@ -50,7 +50,7 @@ INSTALLED_APPS = [
 
     'account.apps.AccountConfig',
     'desksolutionsbase.apps.DesksolutionsbaseConfig',
-    'TaskManagement.apps.TaskmanagementConfig',
+    'taskmanagement',
 
     'django.contrib.admin',
     'django.contrib.auth',
