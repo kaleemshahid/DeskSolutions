@@ -102,7 +102,7 @@ class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
         """
         Create attendence of employee/manager
         """
-        qs = Attendance.objects.filter(user_profile=request.user.id, punch_in_time=datetime.date.today())
+        qs = Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today())
         if qs:
             raise NotAcceptable("Already marked for today")
         request_data = request.data
