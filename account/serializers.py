@@ -15,9 +15,19 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 
 class AttendanceSerializer(serializers.ModelSerializer):
+
+    attendance_details = serializers.SerializerMethodField()
+
+    def get_attendance_details(self, obj):
+        test = {
+            "test" : obj.is_present,
+        }
+        return test
+
+
     class Meta:
         model = Attendance
-        fields = ['user_profile', 'punch_in_time', 'punch_out_time', 'is_present']
+        fields = ['user_profile', 'punch_in_time', 'punch_out_time', 'is_present', 'attendance_details']
 
 
 class CreateComplaintBoxSerializer(serializers.ModelSerializer):

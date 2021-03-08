@@ -112,8 +112,8 @@ class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
                 "user_profile": request.user.id,
                 "is_present" : False
             })
-        elif datetime.datetime.now().hour < 8:
-            raise NotAcceptable("You can mark attendance after 8.00 am")     
+        # elif datetime.datetime.now().hour < 8:
+        #     raise NotAcceptable("You can mark attendance after 8.00 am")     
         else:
             request_data.update({
                 "user_profile": request.user.id,
@@ -130,10 +130,11 @@ class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
+        if self.request.user.is_admin:
+            print("asdknasdkn]")
         return Attendance.objects.filter(user_profile=self.request.user.id)
 
     def get_object(self):
-
         org = Attendance.objects.get(user_profile=self.request.user.id)
         print(org)
         self.check_object_permissions(self.request, org)
