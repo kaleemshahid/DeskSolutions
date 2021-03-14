@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 'leaflet',
-    # 'django_extensions',
+    'django_extensions',
     # 'mapwidgets',
     # "fcm_django",
     # 'django.contrib.gis',
