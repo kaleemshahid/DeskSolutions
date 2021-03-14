@@ -35,7 +35,10 @@ class TaskDetail(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
 
     # End time for manager to set up a time limit for a sub task
-    end_time = models.PositiveIntegerField(null=False, blank=False, default=None)
+    end_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.description
 
 class TaskUpdate(models.Model):
     STATUS_CHOICES = (
@@ -52,3 +55,6 @@ class TaskUpdate(models.Model):
     status = models.CharField(
         max_length=25, choices=STATUS_CHOICES, null=False, blank=False, default=1)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.update_info

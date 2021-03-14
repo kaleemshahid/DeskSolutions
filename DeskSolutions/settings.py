@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 'leaflet',
-    'django_extensions',
+    # 'django_extensions',
     # 'mapwidgets',
     # "fcm_django",
     # 'django.contrib.gis',
@@ -205,23 +205,14 @@ WSGI_APPLICATION = 'DeskSolutions.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE' : 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'DeskSolutions',
+        'NAME' : 'DSolutions',
         'USER' : 'postgres',
         'PASSWORD' : 'custom123',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE' : 'django.contrib.gis.db.backends.postgis',
-#         'NAME' : 'DSDB',
-#         'USER' : 'postgres',
-#         'PASSWORD' : 'custom123',
-#         'HOST' : 'localhost',
-#         'PORT' : '5432',
-#     }
-# }
+
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
@@ -252,7 +243,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Karachi'
 
 USE_I18N = True
 

@@ -72,6 +72,9 @@ class OrganizationForm(forms.ModelForm):
                 'rows': 1,
                 'placeholder' : 'House no 1, Street 44, Model Town, Lahore',
                 }),
+            'city': forms.TextInput(attrs={
+                'class': 'form-control input-text',
+                })
             # 'logo': forms.FileField(allow_empty_file=True),
         }
         

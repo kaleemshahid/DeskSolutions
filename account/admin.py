@@ -478,6 +478,11 @@ class UserAdmin(BaseUserAdmin):
             return True
         return False
 
+    def has_change_permission(Self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
@@ -599,7 +604,8 @@ class OrganizationAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_admin:
+        print(qs)
+        if request.user:
             return qs.filter(user__id=request.user.id)
         return qs
 
