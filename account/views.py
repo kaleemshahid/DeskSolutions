@@ -227,10 +227,31 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
             "user_profile": request.user.id
         })
         # self.request.data._mutable = True
-        serializer = self.get_serializer(data=request.data.copy())
-        print(serializer)
+        serializer = self.get_serializer(data=request.data)
         # print(request._request.POST.__dict__) #1
         request._request.POST = request._request.POST.copy()
+        post = request.POST.copy() 
+        print(request._request.POST)
+        # request.data._mutable = True
+        print(request.data)
+        print(request.data['subject'])
+        if (subject := request.data.get("subject")) and (
+            complain := request.data.get("complain")
+        ):
+            request.data["subject"] = subject
+            request.data["complain"] = complain
+        # request.data._mutable = False
+
+        # remember old state
+        # _mutable = data._mutable
+        # print(_mutable)
+        # # set to mutable
+        # data._mutable = True
+        # # change the values you want
+        # data['param_name'] = 'new value'
+        # # set mutable flag back
+        # data._mutable = _mutable
+
         # print(request._request.POST.__dict__) #2
         # print(request._request.POST) #2
         # print(request._request) #2
@@ -238,7 +259,9 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         # mydata=request.data.copy()
         # print(mydata)
         serializer.is_valid(raise_exception=True)
+        # serializer.create(validated_data=request.data)
         serializer.save()
+        print(serializer.data)
         headers = self.get_success_headers(serializer.data)
         # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
