@@ -146,14 +146,21 @@ class AttendanceViewSet(viewsets.ModelViewSet):
     serializer_class = AttendanceSerializer
     
     def create(self, request, *args, **kwargs):
-        """
-        Create attendence of employee/manager
-        """
-        qs = Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today())
+
+        request_data = request.data
+
+        qs = Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today(), punch_in_time__isnull=False, punch_out_time__isnull=False)
         if qs:
             raise NotAcceptable("Already marked for today")
-        request_data = request.data
-        
+            
+        checkPunchIn =  Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today(), punch_in_time__isnull=False)
+        if checkPunchIn:
+            request_data.update({
+                "punch_out_time" : datetime.datetime.now()
+            })
+
+        print(datetime.datetime.now())
+
         if datetime.datetime.now().hour > 9 :
             request_data.update({
                 "user_profile": request.user.id,
@@ -236,7 +243,7 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         serializer = self.get_serializer(data=q_dict)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        # print(serializer.data)
+        print(serializer.data)
 
         headers = self.get_success_headers(serializer.data)
         # print(serializer.data.copy())
