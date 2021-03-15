@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from rest_framework.response import Response
+from django.http.request import QueryDict
 import datetime
 
 
@@ -209,7 +210,7 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
     #     request_data.update({
     #         "user_profile": request.user.id
     #     })
-    #     # self.request.data._mutable = True
+    #     # request.data._mutable = True
     #     serializer = self.get_serializer(data=request.data)
     #     print(serializer)
     #     serializer.is_valid(raise_exception=True)
@@ -226,15 +227,20 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         request_data.update({
             "user_profile": request.user.id
         })
+
+        # request_data._mutable = True
+        q_dict = QueryDict('', mutable=True)
+        q_dict.update(request.data)
+        print(q_dict)
         # self.request.data._mutable = True
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=q_dict)
         # print(request._request.POST.__dict__) #1
         request._request.POST = request._request.POST.copy()
         post = request.POST.copy() 
-        print(request._request.POST)
+        # print(request._request.POST)
         # request.data._mutable = True
-        print(request.data)
-        print(request.data['subject'])
+        # print(request.data)
+        # print(request.data['subject'])
         if (subject := request.data.get("subject")) and (
             complain := request.data.get("complain")
         ):
@@ -261,7 +267,7 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         serializer.is_valid(raise_exception=True)
         # serializer.create(validated_data=request.data)
         serializer.save()
-        print(serializer.data)
+        # print(serializer.data)
         headers = self.get_success_headers(serializer.data)
         # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
