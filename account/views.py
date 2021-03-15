@@ -211,11 +211,13 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         })
         # self.request.data._mutable = True
         serializer = self.get_serializer(data=request.data)
+        print(serializer)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         print(serializer.data.copy())
-        return Response(serializer.data.copy(), status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
     def list(self, request, *args, **kwargs):
         if not self.request.user.is_admin:
