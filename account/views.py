@@ -202,20 +202,20 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
     serializer_class = CreateComplaintBoxSerializer
 
     def create(self, request, *args, **kwargs):
-        """
-        Create complaint
-        """
         if self.request.user.is_admin:
             raise NotAcceptable("Admin can not create issue")
         request_data = request.data
+        print(request_data)
         request_data.update({
             "user_profile": request.user.id
         })
+        # self.request.data._mutable = True
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        print(serializer.data.copy())
+        return Response(serializer.data.copy(), status=status.HTTP_201_CREATED, headers=headers)
 
     def list(self, request, *args, **kwargs):
         if not self.request.user.is_admin:
