@@ -94,7 +94,53 @@ class OrganizationViewSet(UpdateAPIView):
         return org
 
 
-class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
+# class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
+#     queryset = Attendance.objects.all()
+#     serializer_class = AttendanceSerializer
+    
+#     def create(self, request, *args, **kwargs):
+#         """
+#         Create attendence of employee/manager
+#         """
+#         qs = Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today())
+#         if qs:
+#             raise NotAcceptable("Already marked for today")
+#         request_data = request.data
+        
+#         if datetime.datetime.now().hour > 9 :
+#             request_data.update({
+#                 "user_profile": request.user.id,
+#                 "is_present" : False
+#             })
+#         # elif datetime.datetime.now().hour < 8:
+#         #     raise NotAcceptable("You can mark attendance after 8.00 am")     
+#         else:
+#             request_data.update({
+#                 "user_profile": request.user.id,
+#                 "is_present" : True
+#             })
+        
+#         serializer = self.get_serializer(data=request.data)
+#         # print(serializer)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         # headers = self.get_success_headers(serializer.data)
+#         # print(serializer.data)
+#         # print(datetime.date.today())
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+#     def get_queryset(self):
+#         if self.request.user.is_admin:
+#             print("asdknasdkn]")
+#         return Attendance.objects.filter(user_profile=self.request.user.id)
+
+#     def get_object(self):
+#         org = Attendance.objects.get(user_profile=self.request.user.id)
+#         print(org)
+#         self.check_object_permissions(self.request, org)
+#         return org
+
+class AttendanceViewSet(viewsets.ModelViewSet):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
     
@@ -134,12 +180,22 @@ class AttendanceViewSet(ListAPIView, CreateAPIView, UpdateAPIView):
             print("asdknasdkn]")
         return Attendance.objects.filter(user_profile=self.request.user.id)
 
-    def get_object(self):
-        org = Attendance.objects.get(user_profile=self.request.user.id)
-        print(org)
-        self.check_object_permissions(self.request, org)
-        return org
+    # def partial_update(self, request, pk=None):
+    #     obj = self.get_object()
+    #     data = request.data
+    #     data.update({"user_profile": obj.id})
+    #     serializer = AttendanceSerializer(data=data)
 
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     print(obj)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    # def get_object(self):
+    #     org = Attendance.objects.get(user_profile=self.request.user.id)
+    #     print(org)
+    #     self.check_object_permissions(self.request, org)
+    #     return org
 
 class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
     queryset = ComplaintBox.objects.all()
