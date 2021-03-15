@@ -35,7 +35,7 @@ class TaskDetail(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
 
     # End time for manager to set up a time limit for a sub task
-    end_time = models.PositiveIntegerField(null=False, blank=False)
+    end_time = models.BigIntegerField(null=False, blank=False)
 
     def __str__(self):
         return self.description
