@@ -144,43 +144,73 @@ class OrganizationViewSet(UpdateAPIView):
 class AttendanceViewSet(viewsets.ModelViewSet):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
+
+    # def perform_create(self, serializer):
+    #     user_profile = serializer.validated_data.get('user_profile')
+    #     punch_in_time =serializer.validated_data.get('punch_in_time'),
+    #     # chamber = Chamber.objects.get(chamber_name=chamber)
+    #     punch_out_time=serializer.validated_data.get('punch_out_time')
+    #     date=serializer.validated_data.get('date'),
+    #     is_present=serializer.validated_data.get('is_present'),
+
+    #     print(user_profile)
+    #     # obj_lst = Run.objects.filter(chamber=chamber, start_time=start_time)
+    #     # if obj_lst:
+    #     #     obj_lst.update(
+    #     #             chamber=chamber,
+    #     #             start_time=start_time,
+    #     #             end_time=end_time)
+    #     # else:
+    #     #     Run.objects.create(chamber=chamber,
+    #     #             start_time=start_time,
+    #     #             end_time=end_time)
     
     def create(self, request, *args, **kwargs):
 
         request_data = request.data
+        
 
         qs = Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today(), punch_in_time__isnull=False, punch_out_time__isnull=False)
+        # qs = Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today())
         if qs:
+            # for i in qs:
+            #     print(i.punch_in_time)
+            #     print(i.punch_out_time)
             raise NotAcceptable("Already marked for today")
             
         checkPunchIn =  Attendance.objects.filter(user_profile=request.user.id, date=datetime.date.today(), punch_in_time__isnull=False)
+        # instance = self.get_object()
+        # print(instance)
         if checkPunchIn:
-            request_data.update({
-                "punch_out_time" : datetime.datetime.now()
-            })
-
-        print(datetime.datetime.now())
-
-        if datetime.datetime.now().hour > 9 :
+            for i in checkPunchIn:
+                print(i.pk)
             request_data.update({
                 "user_profile": request.user.id,
-                "is_present" : False
             })
-        # elif datetime.datetime.now().hour < 8:
-        #     raise NotAcceptable("You can mark attendance after 8.00 am")     
+            addPunchIn = Attendance.objects.update(user_profile= request.user.id, punch_out_time=datetime.datetime.now())
+        # else:
+        #     request_data.update({
+        #         "user_profile": request.user.id,
+        #         "punch_in_time" : datetime.datetime.now()
+        #     })
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
         else:
-            request_data.update({
-                "user_profile": request.user.id,
-                "is_present" : True
-            })
-        
-        serializer = self.get_serializer(data=request.data)
-        # print(serializer)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        # headers = self.get_success_headers(serializer.data)
-        # print(serializer.data)
-        # print(datetime.date.today())
+            if datetime.datetime.now().hour > 9 :
+                request_data.update({
+                    "user_profile": request.user.id,
+                    "is_present" : False
+                })
+            # elif datetime.datetime.now().hour < 8:
+            #     raise NotAcceptable("You can mark attendance after 8.00 am")     
+            else:
+                request_data.update({
+                    "user_profile": request.user.id,
+                    "is_present" : True
+                })
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
