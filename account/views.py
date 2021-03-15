@@ -202,24 +202,7 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
     queryset = ComplaintBox.objects.all()
     serializer_class = CreateComplaintBoxSerializer
 
-    # def create(self, request, *args, **kwargs):
-    #     if self.request.user.is_admin:
-    #         raise NotAcceptable("Admin can not create issue")
-    #     request_data = request.data
-    #     print(request_data)
-    #     request_data.update({
-    #         "user_profile": request.user.id
-    #     })
-    #     # request.data._mutable = True
-    #     serializer = self.get_serializer(data=request.data)
-    #     print(serializer)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     print(serializer.data.copy())
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         if self.request.user.is_admin:
             raise NotAcceptable("Admin can not create issue")
         request_data = request.data
@@ -227,50 +210,90 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         request_data.update({
             "user_profile": request.user.id
         })
-
-        # request_data._mutable = True
-        q_dict = QueryDict('', mutable=True)
-        q_dict.update(request.data)
-        print(q_dict)
-        # self.request.data._mutable = True
-        serializer = self.get_serializer(data=q_dict)
-        # print(request._request.POST.__dict__) #1
-        request._request.POST = request._request.POST.copy()
-        post = request.POST.copy() 
-        # print(request._request.POST)
         # request.data._mutable = True
-        # print(request.data)
-        # print(request.data['subject'])
-        if (subject := request.data.get("subject")) and (
-            complain := request.data.get("complain")
-        ):
-            request.data["subject"] = subject
-            request.data["complain"] = complain
-        # request.data._mutable = False
+        q_dict = QueryDict(mutable=True)
+        q_dict.update(request.data)
+        # print(q_dict)
+        # print(request_data)
+        _mutable = q_dict._mutable
+        print(_mutable)
 
-        # remember old state
-        # _mutable = data._mutable
-        # print(_mutable)
-        # # set to mutable
-        # data._mutable = True
-        # # change the values you want
-        # data['param_name'] = 'new value'
-        # # set mutable flag back
-        # data._mutable = _mutable
+        q_dict._mutable = True
 
-        # print(request._request.POST.__dict__) #2
-        # print(request._request.POST) #2
-        # print(request._request) #2
-        # print(request) #2
-        # mydata=request.data.copy()
-        # print(mydata)
+        q_dict['subject'] = request_data['subject']
+        q_dict['complain'] = request_data['complain']
+        print(q_dict['subject'])
+        print(request_data['subject'])
+        # mutable = request.POST._mutable
+        # print(mutable)
+        # print(request.POST['subject'])
+        # request.POST._mutable = True
+        # request.POST['subject'] = 'test data'
+        # request.POST._mutable = mutable
+        # serializer = self.get_serializer(data=request.data)
+
+
+        serializer = self.get_serializer(data=q_dict)
         serializer.is_valid(raise_exception=True)
-        # serializer.create(validated_data=request.data)
-        serializer.save()
+        self.perform_create(serializer)
         # print(serializer.data)
+
         headers = self.get_success_headers(serializer.data)
-        # print(serializer.data)
+        # print(serializer.data.copy())
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # def post(self, request, *args, **kwargs):
+    #     if self.request.user.is_admin:
+    #         raise NotAcceptable("Admin can not create issue")
+    #     request_data = request.data
+    #     # print(request_data)
+    #     request_data.update({
+    #         "user_profile": request.user.id
+    #     })
+
+    #     # request_data._mutable = True
+    #     q_dict = QueryDict('', mutable=True)
+    #     q_dict.update(request.data)
+    #     print(q_dict)
+    #     # self.request.data._mutable = True
+    #     serializer = self.get_serializer(data=q_dict)
+    #     # print(request._request.POST.__dict__) #1
+    #     request._request.POST = request._request.POST.copy()
+    #     post = request.POST.copy() 
+    #     # print(request._request.POST)
+    #     # request.data._mutable = True
+    #     # print(request.data)
+    #     # print(request.data['subject'])
+    #     if (subject := request.data.get("subject")) and (
+    #         complain := request.data.get("complain")
+    #     ):
+    #         request.data["subject"] = subject
+    #         request.data["complain"] = complain
+    #     # request.data._mutable = False
+
+    #     # remember old state
+    #     # _mutable = data._mutable
+    #     # print(_mutable)
+    #     # # set to mutable
+    #     # data._mutable = True
+    #     # # change the values you want
+    #     # data['param_name'] = 'new value'
+    #     # # set mutable flag back
+    #     # data._mutable = _mutable
+
+    #     # print(request._request.POST.__dict__) #2
+    #     # print(request._request.POST) #2
+    #     # print(request._request) #2
+    #     # print(request) #2
+    #     # mydata=request.data.copy()
+    #     # print(mydata)
+    #     serializer.is_valid(raise_exception=True)
+    #     # serializer.create(validated_data=request.data)
+    #     serializer.save()
+    #     # print(serializer.data)
+    #     headers = self.get_success_headers(serializer.data)
+    #     # print(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
     def list(self, request, *args, **kwargs):
