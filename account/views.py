@@ -222,18 +222,25 @@ class ComplaintBoxViewSet(ListAPIView, CreateAPIView):
         if self.request.user.is_admin:
             raise NotAcceptable("Admin can not create issue")
         request_data = request.data
-        print(request_data)
+        # print(request_data)
         request_data.update({
             "user_profile": request.user.id
         })
         # self.request.data._mutable = True
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data.copy())
         print(serializer)
+        # print(request._request.POST.__dict__) #1
+        request._request.POST = request._request.POST.copy()
+        # print(request._request.POST.__dict__) #2
+        # print(request._request.POST) #2
+        # print(request._request) #2
+        # print(request) #2
+        # mydata=request.data.copy()
+        # print(mydata)
         serializer.is_valid(raise_exception=True)
-        # self.perform_create(serializer)
         serializer.save()
         headers = self.get_success_headers(serializer.data)
-        print(serializer.data.copy())
+        # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
