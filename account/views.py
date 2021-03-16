@@ -196,13 +196,13 @@ class AttendanceViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
         else:
-            if datetime.datetime.now().hour > 9 :
+            if datetime.datetime.now().hour > 9 and datetime.datetime.now().hour < 17:
                 request_data.update({
                     "user_profile": request.user.id,
                     "is_present" : False
                 })
-            # elif datetime.datetime.now().hour < 8:
-            #     raise NotAcceptable("You can mark attendance after 8.00 am")     
+            elif datetime.datetime.now().hour < 8 or datetime.datetime.now().hour > 17:
+                raise NotAcceptable("You can mark attendance after 8.00 am")     
             else:
                 request_data.update({
                     "user_profile": request.user.id,
@@ -211,6 +211,7 @@ class AttendanceViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
+        print(datetime.datetime.now().hour)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
