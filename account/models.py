@@ -134,12 +134,11 @@ class Attendance(models.Model):
     is_present = models.BooleanField(default=False)
     punch_out_time = models.DateTimeField(default=None, null=True)
 
+    def __str__(self):
+        return str(self.user_profile)
+
 class ComplaintBox(models.Model):
     user_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=False, blank=False)
     complain_date = models.DateTimeField(auto_now_add=True)
     subject = models.CharField(max_length=250, null=False, blank=False)
     complain = models.CharField(max_length=250, null=False, blank=False)
-
-    
-
-

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Organization, User, Department, Profile, Position, Tag, Application
+from .models import Organization, User, Department, Profile, Position, Tag, Application, Attendance
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserModelForm, CustomDepartmentForm, ProfileFormSet, PositionForm, OrganizationModelForm
 from django.contrib.auth.models import Group, Permission
@@ -478,7 +478,7 @@ class UserAdmin(BaseUserAdmin):
             return True
         return False
 
-    def has_change_permission(Self, request, obj=None):
+    def has_change_permission(self, request, obj=None):
         if request.user.is_admin:
             return True
         return False
@@ -714,6 +714,39 @@ class TagAdmin(admin.ModelAdmin):
         if request.user.is_admin:
             return True
         return False
+
+class AttendanceAdmin(admin.ModelAdmin):
+
+    list_display = ('user_profile','date', 'punch_in_time')
+    list_filter = ('date',)
+    search_fields = ['user_profile__user__email','date']
+    ordering = ('date',)
+    filter_horizontal = ()
+    list_per_page = 10
+
+    fieldsets = (
+        (None, {'fields': ('user_profile','date','punch_in_time', 'punch_out_time', 'is_present',)}),
+    )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(user_profile__user__organization=request.user.organization)
+    
+    def has_view_permission(self, request, obj=None):
+        if request.user.is_admin:
+            return True
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
     
 
 admin.site.register(User, UserAdmin)
@@ -723,8 +756,8 @@ admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Application, ApplicationAdmin)
-
+admin.site.register(Attendance, AttendanceAdmin)
 admin.site.unregister(Group)
-admin.site.unregister(Theme)
+# admin.site.unregister(Theme)
 admin.site.unregister(TokenProxy)
 
