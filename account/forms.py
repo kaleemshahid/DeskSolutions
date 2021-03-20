@@ -63,7 +63,7 @@ class UserModelForm(forms.ModelForm):
 class CustomDepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ("department_name", "organization",)
+        fields = ("department_name", "organization")
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)

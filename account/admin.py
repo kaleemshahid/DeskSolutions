@@ -746,9 +746,6 @@ class AttendanceAdmin(admin.ModelAdmin):
     def has_add_permission(self, request, obj=None):
         return False
 
-
-    
-
 admin.site.register(User, UserAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Profile, ProfileAdmin)
@@ -758,6 +755,6 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Application, ApplicationAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
 admin.site.unregister(Group)
-# admin.site.unregister(Theme)
+admin.site.unregister(Theme)
 admin.site.unregister(TokenProxy)
 

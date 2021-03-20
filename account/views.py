@@ -16,7 +16,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
-
 class UserLoginApiView(ObtainAuthToken):
     """ Handle creating user authentication tokens """
 

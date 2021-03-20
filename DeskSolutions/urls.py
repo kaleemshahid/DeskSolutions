@@ -29,10 +29,10 @@ router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('rest/', include('rest_framework.urls')),
     path('api/', include('account.urls')),
     path('api/task/', include('tasksmanagement.urls')),
-    path('admin/', admin.site.urls),
     # path('account/', include('account.urls')),
     path('account/', include('django.contrib.auth.urls')),
     path('', include('desksolutionsbase.urls', namespace='signup')),
@@ -45,3 +45,8 @@ urlpatterns = [
     #                           document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+
+
+admin.AdminSite.site_title = "Admin Panel"
+admin.AdminSite.index_title = "DeskSolutions Admin Panel"
+admin.AdminSite.site_header = "DeskSolutions"
