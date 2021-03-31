@@ -41,9 +41,10 @@ class TaskDetailAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        print(qs)
+        a = qs.filter(task__created_by__organization=request.user.organization)
+        print(a)
         if request.user.is_admin:
-            tasks = qs.filter(task__created_by_organization=request.user.organization)
+            tasks = qs.filter(task__created_by__organization=request.user.organization)
             return tasks
         try:
             get_profile = Profile.objects.get(pk=request.user.id)
@@ -83,10 +84,10 @@ class TaskUpdateAdmin(admin.ModelAdmin):
         try:
             get_profile = Profile.objects.get(pk=request.user.id)
             if get_profile.is_manager: 
-                related_user = qs.filter(taskdetail__task_created_by=request.user)
+                related_user = qs.filter(taskdetail__task__created_by=request.user)
+                return related_user
         except:
             pass
-        return related_user
 
     def has_view_permission(self, request, obj=None):
         try:
