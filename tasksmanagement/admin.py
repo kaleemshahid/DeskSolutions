@@ -54,7 +54,7 @@ class TaskAdmin(admin.ModelAdmin):
         return False
 
     def has_add_permission(self, request, obj=None):
-        return True
+        return False
 
 class TaskDetailAdmin(admin.ModelAdmin):
 
@@ -99,7 +99,7 @@ class TaskDetailAdmin(admin.ModelAdmin):
         return False
 
     def has_add_permission(self, request, obj=None):
-        return True
+        return False
 
 class TaskUpdateAdmin(admin.ModelAdmin):
 
@@ -118,24 +118,24 @@ class TaskUpdateAdmin(admin.ModelAdmin):
             pass
 
     def has_view_permission(self, request, obj=None):
-        try:
-            get_profile = Profile.objects.get(pk=request.user.id)
-            if get_profile.is_manager:
-                return True
-        except:
-            pass
-        if request.user.is_admin:
-            return True
+        # try:
+        #     get_profile = Profile.objects.get(pk=request.user.id)
+        #     if get_profile.is_manager:
+        #         return True
+        # except:
+        #     pass
+        # if request.user.is_admin:
+        #     return True
         return False
     def has_change_permission(self, request, obj=None):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.is_admin:
-            return False
+        # if request.user.is_admin:
+        return False
 
     def has_add_permission(self, request, obj=None):
-        return True
+        return False
 
 admin.site.register(Task, TaskAdmin)
 admin.site.register(TaskDetail, TaskDetailAdmin)
