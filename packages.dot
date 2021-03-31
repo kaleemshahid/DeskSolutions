@@ -1,0 +1,47 @@
+digraph "packages" {
+charset="utf-8"
+rankdir=BT
+"0" [label="account", shape="box"];
+"1" [label="account.admin", shape="box"];
+"2" [label="account.apps", shape="box"];
+"3" [label="account.email", shape="box"];
+"4" [label="account.forms", shape="box"];
+"5" [label="account.managers", shape="box"];
+"6" [label="account.migrations", shape="box"];
+"7" [label="account.migrations.0001_initial", shape="box"];
+"8" [label="account.migrations.0002_auto_20210315_1859", shape="box"];
+"9" [label="account.migrations.0003_auto_20210316_0150", shape="box"];
+"10" [label="account.migrations.0004_auto_20210316_0254", shape="box"];
+"11" [label="account.models", shape="box"];
+"12" [label="account.serializers", shape="box"];
+"13" [label="account.tests", shape="box"];
+"14" [label="account.urls", shape="box"];
+"15" [label="account.validators", shape="box"];
+"16" [label="account.views", shape="box"];
+"17" [label="tasksmanagement", shape="box"];
+"18" [label="tasksmanagement.admin", shape="box"];
+"19" [label="tasksmanagement.apps", shape="box"];
+"20" [label="tasksmanagement.migrations", shape="box"];
+"21" [label="tasksmanagement.migrations.0001_initial", shape="box"];
+"22" [label="tasksmanagement.models", shape="box"];
+"23" [label="tasksmanagement.serializers", shape="box"];
+"24" [label="tasksmanagement.tests", shape="box"];
+"25" [label="tasksmanagement.urls", shape="box"];
+"26" [label="tasksmanagement.views", shape="box"];
+"1" -> "4" [arrowhead="open", arrowtail="none"];
+"1" -> "11" [arrowhead="open", arrowtail="none"];
+"4" -> "11" [arrowhead="open", arrowtail="none"];
+"11" -> "5" [arrowhead="open", arrowtail="none"];
+"11" -> "15" [arrowhead="open", arrowtail="none"];
+"12" -> "11" [arrowhead="open", arrowtail="none"];
+"14" -> "16" [arrowhead="open", arrowtail="none"];
+"16" -> "11" [arrowhead="open", arrowtail="none"];
+"16" -> "12" [arrowhead="open", arrowtail="none"];
+"18" -> "11" [arrowhead="open", arrowtail="none"];
+"18" -> "22" [arrowhead="open", arrowtail="none"];
+"22" -> "11" [arrowhead="open", arrowtail="none"];
+"23" -> "22" [arrowhead="open", arrowtail="none"];
+"25" -> "26" [arrowhead="open", arrowtail="none"];
+"26" -> "22" [arrowhead="open", arrowtail="none"];
+"26" -> "23" [arrowhead="open", arrowtail="none"];
+}

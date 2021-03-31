@@ -22,8 +22,11 @@ class UserLoginApiView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
+        print(serializer)
         serializer.is_valid(raise_exception=True)
+
         user = serializer.validated_data['user']
+        print(user)
         token, created = Token.objects.get_or_create(user=user)
         # delete old token and assign a new one for evey login request
         if not created:

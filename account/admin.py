@@ -353,12 +353,11 @@ class UserAdmin(BaseUserAdmin):
                 if check_manager < 1:
                     messages.warning(request, dep.department_name +
                                     " needs action. No Manager specified for the department")
-
         return super(UserAdmin, self).changelist_view(request, extra_context=extra_context)
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            # hide inline in the add view
+            # hide inline in the add view for admin
             # we are on change page if the below condition is TRUE
             # if obj is None or not obj.is_admin:
             if obj is None or not obj.is_admin:
@@ -463,7 +462,10 @@ class UserAdmin(BaseUserAdmin):
         if request.user.is_superuser:
             return qs
         if request.user.is_admin:
+            print(type(request.user.is_admin))
+            print(type(qs))
             return qs.filter(organization_id=request.user.organization)
+        print(request)
         return qs.filter(id=request.user.id)
 
     def has_add_permission(self, request):
@@ -488,16 +490,11 @@ class UserAdmin(BaseUserAdmin):
             return True
         return False
 
-# 9/11/2020, rat 9.16 pe isko comment kia tha meny, ku k mjy lgta tha k iski koi zrurt ni
     def save_model(self, request, obj, form, change):
         user = request.user
         username = form.cleaned_data['email']
-        print(username)
         obj = form.save(commit=False)
         password = get_random_string(length=7)
-        print(user)
-        print(obj)
-        print(password)
         if obj and not change:
             obj.organization = user.organization
             obj.set_password(password)
@@ -510,7 +507,6 @@ class UserAdmin(BaseUserAdmin):
                 fail_silently=False
             )
         obj.save()
-        # send_mail('This is your passwrd', password,'noreply@desksolutions.com', [obj], fail_silently = False)
         return obj
 
 
@@ -604,7 +600,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        print(qs)
+        print(type(qs))
         if request.user:
             return qs.filter(user__id=request.user.id)
         return qs

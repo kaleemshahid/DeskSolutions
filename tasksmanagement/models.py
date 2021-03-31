@@ -7,7 +7,7 @@ class Task(models.Model):
     created_by = models.ForeignKey(
         User, verbose_name="Created By", on_delete=models.CASCADE, null=False, blank=False)
     task_name = models.CharField(
-        verbose_name="Task Name", max_length=20, null=False, blank=False, unique=True)
+        verbose_name="Task Name", max_length=20, null=False, blank=False)
     is_completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(
         verbose_name="Created At", auto_now_add=True)

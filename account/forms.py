@@ -127,25 +127,25 @@ class PositionForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     name = cleaned_data.get('title')
-    #     job_marker = cleaned_data.get('job_posting')
-    #     # print(name)
-    #     # get_deps = Department.objects.filter(
-    #     #     department_name=name).filter(user__email=self.request.user)
-    #     get_position = Position.objects.filter(title=name).filter(organization=self.request.user.organization)
-    #     # print(get_position)
-    #     # get_organization = OrganizationHead.objects.filter(
-    #     #     department_name=name).filter(organization__email=self.request.user)
-    #     # get_deps = Department.objects.filter(name=name)
-    #     # get_deps = Department.objects.filter(
-    #     #     organization__email=self.user)
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('title')
+        job_marker = cleaned_data.get('job_posting')
+        # print(name)
+        # get_deps = Department.objects.filter(
+        #     department_name=name).filter(user__email=self.request.user)
+        get_position = Position.objects.filter(title=name).filter(organization=self.request.user.organization)
+        # print(get_position)
+        # get_organization = OrganizationHead.objects.filter(
+        #     department_name=name).filter(organization__email=self.request.user)
+        # get_deps = Department.objects.filter(name=name)
+        # get_deps = Department.objects.filter(
+        #     organization__email=self.user)
 
-    #     # get_deps = CustomUser.objects.filter(department__name=name)
-    #     if get_position.count() >= 1:
-    #         raise forms.ValidationError(
-    #             "This Position already exists in the Organization")
+        # get_deps = CustomUser.objects.filter(department__name=name)
+        if get_position.count() >= 1:
+            raise forms.ValidationError(
+                "This Position already exists in the Organization")
 
 
 

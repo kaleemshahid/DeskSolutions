@@ -66,9 +66,9 @@ class User(AbstractUser):
     def has_module_perms(self, app_label):
         return True
 
-    def get_group_permissions(self, obj):
-        querset = User.objects.get(id=obj.id)
-        return querset
+    # def get_group_permissions(self, obj):
+    #     querset = User.objects.get(id=obj.id)
+    #     return querset
 
 # CompanyAdmins can then add their own departments, or add new users to their system but after adding departments
 class Department(models.Model):
