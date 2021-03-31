@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Task, TaskDetail, TaskUpdate
 from account.models import Profile
-from nested_inline.admin import NestedStackedInline, NestedModelAdmin, NestedTabularInline
 
 class TaskUpdateInline(admin.TabularInline):
     model = TaskUpdate
