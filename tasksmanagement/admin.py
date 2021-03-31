@@ -2,7 +2,29 @@ from django.contrib import admin
 from .models import Task, TaskDetail, TaskUpdate
 from account.models import Profile
 
+class TaskUpdateInline(admin.TabularInline):
+    model = TaskUpdate
+    min_num =1
+
+class TaskDetailInline(admin.TabularInline):
+    model = TaskDetail
+    min_num = 1
+    inlines = [
+        TaskUpdateInline
+    ]    
+
+
 class TaskAdmin(admin.ModelAdmin):
+    list_display = ('task_name','created_by','is_completed', 'created_at')
+    list_filter = ('is_completed', )
+    ordering = ('created_at',)
+    fieldsets = (
+            ("Information", {'fields': ('task_name', 'is_completed', 'created_at', 'created_by')}),
+        )
+    inlines = [
+        TaskDetailInline,
+    ]
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         print(qs)
