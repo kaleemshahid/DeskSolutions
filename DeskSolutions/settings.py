@@ -61,7 +61,6 @@ INSTALLED_APPS = [
 
     # 'leaflet',
     'django_extensions',
-    'nested_inline',
     # 'mapwidgets',
     # "fcm_django",
     # 'django.contrib.gis',
