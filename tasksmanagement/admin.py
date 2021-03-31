@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Task, TaskDetail, TaskUpdate
 from account.models import Profile
+from nested_inline.admin import NestedStackedInline, NestedModelAdmin, NestedTabularInline
 
 class TaskUpdateInline(admin.TabularInline):
     model = TaskUpdate
@@ -9,9 +10,6 @@ class TaskUpdateInline(admin.TabularInline):
 class TaskDetailInline(admin.TabularInline):
     model = TaskDetail
     min_num = 1
-    inlines = [
-        TaskUpdateInline
-    ]    
 
 
 class TaskAdmin(admin.ModelAdmin):
@@ -61,6 +59,15 @@ class TaskAdmin(admin.ModelAdmin):
 
 class TaskDetailAdmin(admin.ModelAdmin):
 
+    list_display = ('task','assigned_to', 'priority', 'start_time')
+    list_filter = ('priority', )
+    ordering = ('start_time',)
+    fieldsets = (
+            ("Information", {'fields': ('task','assigned_to', 'description', 'priority', 'start_time')}),
+        )
+    inlines = [
+        TaskUpdateInline,
+    ]
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         a = qs.filter(task__created_by__organization=request.user.organization)
